@@ -1,0 +1,114 @@
+Top down shooter (ala hotline miami)
+Cover, with shadows
+
+Characters have {
+    weapons {
+        1 pistol
+        1 shotgun
+        1 rifle
+        1 sniper
+        lazer
+        grenade launcher
+        flamethrower
+        minigun
+        smg
+        sword
+        revolver/deagle
+        bow
+        dmr
+        boomerang
+    }
+    ability {
+        1 roll
+        invis
+        wall
+        mine
+        sonar pulse
+        translocator
+        throwing knife
+        sanic
+        shield
+        caltrops
+        grenade/molotov/flashbang
+        smoke grenade
+        grav grenade
+        hologram (ala mirage)
+        camera
+        reflect (clive's idea, must add) (parry, sends to attacker)
+        c4
+    }
+    perks {
+        ricochet
+        faster
+        healthy
+        faster cooldown
+        second charge, less cooldown
+        penetration (small distance?)
+        See hp?
+        better gun
+        explosive bullets
+    }
+    stats {
+        1 health
+        1 speed
+        1 ammo
+        1 cooldown
+        size
+    }
+}
+
+game modes {
+    1 deathmatch
+    koth
+    team deathmatch
+    oddball
+    one in the barrel
+    gun game
+}
+
+game modifiers {
+    randomise modifiers
+    2x speed
+    1 hp
+    big big players
+    slow projectiles
+    darkness (small ring around player)
+    can't stop shooting
+    random controls (swaps intermitendly (random intervals, no warning))
+    screen shake
+    alternating curved bullet (random curves (L, curve, spiral, zig zag))
+    no guns
+    killstreak for more speed, cdr, etc (or ala darius)
+}
+
+maps have {
+    1 cover
+    moving cover (that can crush you)
+    conveyer belt
+    homing mine
+    teleporters,
+    1 transparent cover,
+    teleport between layers,
+    1 prebuilt
+    set maps
+    powerups {
+        speed boost
+        infinite ammo
+        health packs
+        power weapon {
+            rpg
+            gun shooting gun
+            kamikazee
+        }
+        true sight
+    }
+    hazards {
+        pits
+        toggling lasers
+        oil
+        occassional blackout/lightout
+        explosive barrels
+        switch to activate cover
+        gravity well
+    }
+}
