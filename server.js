@@ -26,8 +26,9 @@ server.listen(5000, function() {
 let players = {};
 io.on('connection', function(socket) {
     socket.on('new player', function() {
+        let c = new Character();
         players[socket.id] = {
-            player: new Character(),
+            player: c,
             input: {
                 up: false,
                 down: false,
@@ -35,12 +36,12 @@ io.on('connection', function(socket) {
                 right: false
             }
         };
+        socket.emit('player id', c.id);
     });
 
     socket.on('movement', function(data) {
         var player = players[socket.id] || {};
         player.input = data;
-        
     });
 });
 

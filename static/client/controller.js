@@ -1,11 +1,10 @@
-let socket = io();
-
 let movement = {
     up: false,
     down: false,
     left: false,
     right: false
 }
+
 document.addEventListener('keydown', function(event) {
     switch (event.keyCode) {
         case 65: // A
@@ -39,23 +38,15 @@ document.addEventListener('keyup', function(event) {
     }
 });
 
+// declare this player has joined
 socket.emit('new player');
+
+// update movement to the server
 setInterval(function() {
     socket.emit('movement', movement);
-}, 1000 / 30);
+}, tickRate);
 
-let canvas = document.getElementById('canvas');
-canvas.width = 800;
-canvas.height = 600;
-let context = canvas.getContext('2d');
-
-socket.on('state', function(players) {
-    context.clearRect(0, 0, 800, 600);
-    context.fillStyle = 'green';
-    for (let id in players) {
-        let player = players[id];
-        context.beginPath();
-        context.arc(player.x, player.y, 10, 0, 2 * Math.PI);
-        context.fill();
-    }
+// set this instances id
+socket.on("player id", function(val) {
+    pid = val;
 });
