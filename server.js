@@ -1,3 +1,5 @@
+import { Character } from './server/character.js';
+
 // Dependencies
 let express = require('express');
 let http = require('http');
@@ -21,32 +23,39 @@ server.listen(5000, function() {
     console.log('Starting server on port 5000');
 });
 
-var players = {};
+let players = {};
 io.on('connection', function(socket) {
     socket.on('new player', function() {
-    players[socket.id] = {
-        x: 300,
-        y: 300
-    };
-});
-    
-socket.on('movement', function(data) {
-    var player = players[socket.id] || {};
-    if (data.left) {
-            player.x -= 5;
-        }
-        if (data.up) {
-            player.y -= 5;
-        }
-        if (data.right) {
-            player.x += 5;
-        }
-        if (data.down) {
-            player.y += 5;
-        }
+        players[socket.id] = {
+            player: new Character(),
+            input: {
+                up: false,
+                down: false,
+                left: false,
+                right: false
+            }
+        };
+    });
+
+    socket.on('movement', function(data) {
+        var player = players[socket.id] || {};
+        player.input = data;
+        
     });
 });
 
+const tickRate = 1000 / 60;
+let t = (new Date()).getTime();
 setInterval(function() {
-    io.sockets.emit('state', players);
-}, 1000 / 60);
+    let nt = (new Date()).getTime();
+    let resp = {};
+    let delta = (nt - t)/tickRate;
+
+    for (const [key, p] of Object.entries(players)) {
+        p.player.update(delta, p.input);
+        resp[p.player.id] = p.player.getRepr();
+    }
+
+    io.sockets.emit('state', resp);
+    t = nt;
+}, tickRate);
