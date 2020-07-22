@@ -1,14 +1,22 @@
-import { clamp } from './utility.js';
-import { Entity } from './entity.js';
-import { Projectile } from './projectile.js';
-import { getGame } from './game.js'
+import {
+    clamp
+} from './utility.js';
+import {
+    Entity
+} from './entity.js';
+import {
+    Projectile
+} from './projectile.js';
+import {
+    getGame
+} from './game.js'
 
 const max_speed = 300; // pixels/s
 const accel_rate = 800; // pixels/s^2
 let cid = 0;
 export class Character extends Entity {
     constructor() {
-        super(300, 300);
+        super(300, 300, 20);
         this._id = cid++;
     }
 
@@ -36,10 +44,26 @@ export class Character extends Entity {
 
         this._direction = Math.atan2(input.my - this._y, input.mx - this._x);
 
-        super.update(delta);
+        //super.update(delta);
+
+        const g = getGame();
+        let movex = Math.round(this._sx * delta);
+        let movey = Math.round(this._sy * delta);
+        while (g.collision(this._x + movex, this._y, this._r)) {
+            this._sx = 0;
+            movex -= 1;
+        }
+        this._x += movex;
+
+        while (g.collision(this._x, this._y + movey, this._r)) {
+            this._sy = 0;
+            movey -= 1;
+        }
+        this._y += movey;
+
 
         if (input.mpress) {
-            const g = getGame();
+
             g.spawnProjectile(new Projectile(this._x, this._y, this._direction));
         }
     }

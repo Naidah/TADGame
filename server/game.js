@@ -1,9 +1,14 @@
-import { Character } from "./character"
+import {
+    Character
+} from "./character"
+import {
+    Wall
+} from "./wall";
 
 class Game {
     constructor() {
         this._players = {};
-        this._walls = [];
+        this._walls = [new Wall(400, 400, 50, 50)];
         this._projectiles = [];
     }
 
@@ -29,6 +34,15 @@ class Game {
         for (let p of this._projectiles) {
             p.update(delta);
         }
+    }
+
+    collision(x, y, r) {
+        for (let i of this._walls) {
+            if (i.hitbox(x, y, r)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     getRepr() {
