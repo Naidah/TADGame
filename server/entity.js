@@ -1,7 +1,8 @@
 export class Entity {
-  constructor(x, y) {
+  constructor(x, y, r) {
     this._x = x;
     this._y = y;
+    this._r = r;
     this._direction = 0;
 
     this._sx = 0;
@@ -13,11 +14,23 @@ export class Entity {
     this._y += this._sy * delta;
   }
 
+  get x() {
+    return this._x;
+  }
+
+  get y() {
+    return this._y;
+  }
+
+  get r() {
+    return this._r;
+  }
+
   getRepr() {
     return {
       x: this._x,
       y: this._y,
-      direction: this._direction,
-    };
+      direction: this._direction
+    }
   }
 }
