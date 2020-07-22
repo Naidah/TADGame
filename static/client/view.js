@@ -1,4 +1,4 @@
-import { drawCharacter, drawWall } from './renderer.js'
+import { drawCharacter, drawWall, drawProjectile } from './renderer.js'
 
 socket.on('state', function (state) {
     context.clearRect(0, 0, canvas.width, canvas.height);
@@ -9,5 +9,9 @@ socket.on('state', function (state) {
 
     for (let w of state["walls"]) {
         drawWall(w);
+    }
+
+    for (let p of state["projectiles"]) {
+        drawProjectile(p);
     }
 });

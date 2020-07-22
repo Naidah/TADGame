@@ -1,16 +1,15 @@
 import { clamp } from './utility.js';
+import { Entity } from './entity.js';
+import { Projectile } from './projectile.js';
+import { getGame } from './game.js'
 
 const max_speed = 300; // pixels/s
 const accel_rate = 800; // pixels/s^2
 let cid = 0;
-export class Character {
+export class Character extends Entity {
     constructor() {
-        this._x = 300;
-        this._y = 300;
+        super(300, 300);
         this._id = cid++;
-
-        this._sx = 0;
-        this._sy = 0;
     }
 
     update(delta, input) {
@@ -35,8 +34,14 @@ export class Character {
             this._sy *= max_speed / speed;
         }
 
-        this._x += this._sx * delta;
-        this._y += this._sy * delta;
+        this._direction = Math.atan2(input.my - this._y, input.mx - this._x);
+
+        super.update(delta);
+
+        if (input.mpress) {
+            const g = getGame();
+            g.spawnProjectile(new Projectile(this._x, this._y, this._direction));
+        }
     }
 
     get id() {
@@ -44,11 +49,9 @@ export class Character {
     }
 
     getRepr() {
-        return {
-            id: this._id,
-            x: this._x,
-            y: this._y
-        }
+        let repr = super.getRepr();
+        repr["id"] = this._id;
+        return repr;
     }
 }
 

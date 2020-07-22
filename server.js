@@ -1,5 +1,4 @@
-import { Character } from './server/character.js';
-import { Wall } from './server/wall.js';
+import { getGame } from "./server/game"
 
 // Dependencies
 let express = require('express');
@@ -24,54 +23,63 @@ server.listen(5000, function () {
     console.log('Starting server on port 5000');
 });
 
-let walls = [new Wall(400, 400, 50, 50)];
+let game = getGame();
 
-let players = {};
+let inputs = {};
 io.on('connection', function (socket) {
     socket.on('new player', function () {
-        let c = new Character();
-        players[socket.id] = {
-            player: c,
+        let c = game.addPlayer();
+        inputs[socket.id] = {
+            id: c,
             input: {
                 up: false,
                 down: false,
                 left: false,
-                right: false
+                right: false,
+                mx: 0,
+                my: 0,
+                mdown: false,
+                mpress: false
             }
         };
-        socket.emit('player id', c.id);
+        socket.emit('player id', c);
     });
 
     socket.on('movement', function (data) {
-        var player = players[socket.id] || {};
+        var player = inputs[socket.id] || {};
+
+        // a mouse is pressed if the mouse is now pressed, but wasn't on the past frame
+        if (data.mdown && !player.input.mdown) {
+            data.mpress = true;
+        } else {
+            data.mpress = false;
+        }
         player.input = data;
     });
 
     socket.on("leaving player", function () {
-        delete players[socket.id];
+        if (inputs.hasOwnProperty(socket.id)) {
+            game.removePlayer(inputs[socket.id].id);
+            delete inputs[socket.id];
+        }
     })
 });
 
-const tickRate = 1000 / 120;
+const tickRate = 1000 / 60;
 let t = (new Date()).getTime();
 setInterval(function () {
     let nt = (new Date()).getTime();
-    let resp = {};
-    let delta = (nt - t) / 1000; // milliseconds since last update
-    let presp = {};
-    let wresp = [];
+    let delta = (nt - t) / 1000; // seconds since the last update
 
-    for (const [key, p] of Object.entries(players)) {
-        p.player.update(delta, p.input);
-        presp[p.player.id] = p.player.getRepr();
-    }
-    resp["players"] = presp;
-
-    for (let w of walls) {
-        wresp.push(w.getRepr());
-    }
-    resp["walls"] = wresp;
+    game.update(delta, inputs);
+    let resp = game.getRepr();
 
     io.sockets.emit('state', resp);
+
+    // update so the following frame does not have the mouse press
+    for (let i in inputs) {
+        inputs[i].input.mpress = false;
+    }
+
     t = nt;
 }, tickRate);

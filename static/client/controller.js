@@ -2,8 +2,26 @@ let movement = {
     up: false,
     down: false,
     left: false,
-    right: false
+    right: false,
+    mx: 0,
+    my: 0,
+    mdown: false
 }
+
+
+function getMousePos(canvas, evt) {
+    var rect = canvas.getBoundingClientRect();
+    return {
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top
+    };
+}
+
+canvas.addEventListener('mousemove', function (evt) {
+    var mousePos = getMousePos(canvas, evt);
+    movement.mx = mousePos.x;
+    movement.my = mousePos.y;
+}, false);
 
 document.addEventListener('keydown', function (event) {
     switch (event.keyCode) {
@@ -37,6 +55,14 @@ document.addEventListener('keyup', function (event) {
             break;
     }
 });
+
+document.addEventListener("mousedown", function (event) {
+    movement.mdown = true;
+});
+
+document.addEventListener("mouseup", function (event) {
+    movement.mdown = false;
+})
 
 // declare this player has joined
 socket.emit('new player');
