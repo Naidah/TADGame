@@ -5,7 +5,7 @@ let movement = {
     right: false
 }
 
-document.addEventListener('keydown', function(event) {
+document.addEventListener('keydown', function (event) {
     switch (event.keyCode) {
         case 65: // A
             movement.left = true;
@@ -21,7 +21,7 @@ document.addEventListener('keydown', function(event) {
             break;
     }
 });
-document.addEventListener('keyup', function(event) {
+document.addEventListener('keyup', function (event) {
     switch (event.keyCode) {
         case 65: // A
             movement.left = false;
@@ -41,12 +41,16 @@ document.addEventListener('keyup', function(event) {
 // declare this player has joined
 socket.emit('new player');
 
+window.onunload = function () {
+    socket.emit("leaving player");
+};
+
 // update movement to the server
-setInterval(function() {
+setInterval(function () {
     socket.emit('movement', movement);
 }, tickRate);
 
 // set this instances id
-socket.on("player id", function(val) {
+socket.on("player id", function (val) {
     pid = val;
 });

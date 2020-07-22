@@ -1,7 +1,7 @@
 import { clamp } from './utility.js';
 
-const max_speed = 10;
-const accel_rate = 2;
+const max_speed = 300; // pixels/s
+const accel_rate = 800; // pixels/s^2
 let cid = 0;
 export class Character {
     constructor() {
@@ -31,8 +31,8 @@ export class Character {
 
         let speed = Math.sqrt(Math.pow(this._sx, 2) + Math.pow(this._sy, 2));
         if (speed > max_speed) {
-            this._sx *= max_speed/speed;
-            this._sy *= max_speed/speed;
+            this._sx *= max_speed / speed;
+            this._sy *= max_speed / speed;
         }
 
         this._x += this._sx * delta;

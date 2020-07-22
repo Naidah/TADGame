@@ -1,9 +1,5 @@
-import {
-    Character
-} from './server/character.js';
-import {
-    Wall
-} from './server/wall.js';
+import { Character } from './server/character.js';
+import { Wall } from './server/wall.js';
 
 // Dependencies
 let express = require('express');
@@ -50,14 +46,18 @@ io.on('connection', function (socket) {
         var player = players[socket.id] || {};
         player.input = data;
     });
+
+    socket.on("leaving player", function () {
+        delete players[socket.id];
+    })
 });
 
-const tickRate = 1000 / 60;
+const tickRate = 1000 / 120;
 let t = (new Date()).getTime();
 setInterval(function () {
     let nt = (new Date()).getTime();
     let resp = {};
-    let delta = (nt - t) / tickRate;
+    let delta = (nt - t) / 1000; // milliseconds since last update
     let presp = {};
     let wresp = [];
 
