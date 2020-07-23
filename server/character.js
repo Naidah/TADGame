@@ -1,15 +1,7 @@
-import {
-    clamp
-} from './utility.js';
-import {
-    Entity
-} from './entity.js';
-import {
-    Projectile
-} from './projectile.js';
-import {
-    getGame
-} from './game.js'
+import { clamp } from './utility.js';
+import { Entity } from './entity.js';
+import { Projectile } from './projectile.js';
+import { getGame } from './game.js'
 
 const max_speed = 300; // pixels/s
 const accel_rate = 800; // pixels/s^2
@@ -44,20 +36,18 @@ export class Character extends Entity {
 
         this._direction = Math.atan2(input.my - this._y, input.mx - this._x);
 
-        //super.update(delta);
-
         const g = getGame();
         let movex = Math.round(this._sx * delta);
         let movey = Math.round(this._sy * delta);
-        while (g.collision(this._x + movex, this._y, this._r)) {
+        while (g.collision(this._x + movex, this._y, this._r) && movex != 0) {
             this._sx = 0;
-            movex -= 1;
+            movex -= Math.sign(movex);
         }
         this._x += movex;
 
-        while (g.collision(this._x, this._y + movey, this._r)) {
+        while (g.collision(this._x, this._y + movey, this._r) && movey != 0) {
             this._sy = 0;
-            movey -= 1;
+            movey -= Math.sign(movey);
         }
         this._y += movey;
 
