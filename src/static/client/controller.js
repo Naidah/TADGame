@@ -1,3 +1,5 @@
+let canvas = document.getElementById('canvas');
+
 let movement = {
     up: false,
     down: false,
@@ -64,19 +66,12 @@ document.addEventListener("mouseup", function (event) {
     movement.mdown = false;
 })
 
-// declare this player has joined
-socket.emit('new player');
 
 window.onunload = function () {
     socket.emit("leaving player");
 };
 
-// update movement to the server
-setInterval(function () {
-    socket.emit('movement', movement);
-}, tickRate);
+export function getMovement() {
+    return movement
+}
 
-// set this instances id
-socket.on("player id", function (val) {
-    pid = val;
-});

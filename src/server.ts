@@ -1,22 +1,26 @@
-import { getGame } from "./server/game"
+import { getGame } from "./server/game.js";
+import * as express from 'express';
+import * as http from 'http';
+import * as path from 'path';
+// import * as socketIO from 'socket.io';
 
 // Dependencies
-let express = require('express');
-let http = require('http');
-let path = require('path');
 let socketIO = require('socket.io');
 
 let app = express();
-let server = http.Server(app);
+let server = http.createServer(app);
 let io = socketIO(server);
 
 app.set('port', 5000);
-app.use('/static', express.static(__dirname + '/static'))
+app.use(express.static(__dirname));
 
 // Routing
+console.log(__dirname);
 app.get('/', function (request, response) {
-    response.sendFile(path.join(__dirname, 'index.html'));
+    response.sendFile(path.join('/mnt/e/Aidan/Desktop/TADGame', 'index.html'));
 });
+
+console
 
 // Starts the server
 server.listen(5000, function () {

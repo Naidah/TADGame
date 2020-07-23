@@ -1,4 +1,4 @@
-import { clamp } from './utility.js';
+import { clamp, type_input } from './utility';
 import { Entity } from './entity.js';
 import { Projectile } from './projectile.js';
 import { getGame } from './game.js'
@@ -7,14 +7,19 @@ const max_speed = 300; // pixels/s
 const accel_rate = 800; // pixels/s^2
 let cid = 0;
 export class Character extends Entity {
+    private _id: number;
     constructor() {
         super(300, 300, 20);
         this._id = cid++;
     }
 
-    update(delta, input) {
-        const mx = input.right - input.left;
-        const my = input.down - input.up;
+    update(delta: number, input?: type_input): void {
+        let l = input.left ? 1 : 0;
+        let r = input.right ? 1 : 0;
+        let u = input.up ? 1 : 0;
+        let d = input.down ? 1 : 0;
+        const mx = r - l;
+        const my = d - u;
 
         if (mx != 0) {
             this._sx += mx * accel_rate * delta;

@@ -1,8 +1,10 @@
 const char_radius = 20;
 const proj_radius = 4;
 
+let canvas = document.getElementById('canvas');
+let context = canvas.getContext('2d');
 
-export function drawCharacter(state) {
+export function drawCharacter(state, pid) {
     if (state.id == pid) {
         context.fillStyle = 'blue';
     } else {

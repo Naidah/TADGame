@@ -1,9 +1,9 @@
 import {
     Character
-} from "./character"
+} from "./character.ts"
 import {
     Wall
-} from "./wall";
+} from "./wall.js";
 
 class Game {
     constructor() {
