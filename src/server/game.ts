@@ -1,32 +1,33 @@
-import {
-    Character
-} from "./character.ts"
-import {
-    Wall
-} from "./wall.js";
+import { Character } from "./character"
+import { Wall } from "./wall";
+import { type_input, type_input_set, type_state, type_player, type_wall, type_projectile } from "./types";
+import { Projectile } from "./projectile";
 
 class Game {
+    private _players: { [id: number]: Character };
+    private _walls: Wall[];
+    private _projectiles: Projectile[];
     constructor() {
         this._players = {};
         this._walls = [new Wall(400, 400, 50, 50)];
         this._projectiles = [];
     }
 
-    addPlayer() {
+    addPlayer(): number {
         const c = new Character();
         this._players[c.id] = c;
         return c.id;
     }
 
-    removePlayer(id) {
+    removePlayer(id: number): void {
         delete this._players[id];
     }
 
-    spawnProjectile(proj) {
+    spawnProjectile(proj: Projectile): void {
         this._projectiles.push(proj);
     }
 
-    update(delta, inputs) {
+    update(delta: number, inputs: type_input_set): void {
         for (const [key, p] of Object.entries(inputs)) {
             this._players[p.id].update(delta, p.input);
         }
@@ -36,7 +37,7 @@ class Game {
         }
     }
 
-    collision(x, y, r) {
+    collision(x: number, y: number, r: number) {
         for (let i of this._walls) {
             if (i.hitbox(x, y, r)) {
                 return true;
@@ -45,27 +46,27 @@ class Game {
         return false;
     }
 
-    getRepr() {
-        let repr = {};
-
-        let prepr = {};
+    getRepr(): type_state {
+        let prepr: { [id: number]: type_player } = {};
         for (const [key, p] of Object.entries(this._players)) {
             prepr[p.id] = p.getRepr();
         }
-        repr["players"] = prepr;
 
-        let wrepr = [];
+        let wrepr: type_wall[] = [];
         for (let w of this._walls) {
             wrepr.push(w.getRepr());
         }
-        repr["walls"] = wrepr;
 
-        let brepr = [];
+        let brepr: type_projectile[] = [];
         for (let p of this._projectiles) {
             brepr.push(p.getRepr());
         }
-        repr["projectiles"] = brepr;
 
+        let repr: type_state = {
+            "players": prepr,
+            "walls": wrepr,
+            "projectiles": brepr
+        }
         return repr;
     }
 }

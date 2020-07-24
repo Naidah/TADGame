@@ -65,7 +65,7 @@ const widgetConfig = Object.assign({}, config, {
   target: 'web',
   name: 'widget',
   entry: {
-    client: './src/static/client/client.js'
+    client: './src/static/client/client.ts'
   },
   devServer: {
     contentBase: path.join(__dirname, 'dist'),

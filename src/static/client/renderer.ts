@@ -1,10 +1,12 @@
+import { type_player, type_projectile, type_wall } from "../../server/types";
+
 const char_radius = 20;
 const proj_radius = 4;
 
-let canvas = document.getElementById('canvas');
-let context = canvas.getContext('2d');
+const canvas = document.getElementById('canvas') as HTMLCanvasElement;
+const context = canvas.getContext('2d');
 
-export function drawCharacter(state, pid) {
+export function drawCharacter(state: type_player, pid: number): void {
     if (state.id == pid) {
         context.fillStyle = 'blue';
     } else {
@@ -22,7 +24,7 @@ export function drawCharacter(state, pid) {
     context.stroke();
 }
 
-export function drawProjectile(state) {
+export function drawProjectile(state: type_projectile): void {
     context.fillStyle = 'red';
 
     context.beginPath();
@@ -30,7 +32,7 @@ export function drawProjectile(state) {
     context.fill();
 }
 
-export function drawWall(state) {
+export function drawWall(state: type_wall): void {
     context.fillStyle = 'pink';
 
     context.beginPath();

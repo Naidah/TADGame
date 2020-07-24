@@ -1,6 +1,7 @@
 import * as io from 'socket.io-client'
 import { getMovement } from './controller'
 import { drawGameState } from './view'
+import { type_state } from '../../server/types';
 
 // declare global vars needed across the application
 // variables used to communicate with server
@@ -11,7 +12,7 @@ let tickRate = 1000 / 30;
 let pid = -1;
 
 // setup for drawing to canvas
-let canvas = document.getElementById('canvas');
+let canvas = document.getElementById('canvas') as HTMLCanvasElement;
 canvas.width = 800;
 canvas.height = 600;
 
@@ -27,4 +28,4 @@ setInterval(function () {
     socket.emit('movement', getMovement());
 }, tickRate);
 
-socket.on('state', (state) => drawGameState(state, pid));
+socket.on('state', (state: type_state) => drawGameState(state, pid));

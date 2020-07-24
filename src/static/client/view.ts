@@ -1,13 +1,10 @@
-import {
-    drawCharacter,
-    drawWall,
-    drawProjectile
-} from './renderer.js'
+import { drawCharacter, drawWall, drawProjectile } from './renderer'
+import { type_state } from '../../server/types';
 
-let canvas = document.getElementById('canvas');
-let context = canvas.getContext('2d');
+const canvas = document.getElementById('canvas') as HTMLCanvasElement;
+const context = canvas.getContext('2d');
 
-export function drawGameState(state, pid) {
+export function drawGameState(state: type_state, pid: number): void {
     context.clearRect(0, 0, canvas.width, canvas.height);
     let players = state["players"];
     for (let id in players) {

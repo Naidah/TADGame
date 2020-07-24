@@ -1,4 +1,6 @@
-let canvas = document.getElementById('canvas');
+import { type_input } from "../../server/types";
+
+let canvas = document.getElementById('canvas') as HTMLCanvasElement;
 
 let movement = {
     up: false,
@@ -8,10 +10,10 @@ let movement = {
     mx: 0,
     my: 0,
     mdown: false
-}
+} as type_input;
 
 
-function getMousePos(canvas, evt) {
+function getMousePos(canvas: HTMLCanvasElement, evt: MouseEvent) {
     var rect = canvas.getBoundingClientRect();
     return {
         x: evt.clientX - rect.left,
@@ -66,12 +68,7 @@ document.addEventListener("mouseup", function (event) {
     movement.mdown = false;
 })
 
-
-window.onunload = function () {
-    socket.emit("leaving player");
-};
-
-export function getMovement() {
+export function getMovement(): type_input {
     return movement
 }
 

@@ -1,7 +1,8 @@
-import { clamp, type_input } from './utility';
-import { Entity } from './entity.js';
-import { Projectile } from './projectile.js';
-import { getGame } from './game.js'
+import { clamp } from './utility';
+import { type_input, type_player } from './types'
+import { Entity } from './entity';
+import { Projectile } from './projectile';
+import { getGame } from './game'
 
 const max_speed = 300; // pixels/s
 const accel_rate = 800; // pixels/s^2
@@ -63,12 +64,12 @@ export class Character extends Entity {
         }
     }
 
-    get id() {
+    get id(): number {
         return this._id;
     }
 
-    getRepr() {
-        let repr = super.getRepr();
+    getRepr(): type_player {
+        let repr = super.getRepr() as type_player;
         repr["id"] = this._id;
         return repr;
     }
