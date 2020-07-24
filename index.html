@@ -1,19 +1,20 @@
 <html>
-  <head>
-    <title>A Multiplayer Game</title>
-    <style>
-      canvas {
-        width: 800px;
-        height: 600px;
-        border: 5px solid black;
-      }
-    </style>
-    <script src="/socket.io/socket.io.js"></script>
-  </head>
-  <body>
-    <canvas id="canvas"></canvas>
-  </body>
-  <script src="/static/client/config.js"></script>
-  <script type="module" src="/static/client/controller.js"></script>
-  <script type="module" src="/static/client/view.js"></script>
+
+<head>
+  <title>A Multiplayer Game</title>
+  <style>
+    canvas {
+      width: 800px;
+      height: 600px;
+      border: 5px solid black;
+    }
+  </style>
+  <!-- <script src="./../socket.io/socket.io.js"></script> -->
+</head>
+
+<body>
+  <canvas id="canvas"></canvas>
+</body>
+<script src="/client.bundle.js"></script>
+
 </html>

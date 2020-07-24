@@ -1,22 +1,26 @@
-import { getGame } from "./server/game"
+import { getGame } from "./server/game";
+import * as express from 'express';
+import * as http from 'http';
+import * as path from 'path';
+import { type_input_set } from "./server/types";
+// import * as socketIO from 'socket.io';
 
 // Dependencies
-let express = require('express');
-let http = require('http');
-let path = require('path');
 let socketIO = require('socket.io');
 
 let app = express();
-let server = http.Server(app);
+let server = http.createServer(app);
 let io = socketIO(server);
 
 app.set('port', 5000);
-app.use('/static', express.static(__dirname + '/static'))
+app.use(express.static(__dirname));
 
 // Routing
 app.get('/', function (request, response) {
-    response.sendFile(path.join(__dirname, 'index.html'));
+    response.sendFile(path.join('/mnt/e/Aidan/Desktop/TADGame', 'index.html'));
 });
+
+console
 
 // Starts the server
 server.listen(5000, function () {
@@ -25,7 +29,7 @@ server.listen(5000, function () {
 
 let game = getGame();
 
-let inputs = {};
+let inputs: type_input_set = {};
 io.on('connection', function (socket) {
     socket.on('new player', function () {
         let c = game.addPlayer();
@@ -46,18 +50,21 @@ io.on('connection', function (socket) {
     });
 
     socket.on('movement', function (data) {
-        var player = inputs[socket.id] || {};
+        if (socket.id in inputs) {
+            var player = inputs[socket.id];
 
-        // a mouse is pressed if the mouse is now pressed, but wasn't on the past frame
-        if (data.mdown && !player.input.mdown) {
-            data.mpress = true;
-        } else {
-            data.mpress = false;
+            // a mouse is pressed if the mouse is now pressed, but wasn't on the past frame
+            if (data.mdown && !player.input.mdown) {
+                data.mpress = true;
+            } else {
+                data.mpress = false;
+            }
+            player.input = data;
         }
-        player.input = data;
+
     });
 
-    socket.on("leaving player", function () {
+    socket.on("disconnect", function () {
         if (inputs.hasOwnProperty(socket.id)) {
             game.removePlayer(inputs[socket.id].id);
             delete inputs[socket.id];

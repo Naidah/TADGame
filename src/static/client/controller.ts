@@ -1,3 +1,7 @@
+import { type_input } from "../../server/types";
+
+let canvas = document.getElementById('canvas') as HTMLCanvasElement;
+
 let movement = {
     up: false,
     down: false,
@@ -6,10 +10,10 @@ let movement = {
     mx: 0,
     my: 0,
     mdown: false
-}
+} as type_input;
 
 
-function getMousePos(canvas, evt) {
+function getMousePos(canvas: HTMLCanvasElement, evt: MouseEvent) {
     var rect = canvas.getBoundingClientRect();
     return {
         x: evt.clientX - rect.left,
@@ -64,19 +68,7 @@ document.addEventListener("mouseup", function (event) {
     movement.mdown = false;
 })
 
-// declare this player has joined
-socket.emit('new player');
+export function getMovement(): type_input {
+    return movement
+}
 
-window.onunload = function () {
-    socket.emit("leaving player");
-};
-
-// update movement to the server
-setInterval(function () {
-    socket.emit('movement', movement);
-}, tickRate);
-
-// set this instances id
-socket.on("player id", function (val) {
-    pid = val;
-});

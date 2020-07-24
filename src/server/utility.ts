@@ -1,4 +1,4 @@
-export function clamp(val, min, max) {
+export function clamp(val: number, min: number, max: number): number {
     if (max < min) {
         return clamp(val, max, min);
     }

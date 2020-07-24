@@ -1,4 +1,14 @@
+import { type_entity } from "./types";
+
 export class Entity {
+  protected _x: any;
+  protected _y: any;
+  protected _r: any;
+  protected _direction: number;
+
+  protected _sx: number;
+  protected _sy: number;
+
   constructor(x, y, r) {
     this._x = x;
     this._y = y;
@@ -9,24 +19,24 @@ export class Entity {
     this._sy = 0;
   }
 
-  update(delta) {
+  update(delta: number): void {
     this._x += this._sx * delta;
     this._y += this._sy * delta;
   }
 
-  get x() {
+  get x(): number {
     return this._x;
   }
 
-  get y() {
+  get y(): number {
     return this._y;
   }
 
-  get r() {
+  get r(): number {
     return this._r;
   }
 
-  getRepr() {
+  getRepr(): type_entity {
     return {
       x: this._x,
       y: this._y,
