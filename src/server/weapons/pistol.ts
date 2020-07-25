@@ -1,8 +1,13 @@
 import { Weapon, WeaponState } from './weapon';
 import { Projectile } from '../projectile';
+import { clamp, randBinom } from '../utility';
 
 const maxAmmo = 6;
 const reloadTime = 3;
+const minSpread = 0;
+const maxSpread = Math.PI / 8;
+const spreadRecovery = maxSpread * 0.3;
+const spreadGrowth = maxSpread * (1 / 3);
 
 export class Pistol extends Weapon {
     constructor() {
@@ -23,6 +28,7 @@ export class Pistol extends Weapon {
 
 class PistolStateStandby extends WeaponState {
     private _ammo: number;
+    private _spread: number = minSpread;
     constructor() {
         super();
         this._ammo = maxAmmo;
@@ -32,7 +38,8 @@ class PistolStateStandby extends WeaponState {
         let res: [WeaponState, Projectile[]] = [this as WeaponState, []];
         if (mpress) {
             if (this._ammo > 0) {
-                res[1].push(new Projectile(x, y, direction));
+                res[1].push(new Projectile(x, y, direction + randBinom(-this._spread, this._spread)));
+                this._spread = clamp(this._spread + spreadGrowth, minSpread, maxSpread);
                 this._ammo--;
             } else {
                 res[0] = this.reload();
@@ -47,6 +54,7 @@ class PistolStateStandby extends WeaponState {
     }
 
     update(delta: number): WeaponState {
+        this._spread = clamp(this._spread - spreadRecovery * delta, minSpread, maxSpread);
         return this;
     }
 }
