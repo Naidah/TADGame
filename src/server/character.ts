@@ -3,14 +3,17 @@ import { type_input, type_player } from './types'
 import { Entity } from './entity';
 import { Projectile } from './projectile';
 import { getGame } from './game'
+import * as weapons from './weapons/index';
 
 const max_speed = 300; // pixels/s
 const accel_rate = 800; // pixels/s^2
 let cid = 0;
 export class Character extends Entity {
     private _id: number;
+    private _weapon: weapons.Weapon;
     constructor() {
         super(300, 300, 20);
+        this._weapon = new weapons.Pistol();
         this._id = cid++;
     }
 
@@ -57,10 +60,11 @@ export class Character extends Entity {
         }
         this._y += movey;
 
+        this._weapon.update(delta);
 
-        if (input.mpress) {
-
-            g.spawnProjectile(new Projectile(this._x, this._y, this._direction));
+        let ps = this._weapon.shoot(this._x, this._y, this._direction, input.mdown, input.mpress);
+        for (let p of ps) {
+            g.spawnProjectile(p);
         }
     }
 

@@ -1,6 +1,6 @@
 import { type_entity } from "./types";
 
-export class Entity {
+export abstract class Entity {
   protected _x: any;
   protected _y: any;
   protected _r: any;
