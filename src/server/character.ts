@@ -45,17 +45,19 @@ export class Character extends Entity {
         const g = getGame();
         let movex = Math.round(this._sx * delta);
         let movey = Math.round(this._sy * delta);
-        while (g.collision(this._x + movex, this._y, this._r) && movex != 0) {
+        while (g.collision(this._hitbox, movex, 0) && movex != 0) {
             this._sx = 0;
             movex -= Math.sign(movex);
         }
         this._x += movex;
+        this._updateHitbox();
 
-        while (g.collision(this._x, this._y + movey, this._r) && movey != 0) {
+        while (g.collision(this._hitbox, 0, movey) && movey != 0) {
             this._sy = 0;
             movey -= Math.sign(movey);
         }
         this._y += movey;
+        this._updateHitbox();
 
 
         if (input.mpress) {
