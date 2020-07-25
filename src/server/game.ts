@@ -72,7 +72,7 @@ class Game {
 }
 
 let game = null;
-export function getGame() {
+export function getGame(): Game {
     if (game == null) {
         game = new Game();
     }
