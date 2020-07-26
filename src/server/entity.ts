@@ -28,6 +28,12 @@ export class Entity {
     this._y += this._sy * delta;
     this._updateHitbox();
   }
+  
+  updatePos(dx: number, dy: number) {
+    this._x += dx;
+    this._y += dy;
+    this._updateHitbox();
+  }
 
   _updateHitbox () : void {
     this._hitbox.updatePos(this._x, this._y);
