@@ -2,6 +2,7 @@ import { Character } from "./character"
 import { Wall } from "./wall";
 import { type_input, type_input_set, type_state, type_player, type_wall, type_projectile } from "./types";
 import { Projectile } from "./projectiles/projectile";
+import { Hitbox} from "./hitbox";
 
 class Game {
     private _players: { [id: number]: Character };
@@ -37,9 +38,9 @@ class Game {
         }
     }
 
-    collision(x: number, y: number, r: number) {
-        for (let i of this._walls) {
-            if (i.hitbox(x, y, r)) {
+    collision(hitbox: Hitbox, dx: number, dy: number) {
+        for (let wall of this._walls) {
+            if (wall.hitbox(hitbox, dx, dy)) {
                 return true;
             }
         }
