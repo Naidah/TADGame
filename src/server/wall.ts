@@ -1,25 +1,23 @@
 import { type_wall } from "./types";
+import { Hitbox, RectHitbox } from "./hitbox";
 
 export class Wall {
     protected _x: any;
     protected _y: any;
     protected _w: any;
     protected _h: any;
+    protected _hitbox: Hitbox;
 
     constructor(x: number, y: number, w: number, h: number) {
         this._x = x;
         this._y = y;
         this._w = w;
         this._h = h;
+        this._hitbox = new RectHitbox(x, y, w, h);
     }
 
-    hitbox(x: number, y: number, r: number): boolean {
-        if (x >= this._x - r && x <= this._x + this._w + r) {
-            if (y >= this._y - r && y <= this._y + this._h + r) {
-                return true
-            }
-        }
-        return false;
+    hitbox(hitbox: Hitbox, dx: number, dy: number): boolean {
+        return this._hitbox.testMovement(hitbox, dx, dy);
     }
 
     getRepr(): type_wall {
