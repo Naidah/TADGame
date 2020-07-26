@@ -2,17 +2,18 @@ import { Weapon, WeaponState } from './weapon';
 import { Projectile } from '../projectiles/projectile';
 import { clamp, randBinom } from '../utility';
 
-const maxAmmo = 6;
-const reloadTime = 3;
-const minSpread = 0;
-const maxSpread = Math.PI / 8;
-const spreadRecovery = maxSpread / 0.8;
+const maxAmmo = 10;
+const cooldownTime = 0.18;
+const reloadTime = 1.5;
+const minSpread = Math.PI / 30;
+const maxSpread = Math.PI / 10;
+const spreadRecovery = maxSpread / 0.6;
 const spreadGrowth = maxSpread / 3;
 
-export class Pistol extends Weapon {
+export class Rifle extends Weapon {
     constructor() {
         super();
-        this._state = new PistolStateStandby();
+        this._state = new RifleStateStandby(maxAmmo, minSpread);
     }
 
     shoot(x: number, y: number, direction: number, mdown: boolean, mpress: boolean): Projectile[] {
@@ -26,21 +27,24 @@ export class Pistol extends Weapon {
     }
 }
 
-class PistolStateStandby extends WeaponState {
+class RifleStateStandby extends WeaponState {
     private _ammo: number;
-    private _spread: number = minSpread;
-    constructor() {
+    private _spread: number;
+    constructor(ammo: number, spread: number) {
         super();
-        this._ammo = maxAmmo;
+        this._ammo = ammo;
+        this._spread = spread;
     }
 
     shoot(x: number, y: number, direction: number, mdown: boolean, mpress: boolean): [WeaponState, Projectile[]] {
         let res: [WeaponState, Projectile[]] = [this as WeaponState, []];
-        if (mpress) {
+        if (mdown) {
             if (this._ammo > 0) {
                 res[1].push(new Projectile(x, y, direction + randBinom(-this._spread, this._spread)));
                 this._spread = clamp(this._spread + spreadGrowth, minSpread, maxSpread);
                 this._ammo--;
+                res[0] = new RifleStateCooldown(this._ammo, this._spread);
+                return res;
             } else {
                 res[0] = this.reload();
                 return res;
@@ -50,7 +54,7 @@ class PistolStateStandby extends WeaponState {
     }
 
     reload(): WeaponState {
-        return new PistolStateReload();
+        return new RifleStateReload();
     }
 
     update(delta: number): WeaponState {
@@ -59,7 +63,7 @@ class PistolStateStandby extends WeaponState {
     }
 }
 
-class PistolStateReload extends WeaponState {
+class RifleStateReload extends WeaponState {
     private _reloadTime: number;
     constructor() {
         super();
@@ -78,7 +82,36 @@ class PistolStateReload extends WeaponState {
     update(delta): WeaponState {
         this._reloadTime -= delta;
         if (this._reloadTime <= 0) {
-            return new PistolStateStandby();
+            return new RifleStateStandby(maxAmmo, minSpread);
+        }
+        return this;
+    }
+}
+
+class RifleStateCooldown extends WeaponState {
+    private _cooldownTime: number;
+    private _ammo: number;
+    private _spread: number;
+    constructor(ammo: number, spread: number) {
+        super();
+        this._ammo = ammo;
+        this._spread = spread;
+        this._cooldownTime = cooldownTime;
+    }
+
+    shoot(x: number, y: number, direction: number, mdown: boolean, mpress: boolean) {
+        let res: [this, Projectile[]] = [this, []];
+        return res;
+    }
+
+    reload(): WeaponState {
+        return new RifleStateReload();
+    }
+
+    update(delta): WeaponState {
+        this._cooldownTime -= delta;
+        if (this._cooldownTime <= 0) {
+            return new RifleStateStandby(this._ammo, this._spread);
         }
         return this;
     }
