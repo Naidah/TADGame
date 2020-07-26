@@ -1,4 +1,4 @@
-export class Hitbox {
+export abstract class Hitbox {
     private _x: number;
     private _y: number;
 
@@ -35,7 +35,7 @@ export class Hitbox {
     }
 
     // Checks if a collisions occurs
-    hasCollision (hitbox: Hitbox) : boolean {return false}; // Should be an abstract method
+    abstract hasCollision (hitbox: Hitbox) : boolean ; 
 
 }
 
