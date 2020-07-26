@@ -16,12 +16,12 @@ export abstract class Hitbox {
     }
 
     // Absolute position update
-    updatePos(x: number, y: number) {
+    updatePos(x: number = 0, y: number = 0) {
         this._x = x;
         this._y = y;
     }
     // Relative position update
-    move(dx: number, dy: number) {
+    move(dx: number = 0, dy: number = 0) {
         this._x += dx;
         this._y += dy;
     }
