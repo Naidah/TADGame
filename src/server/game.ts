@@ -1,7 +1,7 @@
 import { Character } from "./character"
 import { Wall } from "./wall";
 import { type_input, type_input_set, type_state, type_player, type_wall, type_projectile } from "./types";
-import { Projectile } from "./projectile";
+import { Projectile } from "./projectiles/projectile";
 
 class Game {
     private _players: { [id: number]: Character };

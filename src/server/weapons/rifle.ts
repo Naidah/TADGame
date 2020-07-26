@@ -1,5 +1,5 @@
 import { Weapon, WeaponState } from './weapon';
-import { Projectile } from '../projectile';
+import { Projectile } from '../projectiles/projectile';
 import { clamp, randBinom } from '../utility';
 
 const maxAmmo = 10;

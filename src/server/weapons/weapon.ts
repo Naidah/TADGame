@@ -1,6 +1,6 @@
 // ammo, max ammo, spread, firerate, reload time, projectile speed/life?
 
-import { Projectile } from "../projectile";
+import { Projectile } from "../projectiles/projectile";
 
 export abstract class Weapon {
     protected _state: WeaponState;

@@ -1,7 +1,7 @@
 import { clamp } from './utility';
 import { type_input, type_player } from './types'
 import { Entity } from './entity';
-import { Projectile } from './projectile';
+import { Projectile } from './projectiles/projectile';
 import { getGame } from './game'
 import * as weapons from './weapons/index';
 
@@ -76,6 +76,11 @@ export class Character extends Entity {
         let repr = super.getRepr() as type_player;
         repr["id"] = this._id;
         return repr;
+    }
+
+    destroy(): void {
+        let g = getGame();
+        g.removePlayer(this._id);
     }
 }
 

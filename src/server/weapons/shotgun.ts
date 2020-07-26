@@ -1,5 +1,6 @@
 import { Weapon, WeaponState } from './weapon';
-import { Projectile } from '../projectile';
+import { Projectile } from '../projectiles/projectile';
+import { DecayingProjectile } from '../projectiles/decayingProjectile';
 import { clamp, randRange } from '../utility';
 
 const maxAmmo = 4;
@@ -7,6 +8,9 @@ const cooldownTime = 1.2;
 const reloadTime = 2.5;
 const shots = 6;
 const spread = Math.PI / 10;
+
+const projDecay = 0.45;
+const projLifetime = 2;
 
 export class Shotgun extends Weapon {
     constructor() {
@@ -38,7 +42,7 @@ class ShotgunStateStandby extends WeaponState {
         if (mdown) {
             if (this._ammo > 0) {
                 for (let i = 0; i < shots; i++) {
-                    res[1].push(new Projectile(x, y, direction + randRange(-this._spread, this._spread)));
+                    res[1].push(new DecayingProjectile(x, y, direction + randRange(-this._spread, this._spread), projDecay, projLifetime));
                 }
                 this._ammo--;
                 res[0] = new ShotgunStateCooldown(this._ammo);

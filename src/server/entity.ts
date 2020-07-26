@@ -9,7 +9,7 @@ export abstract class Entity {
   protected _sx: number;
   protected _sy: number;
 
-  constructor(x, y, r) {
+  constructor(x: number, y: number, r: number) {
     this._x = x;
     this._y = y;
     this._r = r;
@@ -43,4 +43,6 @@ export abstract class Entity {
       direction: this._direction
     }
   }
+
+  abstract destroy(): void;
 }
