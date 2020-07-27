@@ -15,7 +15,8 @@ export class Projectile extends Entity {
 
     update(delta: number) {
         super.update(delta);
-        if (this._hitbox.isOutOfBounds()) {
+        let g = getGame();
+        if (this._hitbox.isOutOfBounds() || g.isCollidingWalls(this._hitbox)) {
             this.destroy();
         }
     }

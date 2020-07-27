@@ -48,7 +48,7 @@ class Game {
         }
     }
 
-    collision(hitbox: hitboxes.Hitbox, dx: number, dy: number) {
+    isCollidingWalls(hitbox: hitboxes.Hitbox, dx: number = 0, dy: number = 0) {
         for (let wall of this._walls) {
             if (wall.hitbox(hitbox, dx, dy)) {
                 return true;

@@ -61,14 +61,14 @@ export class Character extends Entity {
 
     updatePos(dx: number, dy: number): void {
         const g = getGame();
-        while ((g.collision(this._hitbox, dx, 0) || this._hitbox.isOutOfBounds(dx, 0, true)) && dx != 0) {
+        while ((g.isCollidingWalls(this._hitbox, dx, 0) || this._hitbox.isOutOfBounds(dx, 0, true)) && dx != 0) {
             this._sx = 0;
             dx -= Math.sign(dx);
         }
         this._x += dx;
         this._updateHitbox();
 
-        while ((g.collision(this._hitbox, 0, dy) || this._hitbox.isOutOfBounds(0, dy, true)) && dy != 0) {
+        while ((g.isCollidingWalls(this._hitbox, 0, dy) || this._hitbox.isOutOfBounds(0, dy, true)) && dy != 0) {
             this._sy = 0;
             dy -= Math.sign(dy);
         }
