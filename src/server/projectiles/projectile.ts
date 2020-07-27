@@ -1,4 +1,5 @@
 import { Entity } from '../entity'
+import { getGame } from '../game';
 
 const speed = 420;
 const radius = 5;
@@ -12,9 +13,15 @@ export class Projectile extends Entity {
         this._sy = speed * Math.sin(direction);
     }
 
+    update(delta: number) {
+        super.update(delta);
+        if (this._hitbox.isOutOfBounds()) {
+            this.destroy();
+        }
+    }
 
     destroy(): void {
-        this._x = 1000;
-        this._y = 1000;
+        let g = getGame();
+        g.destroyProjectile(this);
     }
 }
