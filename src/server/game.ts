@@ -2,12 +2,17 @@ import { Character } from "./character"
 import { Wall } from "./wall";
 import { type_input, type_input_set, type_state, type_player, type_wall, type_projectile } from "./types";
 import { Projectile } from "./projectiles/projectile";
-import { Hitbox} from "./hitbox";
+import * as hitboxes from "./hitboxes/index";
 
 class Game {
     private _players: { [id: number]: Character };
     private _walls: Wall[];
     private _projectiles: Projectile[];
+
+    // temp, should be moved to map once created
+    static readonly width = 800;
+    static readonly height = 600;
+
     constructor() {
         this._players = {};
         this._walls = [new Wall(400, 400, 50, 50)];
@@ -28,17 +33,22 @@ class Game {
         this._projectiles.push(proj);
     }
 
+    destroyProjectile(proj: Projectile): void {
+        const i = this._projectiles.indexOf(proj);
+        this._projectiles.splice(i, 1);
+    }
+
     update(delta: number, inputs: type_input_set): void {
         for (const [key, p] of Object.entries(inputs)) {
             this._players[p.id].update(delta, p.input);
         }
 
-        for (let p of this._projectiles) {
+        for (let p of [...this._projectiles]) { // make a copy of the list to allow removing from the original
             p.update(delta);
         }
     }
 
-    collision(hitbox: Hitbox, dx: number, dy: number) {
+    isCollidingWalls(hitbox: hitboxes.Hitbox, dx: number = 0, dy: number = 0) {
         for (let wall of this._walls) {
             if (wall.hitbox(hitbox, dx, dy)) {
                 return true;
@@ -69,6 +79,14 @@ class Game {
             "projectiles": brepr
         }
         return repr;
+    }
+
+    get width() {
+        return Game.width;
+    }
+
+    get height() {
+        return Game.height;
     }
 }
 

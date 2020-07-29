@@ -43,24 +43,13 @@ export class Character extends Entity {
             this._sy *= max_speed / speed;
         }
 
-        this._direction = Math.atan2(input.my - this._y, input.mx - this._x);
-
         const g = getGame();
         let movex = Math.round(this._sx * delta);
         let movey = Math.round(this._sy * delta);
-        while (g.collision(this._hitbox, movex, 0) && movex != 0) {
-            this._sx = 0;
-            movex -= Math.sign(movex);
-        }
-        this._x += movex;
-        this._updateHitbox();
 
-        while (g.collision(this._hitbox, 0, movey) && movey != 0) {
-            this._sy = 0;
-            movey -= Math.sign(movey);
-        }
-        this._y += movey;
-        this._updateHitbox();
+        this.updatePos(movex, movey);
+
+        this._direction = Math.atan2(input.my - this._y, input.mx - this._x);
 
         this._weapon.update(delta);
 
@@ -68,6 +57,23 @@ export class Character extends Entity {
         for (let p of ps) {
             g.spawnProjectile(p);
         }
+    }
+
+    updatePos(dx: number, dy: number): void {
+        const g = getGame();
+        while ((g.isCollidingWalls(this._hitbox, dx, 0) || this._hitbox.isOutOfBounds(dx, 0, true)) && dx != 0) {
+            this._sx = 0;
+            dx -= Math.sign(dx);
+        }
+        this._x += dx;
+        this._updateHitbox();
+
+        while ((g.isCollidingWalls(this._hitbox, 0, dy) || this._hitbox.isOutOfBounds(0, dy, true)) && dy != 0) {
+            this._sy = 0;
+            dy -= Math.sign(dy);
+        }
+        this._y += dy;
+        this._updateHitbox();
     }
 
     get id(): number {

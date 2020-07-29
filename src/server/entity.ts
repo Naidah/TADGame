@@ -1,5 +1,5 @@
 import { type_entity } from "./types";
-import { Hitbox, CircleHitbox } from "./hitbox";
+import * as hitboxes from "./hitboxes/index";
 
 export abstract class Entity {
   protected _x: any;
@@ -9,13 +9,13 @@ export abstract class Entity {
 
   protected _sx: number;
   protected _sy: number;
-  protected _hitbox: Hitbox;
+  protected _hitbox: hitboxes.CircleHitbox;
 
   constructor(x: number, y: number, r: number) {
     this._x = x;
     this._y = y;
     this._r = r;
-    this._hitbox = new CircleHitbox(x, y, r);
+    this._hitbox = new hitboxes.CircleHitbox(x, y, r);
     this._direction = 0;
 
     this._sx = 0;
@@ -23,18 +23,16 @@ export abstract class Entity {
   }
 
   update(delta: number): void {
-    this._x += this._sx * delta;
-    this._y += this._sy * delta;
-    this._updateHitbox();
+    this.updatePos(this._sx * delta, this._sy * delta)
   }
-  
+
   updatePos(dx: number, dy: number) {
     this._x += dx;
     this._y += dy;
     this._updateHitbox();
   }
 
-  _updateHitbox () : void {
+  _updateHitbox(): void {
     this._hitbox.updatePos(this._x, this._y);
   }
 
