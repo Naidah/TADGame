@@ -1,22 +1,22 @@
 import { type_wall } from "./types";
-import { Hitbox, RectHitbox } from "./hitbox";
+import * as hitboxes from "./hitboxes/index";
 
 export class Wall {
     protected _x: any;
     protected _y: any;
     protected _w: any;
     protected _h: any;
-    protected _hitbox: Hitbox;
+    protected _hitbox: hitboxes.RectHitbox;
 
     constructor(x: number, y: number, w: number, h: number) {
         this._x = x;
         this._y = y;
         this._w = w;
         this._h = h;
-        this._hitbox = new RectHitbox(x, y, w, h);
+        this._hitbox = new hitboxes.RectHitbox(x, y, w, h);
     }
 
-    hitbox(hitbox: Hitbox, dx: number, dy: number): boolean {
+    hitbox(hitbox: hitboxes.Hitbox, dx: number, dy: number): boolean {
         return this._hitbox.testMovement(hitbox, dx, dy);
     }
 
