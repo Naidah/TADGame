@@ -1,3 +1,7 @@
+import * as fs from 'fs';
+import * as path from 'path';
+import { json } from 'express';
+
 // clamp a number between a min and max
 export function clamp(val: number, min: number, max: number): number {
     if (max < min) {
@@ -24,4 +28,19 @@ export function randBinom(min: number, max: number, skew: number = 1): number {
     num *= max - min; // Stretch to fill range
     num += min; // offset to min
     return num;
+}
+
+export function readJSON(fname: string): object {
+    if (!fname.endsWith(".json")) {
+        fname += '.json';
+    }
+
+    return JSON.parse(fs.readFileSync(path.join(__dirname, fname)).toString());
+}
+
+export function writeJSON(fname: string, obj: object): void {
+    if (!fname.endsWith('.json')) {
+        fname += '.json';
+    }
+    fs.writeFileSync(path.join(__dirname, fname), JSON.stringify(obj));
 }

@@ -2,16 +2,23 @@ import { Character } from "./character"
 import { Wall } from "./wall";
 import { type_input, type_input_set, type_state, type_player, type_wall, type_projectile } from "./types";
 import { Projectile } from "./projectiles/projectile";
-import { Hitbox} from "./hitbox";
+import { Hitbox } from "./hitbox";
+import { MapGame } from "./map_tools/map";
+import { MapLoader } from "./map_tools/map_loader";
 
 class Game {
     private _players: { [id: number]: Character };
     private _walls: Wall[];
     private _projectiles: Projectile[];
+    private _map: MapGame;
+    private _map_loader: MapLoader;
     constructor() {
         this._players = {};
-        this._walls = [new Wall(400, 400, 50, 50)];
+        this._walls = [];
         this._projectiles = [];
+
+        this._map_loader = new MapLoader();
+        this._map = this._map_loader.createMap();
     }
 
     addPlayer(): number {
@@ -39,7 +46,7 @@ class Game {
     }
 
     collision(hitbox: Hitbox, dx: number, dy: number) {
-        for (let wall of this._walls) {
+        for (let wall of this._map.walls) {
             if (wall.hitbox(hitbox, dx, dy)) {
                 return true;
             }
@@ -54,7 +61,7 @@ class Game {
         }
 
         let wrepr: type_wall[] = [];
-        for (let w of this._walls) {
+        for (let w of this._map.walls) {
             wrepr.push(w.getRepr());
         }
 

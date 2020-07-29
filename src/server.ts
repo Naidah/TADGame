@@ -2,7 +2,9 @@ import { getGame } from "./server/game";
 import * as express from 'express';
 import * as http from 'http';
 import * as path from 'path';
-import { type_input_set } from "./server/types";
+import * as bodyParser from 'body-parser';
+import { type_input_set, type_map } from "./server/types";
+import { writeJSON } from "./server/utility";
 // import * as socketIO from 'socket.io';
 
 // Dependencies
@@ -14,13 +16,29 @@ let io = socketIO(server);
 
 app.set('port', 5000);
 app.use(express.static(__dirname));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 // Routing
 app.get('/', function (request, response) {
-    response.sendFile(path.join('/mnt/e/Aidan/Desktop/TADGame', 'index.html'));
+    response.sendFile(path.join(__dirname, 'index.html'));
 });
 
-console
+app.get('/editor', function (request, response) {
+    response.sendFile(path.join(__dirname, 'editor.html'));
+});
+
+app.post('/editor/', function (request, response) {
+    let map: type_map = request.body;
+    writeJSON('maps/test.json', map);
+    response.sendStatus(200);
+});
+
+app.post('/editor/:fname', function (request, response) {
+    let map: type_map = request.body.json();
+    writeJSON('maps/' + request.params.fname, map);
+    response.sendStatus(200);
+});
 
 // Starts the server
 server.listen(5000, function () {
