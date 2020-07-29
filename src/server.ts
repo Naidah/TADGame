@@ -35,7 +35,7 @@ app.post('/editor/', function (request, response) {
 });
 
 app.post('/editor/:fname', function (request, response) {
-    let map: type_map = request.body.json();
+    let map: type_map = request.body;
     writeJSON('maps/' + request.params.fname, map);
     response.sendStatus(200);
 });
