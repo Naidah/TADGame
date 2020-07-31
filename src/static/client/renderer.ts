@@ -1,4 +1,5 @@
 import { type_player, type_projectile, type_wall, type_entity } from "../../server/types";
+import { getGame } from "../../server/game";
 
 const char_radius = 20;
 const proj_radius = 4;
@@ -42,11 +43,13 @@ export function drawWall(state: type_wall): void {
 
 export function drawShadow(state: type_entity, state2: type_wall): void {
     console.log(state);
-    let canvasW = 800;
-    let canvasH = 600;
+    let g = getGame();
 
-    let playerx = state.x;
-    let playery = state.y;
+    let canvasW = g.width;
+    let canvasH = g.height
+
+    var playerx = state.x;
+    var playery = state.y;
     //* going clockwise starting from top left
     let c1x = state2.x;
     let c1y = state2.y;
@@ -62,70 +65,217 @@ export function drawShadow(state: type_entity, state2: type_wall): void {
     let rightPointx = 0;
     let rightPointy = 0;
 
+    let x_int1 = 0;
+    let x_int2 = 0;
+    let y_int1 = 0;
+    let y_int2 = 0;
+
+    context.fillStyle = "grey";
     //*deciding which corners to use
+
+    //* middle left
     if (playerx <= c1x && playery >= c1y && playery <= c4y) {
         leftPointx = c1x;
         leftPointy = c1y;
         rightPointx = c4x;
         rightPointy = c4y;
-    } else if (playerx <= c1x && playery <= c1y) {
+
+        y_int1 = getInterceptY(leftPointx, leftPointy, playerx, playery);
+        y_int2 = getInterceptY(rightPointx, rightPointy, playerx, playery);
+        console.log(x_int1, x_int2, y_int1, y_int2);
+        context.beginPath();
+        context.moveTo(leftPointx, leftPointy);
+        context.lineTo(canvasW, y_int1);
+        context.lineTo(canvasW, y_int2);
+
+        context.lineTo(rightPointx, rightPointy);
+        context.closePath();
+        context.fill();
+        //* top left
+    } else if (playerx < c1x && playery < c1y) {
         leftPointx = c2x;
         leftPointy = c2y;
         rightPointx = c4x;
         rightPointy = c4y;
+
+        x_int1 = getInterceptX(leftPointx, leftPointy, playerx, playery);
+        y_int2 = getInterceptY(rightPointx, rightPointy, playerx, playery);
+        console.log(x_int1, x_int2, y_int1, y_int2);
+        context.beginPath();
+        context.moveTo(leftPointx, leftPointy);
+        context.lineTo(x_int1, canvasH);
+        context.lineTo(canvasW, y_int2);
+
+        context.lineTo(rightPointx, rightPointy);
+        context.closePath();
+        context.fill();
+        //* top middle    
     } else if (playerx >= c1x && playerx <= c2x && playery <= c1y) {
-        leftPointx = c1x;
-        leftPointy = c1y;
-        rightPointx = c2x;
-        rightPointy = c2y;
-    } else if (playerx >= c2x && playery <= c2y) {
-        leftPointx = c1x;
-        leftPointy = c1y;
-        rightPointx = c3x;
-        rightPointy = c3y;
-    } else if (playerx >= c2x && playery >= c2y && playery >= c3y) {
+        leftPointx = c2x;
+        leftPointy = c2y;
+        rightPointx = c1x;
+        rightPointy = c1y;
+
+        x_int1 = getInterceptX(leftPointx, leftPointy, playerx, playery);
+        x_int2 = getInterceptX(rightPointx, rightPointy, playerx, playery);
+        console.log(x_int1, x_int2, y_int1, y_int2);
+        context.beginPath();
+        context.moveTo(leftPointx, leftPointy);
+
+        if (isNaN(x_int1)) {
+            context.lineTo(leftPointx, canvasH);
+        } else {
+            context.lineTo(x_int1, canvasH);
+        }
+
+        if (isNaN(x_int2)) {
+            context.lineTo(rightPointx, canvasH);
+        } else {
+            context.lineTo(x_int2, canvasH);
+        }
+
+        context.lineTo(rightPointx, rightPointy);
+        context.closePath();
+        context.fill();
+        //* top right    
+    } else if (playerx > c2x && playery < c2y) {
+        leftPointx = c3x;
+        leftPointy = c3y;
+        rightPointx = c1x;
+        rightPointy = c1y;
+
+        y_int1 = getInterceptY(leftPointx, leftPointy, playerx, playery);
+        x_int2 = getInterceptX(rightPointx, rightPointy, playerx, playery);
+        console.log(x_int1, x_int2, y_int1, y_int2);
+        context.beginPath();
+        context.moveTo(leftPointx, leftPointy);
+        context.lineTo(0, y_int1);
+        context.lineTo(x_int2, canvasH);
+
+        context.lineTo(rightPointx, rightPointy);
+        context.closePath();
+        context.fill();
+        //* middle right    
+    } else if (playerx >= c2x && playery >= c2y && playery <= c3y) {
         leftPointx = c3x;
         leftPointy = c3y;
         rightPointx = c2x;
         rightPointy = c2y;
-    } else if (playerx >= c2x && playery >= c3y) {
+
+        y_int1 = getInterceptY(leftPointx, leftPointy, playerx, playery);
+        y_int2 = getInterceptY(rightPointx, rightPointy, playerx, playery);
+        console.log(x_int1, x_int2, y_int1, y_int2);
+        context.beginPath();
+        context.moveTo(leftPointx, leftPointy);
+        context.lineTo(0, y_int1);
+        context.lineTo(0, y_int2);
+
+        context.lineTo(rightPointx, rightPointy);
+        context.closePath();
+        context.fill();
+        //* bottom right    
+    } else if (playerx > c2x && playery > c3y) {
         leftPointx = c4x;
         leftPointy = c4y;
         rightPointx = c2x;
         rightPointy = c2y;
+
+        x_int1 = getInterceptX(leftPointx, leftPointy, playerx, playery);
+        y_int2 = getInterceptY(rightPointx, rightPointy, playerx, playery);
+        console.log(x_int1, x_int2, y_int1, y_int2);
+        context.beginPath();
+        context.moveTo(leftPointx, leftPointy);
+        context.lineTo(x_int1, 0);
+        context.lineTo(0, y_int2);
+
+        context.lineTo(rightPointx, rightPointy);
+        context.closePath();
+        context.fill();
+        //* bottom middle    
     } else if (playerx >= c1x && playerx <= c2x && playery >= c4y) {
         leftPointx = c4x;
         leftPointy = c4y;
         rightPointx = c3x;
         rightPointy = c3y;
-    } else if (playerx <= c1x && playery >= c4y) {
+
+        x_int1 = getInterceptX(leftPointx, leftPointy, playerx, playery);
+        x_int2 = getInterceptX(rightPointx, rightPointy, playerx, playery);
+        console.log(x_int1, x_int2, y_int1, y_int2);
+        context.beginPath();
+        context.moveTo(leftPointx, leftPointy);
+
+        if (isNaN(x_int1)) {
+            context.lineTo(leftPointx, 0);
+        } else {
+            context.lineTo(x_int1, 0);
+        }
+
+        if (isNaN(x_int2)) {
+            context.lineTo(rightPointx, 0);
+        } else {
+            context.lineTo(x_int2, 0);
+        }
+
+        context.lineTo(rightPointx, rightPointy);
+        context.closePath();
+        context.fill();
+        //* bottom left    
+    } else if (playerx < c1x && playery > c4y) {
         leftPointx = c1x;
         leftPointy = c1y;
         rightPointx = c3x;
         rightPointy = c3y;
+
+        y_int1 = getInterceptY(leftPointx, leftPointy, playerx, playery);
+        x_int2 = getInterceptX(rightPointx, rightPointy, playerx, playery);
+        console.log(x_int1, x_int2, y_int1, y_int2);
+        context.beginPath();
+        context.moveTo(leftPointx, leftPointy);
+        context.lineTo(canvasW, y_int1);
+        context.lineTo(x_int2, 0);
+
+        context.lineTo(rightPointx, rightPointy);
+        context.closePath();
+        context.fill();
+    }
+}
+
+function getInterceptX(x1: number, y1: number, x2: number, y2: number): number {
+    let g = (y1 - y2) / (x1 - x2);
+    let x_int = 0;
+    let inf = 99999999999;
+    let nInf = -99999999999;
+    if (y2 >= y1) {
+        x_int = ((g * x1) - y1) / g;
+    } else {
+        x_int = (getGame().height - y1 + (g * x1)) / g;
     }
 
-    let g1 = (leftPointy - playery) / (leftPointx - playerx);
-    let g2 = (rightPointy - playery) / (rightPointx - playerx);
-
-    let lx_int = ((g1 * leftPointx) - leftPointy) / g1;
-    let ly_int = leftPointy - (g1 * leftPointx);
-
-    let rx_int = (600 - (g2 * rightPointx) - rightPointy) / g2;
-    let ry_int = (g2 * (800 - rightPointx)) + rightPointy;
-
-    context.fillStyle = "grey";
-
-    context.beginPath();
-    context.moveTo(leftPointx, leftPointy);
-    context.lineTo(lx_int, 0);
-    context.lineTo(800, ry_int);
-    context.lineTo(rightPointx, rightPointy);
-    context.closePath();
-    context.fill();
+    if (x_int == -Infinity) {
+        return inf;
+    } else if (x_int == Infinity) {
+        return nInf;
+    } else {
+        return x_int;
+    }
 }
 
-function getInterceptX() {
+function getInterceptY(x1: number, y1: number, x2: number, y2: number): number {
+    let g = (y1 - y2) / (x1 - x2);
+    let y_int = 0;
+    let inf = 99999999999;
+    let nInf = -99999999999;
+    if (x2 >= x1) {
+        y_int = y1 - (g * x1);
+    } else {
+        y_int = g * (getGame().width - x1) + y1;
+    }
 
+    if (y_int == -Infinity) {
+        return inf;
+    } else if (y_int == Infinity) {
+        return nInf;
+    } else {
+        return y_int;
+    }
 }
-

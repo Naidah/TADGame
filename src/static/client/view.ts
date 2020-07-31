@@ -11,9 +11,10 @@ export function drawGameState(state: type_state, pid: number): void {
         drawCharacter(players[id], pid);
     }
 
-    console.log(players);
-    if (players[1]) {
-        drawShadow(players[1], state["walls"][0]);
+    for (let id in players) {
+        if (id == pid.toString()) {
+            drawShadow(players[id], state["walls"][0])
+        }
     }
 
     for (let w of state["walls"]) {
