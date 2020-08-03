@@ -11,17 +11,17 @@ export function drawGameState(state: type_state, pid: number): void {
         drawCharacter(players[id], pid);
     }
 
+    for (let p of state["projectiles"]) {
+        drawProjectile(p);
+    }
+
     for (let id in players) {
         if (id == pid.toString()) {
-            drawShadow(players[id], state["walls"][0])
+            drawShadow(players[id], state["walls"])
         }
     }
 
     for (let w of state["walls"]) {
         drawWall(w);
-    }
-
-    for (let p of state["projectiles"]) {
-        drawProjectile(p);
     }
 }

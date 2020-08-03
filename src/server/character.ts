@@ -1,7 +1,6 @@
 import { clamp } from './utility';
 import { type_input, type_player } from './types'
 import { Entity } from './entity';
-import { Projectile } from './projectiles/projectile';
 import { getGame } from './game'
 import * as weapons from './weapons/index';
 

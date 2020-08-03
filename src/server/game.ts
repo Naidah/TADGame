@@ -2,7 +2,9 @@ import { Character } from "./character"
 import { Wall } from "./wall";
 import { type_input, type_input_set, type_state, type_player, type_wall, type_projectile } from "./types";
 import { Projectile } from "./projectiles/projectile";
-import * as hitboxes from "./hitboxes/index;
+import * as hitboxes from "./hitboxes/index";
+import { MapGame } from "./map_tools/map";
+import { MapLoader } from "./map_tools/map_loader";
 
 class Game {
     private _players: { [id: number]: Character };
@@ -54,7 +56,7 @@ class Game {
     }
 
     isCollidingWalls(hitbox: hitboxes.Hitbox, dx: number = 0, dy: number = 0) {
-        for (let wall of this._walls) {
+        for (let wall of this._map.walls) {
             if (wall.hitbox(hitbox, dx, dy)) {
                 return true;
             }
