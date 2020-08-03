@@ -2,7 +2,10 @@ import { getGame } from "./server/game";
 import * as express from 'express';
 import * as http from 'http';
 import * as path from 'path';
-import { type_input_set } from "./server/types";
+import * as bodyParser from 'body-parser';
+import * as fs from 'fs'
+import { type_input_set, type_map } from "./server/types";
+import { writeJSON, readJSON } from "./server/utility";
 // import * as socketIO from 'socket.io';
 
 // Dependencies
@@ -14,13 +17,34 @@ let io = socketIO(server);
 
 app.set('port', 5000);
 app.use(express.static(__dirname));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 // Routing
 app.get('/', function (request, response) {
-    response.sendFile(path.join('/mnt/e/Aidan/Desktop/TADGame', 'index.html'));
+    response.sendFile(path.join(__dirname, 'index.html'));
 });
 
-console
+app.get('/editor', function (request, response) {
+    response.sendFile(path.join(__dirname, 'editor.html'));
+});
+
+app.get('/maps/new', function (request, response) {
+    let x = 1;
+    while (fs.existsSync(path.join(__dirname, 'maps', "map" + x + '.json'))) {
+        x += 1
+    }
+    response.send(JSON.stringify("map" + x + '.json'));
+})
+
+app.post('/editor/:fname', function (request, response) {
+    let map: type_map = request.body;
+    writeJSON('maps/' + request.params.fname, map);
+    let index = readJSON('index.json');
+    index[request.params.fname] = map.settings.name;
+    writeJSON('index.json', index);
+    response.sendStatus(200);
+});
 
 // Starts the server
 server.listen(5000, function () {

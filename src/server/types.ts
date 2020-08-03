@@ -40,3 +40,14 @@ export type type_input_set = {
         input: type_input
     };
 }
+
+export type type_map = {
+    settings: {
+        name: string,
+        size: {
+            width: number,
+            height: number
+        }
+    },
+    walls: type_wall[];
+}

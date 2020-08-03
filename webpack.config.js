@@ -28,7 +28,7 @@ const config = {
         ]
       },
       {
-        test: /\.ts?$/,
+        test: /\.ts?$|\.tsx$/,
         use: "ts-loader",
         include: [
           path.resolve(__dirname, 'src')
@@ -65,7 +65,8 @@ const widgetConfig = Object.assign({}, config, {
   target: 'web',
   name: 'widget',
   entry: {
-    client: './src/static/client/client.ts'
+    client: './src/static/client/client.ts',
+    editor: './src/editor/editor.tsx'
   },
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
