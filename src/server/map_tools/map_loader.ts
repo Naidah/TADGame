@@ -6,7 +6,7 @@ import { Wall } from "../wall";
 export class MapLoader {
     private _map: string;
     constructor() {
-        this._map = "basic.json";
+        this._map = "map6.json";
     }
 
     createMap(): MapGame {
