@@ -1,4 +1,4 @@
-import { drawCharacter, drawWall, drawProjectile } from './renderer'
+import { drawCharacter, drawWall, drawProjectile, drawShadow } from './renderer'
 import { type_state } from '../../server/types';
 
 const canvas = document.getElementById('canvas') as HTMLCanvasElement;
@@ -9,6 +9,12 @@ export function drawGameState(state: type_state, pid: number): void {
     let players = state["players"];
     for (let id in players) {
         drawCharacter(players[id], pid);
+    }
+
+    for (let id in players) {
+        if (id == pid.toString()) {
+            drawShadow(players[id], state["walls"][0])
+        }
     }
 
     for (let w of state["walls"]) {
