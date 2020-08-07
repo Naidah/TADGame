@@ -12,7 +12,7 @@ export class Character extends Entity {
     private _weapon: weapons.Weapon;
     constructor() {
         super(300, 300, 20);
-        this._weapon = new weapons.Shotgun();
+        this._weapon = new weapons.Flamethrower(this);
         this._id = cid++;
     }
 

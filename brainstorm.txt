@@ -9,14 +9,15 @@ Characters have {
         1 sniper
         lazer
         grenade launcher
-        flamethrower
-        minigun
-        smg
+        1 flamethrower
+        1 minigun
+        xx smg
         sword
         revolver/deagle
         bow
-        dmr
-        boomerang
+        1 dmr
+        boomerang/ chakram
+        random crits?!?
     }
     ability {
         1 roll

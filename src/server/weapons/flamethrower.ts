@@ -2,19 +2,18 @@ import { Weapon } from './weapon';
 import { DecayingProjectileFactory } from '../projectiles/decayingProjectileFactory';
 import { Character } from '../character';
 
-export class Shotgun extends Weapon {
+export class Flamethrower extends Weapon {
     constructor(player: Character) {
         super(player, {
-            maxAmmo: 4,
-            cooldownTime: 0.75,
-            reloadTime: 2.5,
+            maxAmmo: 50,
+            cooldownTime: 0.03,
+            reloadTime: 1,
             minSpread: Math.PI / 5,
             maxSpread: Math.PI / 5,
             spreadRecovery: 0,
             spreadGrowth: 0,
-            projFactory: new DecayingProjectileFactory(420, 0.45, 1.2),
-            isPress: true,
-            shots: 8
+            projFactory: new DecayingProjectileFactory(400, 0.2, 3),
+            shots: 3
         });
     }
 }

@@ -1,14 +1,15 @@
 import { Entity } from '../entity'
 import { getGame } from '../game';
 
-const speed = 420;
 const radius = 5;
 
 export class Projectile extends Entity {
-    constructor(x: number, y: number, direction: number) {
+    private _speed: number;
+    constructor(x: number, y: number, direction: number, speed: number) {
         super(x, y, radius);
         this._direction = direction;
 
+        this._speed = speed;
         this._sx = speed * Math.cos(direction);
         this._sy = speed * Math.sin(direction);
     }

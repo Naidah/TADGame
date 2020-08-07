@@ -1,3 +1,5 @@
+import { ProjectileFactory } from "./projectiles/projectileFactory";
+
 export type type_entity = {
     x: number,
     y: number,
@@ -50,4 +52,17 @@ export type type_map = {
         }
     },
     walls: type_wall[];
+}
+
+export type type_weapon_args = {
+    maxAmmo?: number,
+    cooldownTime?: number,
+    reloadTime?: number,
+    minSpread?: number,
+    maxSpread?: number,
+    spreadRecovery?: number,
+    spreadGrowth?: number,
+    projFactory?: ProjectileFactory,
+    isPress?: boolean,
+    shots?: number
 }
