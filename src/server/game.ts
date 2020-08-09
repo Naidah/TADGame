@@ -89,11 +89,11 @@ class Game {
     }
 
     get width() {
-        return Game.width;
+        return this._map.width;
     }
 
     get height() {
-        return Game.height;
+        return this._map.height;
     }
 }
 

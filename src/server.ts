@@ -5,11 +5,8 @@ import * as path from 'path';
 import * as bodyParser from 'body-parser';
 import * as fs from 'fs'
 import { type_input_set, type_map } from "./server/types";
-import { writeJSON, readJSON } from "./server/utility";
-// import * as socketIO from 'socket.io';
-
-// Dependencies
-let socketIO = require('socket.io');
+import { writeJSON, readJSON, writePNG } from "./server/utility";
+import * as socketIO from 'socket.io';
 
 let app = express();
 let server = http.createServer(app);
@@ -22,24 +19,32 @@ app.use(bodyParser.json());
 
 // Routing
 app.get('/', function (request, response) {
-    response.sendFile(path.join(__dirname, 'index.html'));
+    response.sendFile(path.join(__dirname, 'game.html'));
 });
 
 app.get('/editor', function (request, response) {
     response.sendFile(path.join(__dirname, 'editor.html'));
 });
 
+app.get('/lobby', function (request, response) {
+    response.sendFile(path.join(__dirname, "menu.html"));
+})
+
 app.get('/maps/new', function (request, response) {
     let x = 1;
-    while (fs.existsSync(path.join(__dirname, 'maps', "map" + x + '.json'))) {
-        x += 1
+    let index = readJSON('index.json');
+    while ("map" + x in index) {
+        x += 1;
     }
-    response.send(JSON.stringify("map" + x + '.json'));
+    response.send(JSON.stringify("map" + x));
 })
 
 app.post('/editor/:fname', function (request, response) {
-    let map: type_map = request.body;
+    let msg: { map: type_map, image: string } = request.body;
+    let map = msg.map;
+    let image = msg.image;
     writeJSON('maps/' + request.params.fname, map);
+    writePNG(path.join('maps', 'images', request.params.fname), image);
     let index = readJSON('index.json');
     index[request.params.fname] = map.settings.name;
     writeJSON('index.json', index);

@@ -29,7 +29,28 @@ const config = {
       },
       {
         test: /\.ts?$|\.tsx$/,
-        use: "ts-loader",
+        use: "awesome-typescript-loader",
+        include: [
+          path.resolve(__dirname, 'src')
+        ],
+        exclude: [
+          path.resolve(__dirname, 'node_modules')
+        ]
+      },
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          {
+            loader: '@teamsupercell/typings-for-css-modules-loader'
+          },
+          {
+            loader: "css-loader",
+            options: {
+              modules: true
+            }
+          }
+        ],
         include: [
           path.resolve(__dirname, 'src')
         ],
@@ -66,7 +87,8 @@ const widgetConfig = Object.assign({}, config, {
   name: 'widget',
   entry: {
     client: './src/static/client/client.ts',
-    editor: './src/editor/editor.tsx'
+    editor: './src/editor/editor.tsx',
+    menu: './src/lobby/menu.tsx'
   },
   devServer: {
     contentBase: path.join(__dirname, 'dist'),

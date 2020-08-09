@@ -1,0 +1,26 @@
+.playerlist h2 {
+    text-align: center;
+}
+
+.playerlist-list {
+    padding: 0px;
+    list-style: none;
+    border-top: 1px solid rgba(29, 29, 29, 0.199);
+}
+
+.playerlist-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid rgba(29, 29, 29, 0.199);
+}
+
+/* .playerlist-list-controls {
+
+} */
+
+.playerlist-list-readydisp {
+    width: 20px;
+    height: 20px;
+    background-color: green;
+}

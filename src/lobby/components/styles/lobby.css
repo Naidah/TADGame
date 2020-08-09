@@ -1,0 +1,35 @@
+.lobby {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+
+    background-color: var(--color-base);
+}
+
+.lobby-main {
+    display: flex;
+    width: 100%;
+    height: 80%;
+}
+
+.lobby-playerlist {
+    border-right: 2px solid black;
+    width: 20%;
+    height: 100%;
+    
+    background-color: var(--color-shade-1);
+}
+
+.lobby-settings {
+    width: 80%;
+    height: 100%;
+}
+
+.lobby-chat {
+    border-top: 2px solid black;
+    width: 100%;
+    height: 20%;
+
+    background-color: var(--color-shade-2);
+}

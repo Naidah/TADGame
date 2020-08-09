@@ -1,4 +1,4 @@
 {
-    "basic.json": "Simple Map",
-    "advanced.json": "Advanced Map"
+    "basic": "Simple Map",
+    "advanced": "Advanced Map"
 }

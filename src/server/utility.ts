@@ -44,3 +44,11 @@ export function writeJSON(fname: string, obj: object): void {
     }
     fs.writeFileSync(path.join(__dirname, fname), JSON.stringify(obj));
 }
+
+export function writePNG(fname: string, data: string): void {
+    if (!fname.endsWith(".png")) {
+        fname += '.png';
+    }
+    let img = data.replace(/^data:image\/png;base64,/, "");
+    fs.writeFileSync(path.join(__dirname, fname), img, 'base64');
+}

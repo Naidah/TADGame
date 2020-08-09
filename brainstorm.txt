@@ -6,16 +6,16 @@ Characters have {
         1 pistol
         1 shotgun
         1 rifle
-        1 sniper
-        lazer
+        1 sniper (slower, tunnel vision)
+        laZer rifle
         grenade launcher
         flamethrower
-        minigun
-        smg
+        1 minigun
+        smg (high firerate, high spread)
         sword
         revolver/deagle
-        bow
-        dmr
+        bow (slow when charging, slow projectile, oneshot?, scatta)
+        1 dmr
         boomerang
     }
     ability {

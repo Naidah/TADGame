@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Selector } from './selector'
-import { type_map, type_wall } from '../../server/types';
+import { Selector } from '../../components/selector'
+import { type_map } from '../../server/types';
 
 const tile_size = 50;
 
@@ -107,8 +107,9 @@ export class MapCanvas extends React.Component<{}, {
     }
 
     loadMap(name: string) {
+        let fname = name + (name.endsWith('.json') ? '' : '.json');
         if (name != '') {
-            fetch('/maps/' + name)
+            fetch('/maps/' + fname)
                 .then(resp => resp.json())
                 .then((resp: type_map) => {
                     let mx = Math.floor(resp.settings.size.width / tile_size);
@@ -143,14 +144,18 @@ export class MapCanvas extends React.Component<{}, {
     }
 
     saveMap(map: type_map) {
-        console.log(map);
+        let snapshot = this._canvas.toDataURL("png");
+        let resp = {
+            map: map,
+            image: snapshot
+        }
         fetch('/editor/' + this.state.file, {
             method: "POST",
             cache: 'no-cache',
             headers: {
                 'Content-Type': "application/json"
             },
-            body: JSON.stringify(map)
+            body: JSON.stringify(resp)
         });
     }
 
@@ -202,9 +207,10 @@ function range(start: number, end: number) {
 }
 
 let cache: { [id: string]: number | [[string, number], number] } = {};
-function getElementList(state: number[][]) {
+function getElementList(state: number[][])
+    : { x: number, y: number, w: number, h: number }[] {
     cache = {};
-    console.log(_getElementCount(state, 0, 0, state.length, state[0].length));
+    _getElementCount(state, 0, 0, state.length, state[0].length);
     return _getElementList(0, 0, state.length, state[0].length);
 }
 
