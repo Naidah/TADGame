@@ -12,7 +12,7 @@ export class Shotgun extends Weapon {
             maxSpread: Math.PI / 5,
             spreadRecovery: 0,
             spreadGrowth: 0,
-            projFactory: new DecayingProjectileFactory(420, 0.45, 1.2),
+            projFactory: new DecayingProjectileFactory(420, 30, 0.45, 1.2),
             isPress: true,
             shots: 8
         });

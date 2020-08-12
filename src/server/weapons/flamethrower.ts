@@ -12,7 +12,7 @@ export class Flamethrower extends Weapon {
             maxSpread: Math.PI / 5,
             spreadRecovery: 0,
             spreadGrowth: 0,
-            projFactory: new DecayingProjectileFactory(400, 0.2, 3),
+            projFactory: new DecayingProjectileFactory(400, 5, 0.2, 3),
             shots: 3
         });
     }

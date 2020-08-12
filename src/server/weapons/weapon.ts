@@ -27,7 +27,7 @@ export class Weapon {
         maxSpread,
         spreadRecovery,
         spreadGrowth,
-        projFactory = new ProjectileFactory(420),
+        projFactory = new ProjectileFactory(420, 40),
         isPress = false,
         shots = 1
     }) {
@@ -59,6 +59,10 @@ export class Weapon {
 
     update(delta: number) {
         this._state = this._state.update(delta);
+    }
+
+    reset() {
+        this._state = new StateStandby(this, this.maxAmmo, this.minSpread);
     }
 
     get maxAmmo() {

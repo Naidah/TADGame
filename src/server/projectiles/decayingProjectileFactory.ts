@@ -5,13 +5,13 @@ import { DecayingProjectile } from "./decayingProjectile";
 export class DecayingProjectileFactory extends ProjectileFactory {
     private _rate: number;
     private _lifetime: number;
-    constructor(speed: number, rate: number, lifetime: number) {
-        super(speed);
+    constructor(speed: number, dmg: number, rate: number, lifetime: number) {
+        super(speed, dmg);
         this._rate = rate;
         this._lifetime = lifetime;
     }
 
     generate(x: number, y: number, direction: number): Projectile {
-        return new DecayingProjectile(x, y, direction, this._speed, this._rate, this._lifetime);
+        return new DecayingProjectile(this._owner, x, y, direction, this._speed, this._dmg, this._rate, this._lifetime);
     }
 }

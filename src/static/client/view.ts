@@ -15,10 +15,19 @@ export function drawGameState(state: type_state, pid: number): void {
         drawProjectile(p);
     }
 
+    let isAlive = false;
     for (let id in players) {
         if (id == pid.toString()) {
-            drawShadow(players[id], state["walls"])
+            drawShadow(players[id], state["walls"]);
+            isAlive = true;
         }
+    }
+
+    if (!isAlive) {
+        context.fillStyle = "grey";
+        context.beginPath();
+        context.rect(0, 0, canvas.width, canvas.height);
+        context.fill();
     }
 
     for (let w of state["walls"]) {

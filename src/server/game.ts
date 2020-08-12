@@ -66,7 +66,7 @@ class Game {
 
     getRepr(): type_state {
         let prepr: { [id: number]: type_player } = {};
-        for (const [key, p] of Object.entries(this._players)) {
+        for (const p of this.players) {
             prepr[p.id] = p.getRepr();
         }
 
@@ -94,6 +94,10 @@ class Game {
 
     get height() {
         return Game.height;
+    }
+
+    get players(): Character[] {
+        return Object.values(this._players).filter(x => x.isAlive);
     }
 }
 

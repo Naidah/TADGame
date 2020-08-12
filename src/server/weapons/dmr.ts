@@ -12,7 +12,7 @@ export class Dmr extends Weapon {
             maxSpread: 0,
             spreadRecovery: 0,
             spreadGrowth: 0,
-            projFactory: new ProjectileFactory(650),
+            projFactory: new ProjectileFactory(650, 60),
             isPress: true,
         });
     }
