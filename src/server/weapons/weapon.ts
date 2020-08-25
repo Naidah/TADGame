@@ -11,6 +11,7 @@ export abstract class WeaponState {
     constructor(parent: Weapon) {
         this._parent = parent;
     }
+    abstract get ammo(): number;
     abstract shoot(x: number, y: number, direction: number, mdown: boolean, mpress: boolean): [WeaponState, Projectile[]];
     abstract reload(): WeaponState;
     abstract update(delta: number): WeaponState;
@@ -63,6 +64,10 @@ export class Weapon {
 
     reset() {
         this._state = new StateStandby(this, this.maxAmmo, this.minSpread);
+    }
+
+    get ammo() {
+        return this._state.ammo;
     }
 
     get maxAmmo() {
@@ -121,6 +126,10 @@ class StateStandby extends WeaponState {
         this._spread = spread;
     }
 
+    get ammo(): number {
+        return this._ammo;
+    }
+
     shoot(x: number, y: number, direction: number, mdown: boolean, mpress: boolean): [WeaponState, Projectile[]] {
         let res: [WeaponState, Projectile[]] = [this as WeaponState, []];
         if (this._parent.isPress ? mpress : mdown) {
@@ -160,6 +169,10 @@ class StateReload extends WeaponState {
         this._reloadTime = this._parent.reloadTime;
     }
 
+    get ammo(): number {
+        return 0;
+    }
+
     shoot(x: number, y: number, direction: number, mdown: boolean, mpress: boolean) {
         let res: [this, Projectile[]] = [this, []];
         return res;
@@ -187,6 +200,10 @@ class StateCooldown extends WeaponState {
         this._ammo = ammo;
         this._spread = spread;
         this._cooldownTime = this._parent.cooldownTime;
+    }
+
+    get ammo(): number {
+        return this._ammo;
     }
 
     shoot(x: number, y: number, direction: number, mdown: boolean, mpress: boolean) {

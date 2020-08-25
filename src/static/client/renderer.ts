@@ -276,3 +276,20 @@ function getInterceptY(x1: number, y1: number, x2: number, y2: number): number {
         return y_int;
     }
 }
+
+export function drawUI(state: type_player) {
+    context.fillStyle = "black";
+    context.beginPath();
+    context.rect(20, canvas.height - 40, 150, 20);
+    context.fill();
+
+    context.fillStyle = "red";
+    context.beginPath();
+    context.rect(20, canvas.height - 40, (150 * state.hp) / 100, 20);
+    context.fill();
+
+    context.font = "30px Arial";
+    context.textAlign = "end";
+    context.fillText(state.ammo.toString(), 60, canvas.height - 60);
+    console.log(state)
+}

@@ -120,7 +120,15 @@ export class Character extends Entity {
 
     getRepr(): type_player {
         let repr = super.getRepr() as type_player;
-        repr["id"] = this._id;
+        repr.id = this._id;
+        if (this.isAlive) {
+            repr.hp = this._hp;
+        } else {
+            repr.hp = 100 - (this._respawnTimer / Character.respawnTime) * 100;
+        }
+        repr.isAlive = this.isAlive;
+        repr.ammo = this._weapon.ammo;
+        repr.maxAmmo = this._weapon.maxAmmo;
         return repr;
     }
 

@@ -6,7 +6,13 @@ export type type_entity = {
     direction: number
 };
 
-export type type_player = type_entity & { id: number };
+export type type_player = type_entity & {
+    id: number,
+    hp: number,
+    isAlive: boolean,
+    ammo: number,
+    maxAmmo: number
+};
 
 export type type_projectile = type_entity;
 

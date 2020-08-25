@@ -23,7 +23,7 @@ export class Projectile extends Entity {
         super.update(delta);
         let g = getGame();
         let hasHit = false;
-        for (let player of g.players) {
+        for (let player of g.alivePlayers) {
             if (player.hitbox.hasCollision(this._hitbox) && player != this._owner) {
                 player.damage(this._dmg);
                 hasHit = true;

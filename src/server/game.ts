@@ -97,7 +97,11 @@ class Game {
     }
 
     get players(): Character[] {
-        return Object.values(this._players).filter(x => x.isAlive);
+        return Object.values(this._players);
+    }
+
+    get alivePlayers(): Character[] {
+        return this.players.filter(x => x.isAlive);
     }
 }
 
