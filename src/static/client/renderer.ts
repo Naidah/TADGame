@@ -86,7 +86,6 @@ export function drawShadow(player: type_entity, walls: type_wall[]): void {
 
             y_int1 = getInterceptY(leftPointx, leftPointy, playerx, playery);
             y_int2 = getInterceptY(rightPointx, rightPointy, playerx, playery);
-            console.log(x_int1, x_int2, y_int1, y_int2);
             context.beginPath();
             context.moveTo(leftPointx, leftPointy);
             context.lineTo(canvasW, y_int1);
@@ -104,7 +103,6 @@ export function drawShadow(player: type_entity, walls: type_wall[]): void {
 
             x_int1 = getInterceptX(leftPointx, leftPointy, playerx, playery);
             y_int2 = getInterceptY(rightPointx, rightPointy, playerx, playery);
-            console.log(x_int1, x_int2, y_int1, y_int2);
             context.beginPath();
             context.moveTo(leftPointx, leftPointy);
             context.lineTo(x_int1, canvasH);
@@ -122,7 +120,6 @@ export function drawShadow(player: type_entity, walls: type_wall[]): void {
 
             x_int1 = getInterceptX(leftPointx, leftPointy, playerx, playery);
             x_int2 = getInterceptX(rightPointx, rightPointy, playerx, playery);
-            console.log(x_int1, x_int2, y_int1, y_int2);
             context.beginPath();
             context.moveTo(leftPointx, leftPointy);
 
@@ -150,7 +147,6 @@ export function drawShadow(player: type_entity, walls: type_wall[]): void {
 
             y_int1 = getInterceptY(leftPointx, leftPointy, playerx, playery);
             x_int2 = getInterceptX(rightPointx, rightPointy, playerx, playery);
-            console.log(x_int1, x_int2, y_int1, y_int2);
             context.beginPath();
             context.moveTo(leftPointx, leftPointy);
             context.lineTo(0, y_int1);
@@ -168,7 +164,6 @@ export function drawShadow(player: type_entity, walls: type_wall[]): void {
 
             y_int1 = getInterceptY(leftPointx, leftPointy, playerx, playery);
             y_int2 = getInterceptY(rightPointx, rightPointy, playerx, playery);
-            console.log(x_int1, x_int2, y_int1, y_int2);
             context.beginPath();
             context.moveTo(leftPointx, leftPointy);
             context.lineTo(0, y_int1);
@@ -186,7 +181,6 @@ export function drawShadow(player: type_entity, walls: type_wall[]): void {
 
             x_int1 = getInterceptX(leftPointx, leftPointy, playerx, playery);
             y_int2 = getInterceptY(rightPointx, rightPointy, playerx, playery);
-            console.log(x_int1, x_int2, y_int1, y_int2);
             context.beginPath();
             context.moveTo(leftPointx, leftPointy);
             context.lineTo(x_int1, 0);
@@ -204,7 +198,6 @@ export function drawShadow(player: type_entity, walls: type_wall[]): void {
 
             x_int1 = getInterceptX(leftPointx, leftPointy, playerx, playery);
             x_int2 = getInterceptX(rightPointx, rightPointy, playerx, playery);
-            console.log(x_int1, x_int2, y_int1, y_int2);
             context.beginPath();
             context.moveTo(leftPointx, leftPointy);
 
@@ -232,7 +225,6 @@ export function drawShadow(player: type_entity, walls: type_wall[]): void {
 
             y_int1 = getInterceptY(leftPointx, leftPointy, playerx, playery);
             x_int2 = getInterceptX(rightPointx, rightPointy, playerx, playery);
-            console.log(x_int1, x_int2, y_int1, y_int2);
             context.beginPath();
             context.moveTo(leftPointx, leftPointy);
             context.lineTo(canvasW, y_int1);
@@ -283,4 +275,21 @@ function getInterceptY(x1: number, y1: number, x2: number, y2: number): number {
     } else {
         return y_int;
     }
+}
+
+export function drawUI(state: type_player) {
+    context.fillStyle = "black";
+    context.beginPath();
+    context.rect(20, canvas.height - 40, 150, 20);
+    context.fill();
+
+    context.fillStyle = "red";
+    context.beginPath();
+    context.rect(20, canvas.height - 40, (150 * state.hp) / 100, 20);
+    context.fill();
+
+    context.font = "30px Arial";
+    context.textAlign = "end";
+    context.fillText(state.ammo.toString(), 60, canvas.height - 60);
+    console.log(state)
 }

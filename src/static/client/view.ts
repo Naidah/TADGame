@@ -1,4 +1,4 @@
-import { drawCharacter, drawWall, drawProjectile, drawShadow } from './renderer'
+import { drawCharacter, drawWall, drawProjectile, drawShadow, drawUI } from './renderer'
 import { type_state } from '../../server/types';
 
 const canvas = document.getElementById('canvas') as HTMLCanvasElement;
@@ -15,13 +15,30 @@ export function drawGameState(state: type_state, pid: number): void {
         drawProjectile(p);
     }
 
+    let myPlayer;
+    let isFound = false;
     for (let id in players) {
         if (id == pid.toString()) {
-            drawShadow(players[id], state["walls"])
+            myPlayer = players[id];
+            isFound = true;
         }
+    }
+    if (isFound && myPlayer.isAlive) {
+        drawShadow(myPlayer, state["walls"]);
+    }
+
+    if (isFound && !myPlayer.isAlive) {
+        context.fillStyle = "grey";
+        context.beginPath();
+        context.rect(0, 0, canvas.width, canvas.height);
+        context.fill();
     }
 
     for (let w of state["walls"]) {
         drawWall(w);
     }
-}
+
+    if (isFound) {
+        drawUI(myPlayer);
+    }
+}  

@@ -1,10 +1,11 @@
-import { Projectile } from './projectile'
+import { Projectile } from './projectile';
+import { Character } from '../character';
 
 export class DecayingProjectile extends Projectile {
     private _lifetime: number;
     private _rate: number;
-    constructor(x: number, y: number, direction: number, rate: number, lifetime: number) {
-        super(x, y, direction);
+    constructor(owner: Character, x: number, y: number, direction: number, speed: number, dmg: number, rate: number, lifetime: number) {
+        super(owner, x, y, direction, speed, dmg);
         this._rate = rate;
         this._lifetime = lifetime;
     }
