@@ -13,8 +13,6 @@ let pid = -1;
 
 // setup for drawing to canvas
 let canvas = document.getElementById('canvas') as HTMLCanvasElement;
-canvas.width = 800;
-canvas.height = 600;
 
 // declare this player has joined
 socket.emit('new player');
