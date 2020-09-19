@@ -2,6 +2,7 @@ import { type_state } from '../../server/types';
 import * as render from './renderer/index'
 import * as globals from './globals';
 import { clamp } from '../../server/utility';
+import _ from "underscore";
 
 const canvas = document.getElementById('canvas') as HTMLCanvasElement;
 const context = canvas.getContext('2d');
@@ -29,9 +30,11 @@ export function drawGameState(state: type_state, pid: number): void {
         }
     }
 
-    for (let id in players) {
-        render.renderCharacter(canvas, centre, players[id], pid);
-    }
+    // for (let id in players) {
+    //     render.renderCharacter(canvas, centre, players[id], pid);
+    // }
+
+    _.forEach(_.filter(players, (p) => p.isAlive), (p) => render.renderCharacter(canvas, centre, p, pid));
 
     for (let p of state["projectiles"]) {
         render.renderProjectile(canvas, centre, p);
