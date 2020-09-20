@@ -1,6 +1,5 @@
-import { Hitbox } from './hitbox'
-import { RectHitbox } from './rectHitbox'
-import { getGame } from '../game'
+import { Hitbox } from './hitbox';
+import { getGame } from '../game';
 
 export class CircleHitbox extends Hitbox {
     private _r: number;
@@ -39,7 +38,14 @@ export class CircleHitbox extends Hitbox {
     }
 
     // Helper function for circle on circle with all necessary values as a parameter
-    private _circleOnCircle(x1: number, y1: number, r1: number, x2: number, y2: number, r2: number): boolean {
+    private _circleOnCircle(
+        x1: number,
+        y1: number,
+        r1: number,
+        x2: number,
+        y2: number,
+        r2: number
+    ): boolean {
         const dx = Math.abs(x1 - x2);
         const dy = Math.abs(y1 - y2);
         const distance = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));

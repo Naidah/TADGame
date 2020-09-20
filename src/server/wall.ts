@@ -1,5 +1,5 @@
-import { type_wall } from "./types";
 import * as hitboxes from "./hitboxes/index";
+import { type_wall } from "./types";
 
 export class Wall {
     protected _x: any;

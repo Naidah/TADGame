@@ -1,6 +1,6 @@
-import { Weapon } from './weapon';
-import { DecayingProjectileFactory } from '../projectiles/decayingProjectileFactory';
 import { Character } from '../character';
+import { DecayingProjectileFactory } from '../projectiles/decayingProjectileFactory';
+import { Weapon } from './weapon';
 
 export class Flamethrower extends Weapon {
     constructor(player: Character) {
@@ -13,7 +13,7 @@ export class Flamethrower extends Weapon {
             spreadRecovery: 0,
             spreadGrowth: 0,
             projFactory: new DecayingProjectileFactory(400, 5, 0.2, 3),
-            shots: 3
+            shots: 3,
         });
     }
 }

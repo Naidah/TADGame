@@ -1,10 +1,10 @@
-import { Character } from "./character"
-import { Wall } from "./wall";
-import { type_input, type_input_set, type_player, type_projectile, type_state, type_wall } from "./types";
-import { Projectile } from "./projectiles/projectile";
 import * as hitboxes from "./hitboxes/index";
+import { type_input_set, type_player, type_projectile, type_state, type_wall } from "./types";
+import { Character } from "./character"
 import { MapGame } from "./map_tools/map";
 import { MapLoader } from "./map_tools/map_loader";
+import { Projectile } from "./projectiles/projectile";
+import { Wall } from "./wall";
 
 class Game {
     private _players: { [id: number]: Character };
@@ -65,7 +65,7 @@ class Game {
     }
 
     getRepr(): type_state {
-        let prepr: { [id: number]: type_player } = {};
+        const prepr: { [id: number]: type_player } = {};
         for (const p of this.players) {
             prepr[p.id] = p.getRepr();
         }
@@ -101,13 +101,13 @@ class Game {
     }
 
     get alivePlayers(): Character[] {
-        return this.players.filter(x => x.isAlive);
+        return this.players.filter((x) => x.isAlive);
     }
 }
 
 let game = null;
 export function getGame(): Game {
-    if (game == null) {
+    if (game === null) {
         game = new Game();
     }
     return game;

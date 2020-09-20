@@ -1,17 +1,20 @@
 import * as React from 'react';
 import * as styles from './styles/chat.css';
 
-export class Chat extends React.Component<{}, { messages: string[] }> {
+type Props = Record<string, unknown>;
+interface State {
+    messages: string[]
+}
+
+export class Chat extends React.Component<Props, State> {
     private _textInput: HTMLInputElement;
+    inputRef: React.RefObject<HTMLInputElement>;
     constructor(props) {
         super(props);
         this.state = { messages: [] };
+        this.inputRef = React.createRef();
 
         this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    componentDidMount() {
-        this._textInput = this.refs.input as HTMLInputElement;
     }
 
     handleSubmit(event) {
@@ -33,7 +36,7 @@ export class Chat extends React.Component<{}, { messages: string[] }> {
                 {[...this.state.messages].reverse().map((msg, i) => <li key={i}>{msg}</li>)}
             </ul>
             <form onSubmit={this.handleSubmit} className={styles["chat-input"]}>
-                <input ref="input" type="text" placeholder="Message:"></input>
+                <input ref={this.inputRef} type="text" placeholder="Message:"></input>
             </form>
         </div>
     }

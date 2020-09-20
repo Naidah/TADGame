@@ -1,8 +1,8 @@
-import { type_state } from '../../server/types';
-import * as render from './renderer/index'
 import * as globals from './globals';
-import { clamp } from '../../server/utility';
+import * as render from './renderer/index'
 import _ from "underscore";
+import { clamp } from '../../server/utility';
+import { type_state } from '../../server/types';
 
 const canvas = document.getElementById('canvas') as HTMLCanvasElement;
 const context = canvas.getContext('2d');
@@ -15,13 +15,13 @@ export function drawGameState(state: type_state, pid: number): void {
         canvas.height = 600;
     }
     context.clearRect(0, 0, canvas.width, canvas.height);
-    let players = state["players"];
+    const players = state.players;
     let centre: [number, number] = [0, 0];
 
     let myPlayer;
     let isFound = false;
-    for (let id in players) {
-        if (id == pid.toString()) {
+    for (const id in players) {
+        if (id === pid.toString()) {
             myPlayer = players[id];
             centre = [myPlayer.x, myPlayer.y];
             globals.setViewportX(clamp(myPlayer.x - canvas.width / 2, 0, 800 - canvas.width));
@@ -34,14 +34,15 @@ export function drawGameState(state: type_state, pid: number): void {
     //     render.renderCharacter(canvas, centre, players[id], pid);
     // }
 
-    _.forEach(_.filter(players, (p) => p.isAlive), (p) => render.renderCharacter(canvas, centre, p, pid));
+    _.forEach(_.filter(players, (p) => p.isAlive),
+        (p) => render.renderCharacter(canvas, p, pid));
 
-    for (let p of state["projectiles"]) {
-        render.renderProjectile(canvas, centre, p);
+    for (const p of state.projectiles) {
+        render.renderProjectile(canvas, p);
     }
 
     if (isFound && myPlayer.isAlive) {
-        render.renderShadow(canvas, centre, myPlayer, state["walls"]);
+        render.renderShadow(canvas, myPlayer, state.walls);
     }
 
     if (isFound && !myPlayer.isAlive) {
@@ -51,7 +52,7 @@ export function drawGameState(state: type_state, pid: number): void {
         context.fill();
     }
 
-    for (let w of state["walls"]) {
+    for (const w of state.walls) {
         render.renderWall(canvas, centre, w);
     }
 

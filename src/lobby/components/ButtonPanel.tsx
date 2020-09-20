@@ -19,7 +19,7 @@ export class ButtonPanel extends React.Component<Props, State> {
     constructor (props: Props) {
         super(props);
 
-        const cs = !(this.props.hasOwnProperty("canSelect") && !this.props.canSelect);
+        const cs = !(this.props.canSelect && !this.props.canSelect);
 
         this.state = { active: props.default ? props.default : "", canSelect: cs };
 
@@ -28,7 +28,7 @@ export class ButtonPanel extends React.Component<Props, State> {
 
     componentDidUpdate(prevProps, prevState) {
         if (prevProps.default !== this.props.default) {
-            const cs = !(this.props.hasOwnProperty("canSelect") && !this.props.canSelect);
+            const cs = !(this.props.canSelect && !this.props.canSelect);
             this.setState({
                 active: this.props.default ? this.props.default : "",
                 canSelect: cs,
@@ -51,12 +51,23 @@ export class ButtonPanel extends React.Component<Props, State> {
             if (v.img) {
                 contents = <img style={{ width: v.width, height: v.height }} src={v.img} />
             } else {
-                contents = <div style={{ lineHeight: `${v.height}px`, fontSize: 24 }}>{id[0].toUpperCase()}</div>;
+                contents = <div
+                    style={{ lineHeight: `${v.height}px`, fontSize: 24 }}
+                >{id[0].toUpperCase()}</div>;
             }
-
-            res.push(<button key={id} value={id} className={`${styles["buttonpanel-button"]} ${this.state.active == id ? styles.active : ""}`} onClick={(e) => this.handleButtonPress(id)}>
+            const classname = `${styles["buttonpanel-button"]}
+                ${this.state.active === id ? styles.active : ""}`;
+            res.push(<button
+                key={id}
+                value={id}
+                className={classname}
+                onClick={(e) => this.handleButtonPress(id)}
+            >
                 {v.title ? <h3>{v.title}</h3> : null}
-                <div style={{ width: v.width, height: v.height }} className={styles['buttonpanel-snapshot']}>
+                <div
+                    style={{ width: v.width, height: v.height }}
+                    className={styles['buttonpanel-snapshot']}
+                >
                     {contents}
                 </div>
             </button>);

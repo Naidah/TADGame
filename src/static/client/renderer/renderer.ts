@@ -1,11 +1,14 @@
-import { type_player, type_projectile, type_wall, type_entity } from "../../../server/types";
+import { type_entity, type_player, type_projectile, type_wall } from "../../../server/types";
 
 const char_radius = 20;
 const proj_radius = 4;
 
-export function drawCharacter(canvas: HTMLCanvasElement, state: type_player, pid: number): void {
+export function drawCharacter(
+    canvas: HTMLCanvasElement,
+    state: type_player, pid: number
+): void {
     const context = canvas.getContext('2d');
-    if (state.id == pid) {
+    if (state.id === pid) {
         context.fillStyle = 'blue';
     } else {
         context.fillStyle = 'green';
@@ -41,7 +44,10 @@ export function drawWall(canvas: HTMLCanvasElement, state: type_wall): void {
     context.fill();
 }
 
-export function drawShadow(canvas: HTMLCanvasElement, player: type_entity, walls: type_wall[]): void {
+export function drawShadow(
+    canvas: HTMLCanvasElement,
+    player: type_entity, walls: type_wall[]
+): void {
     const context = canvas.getContext('2d');
 
     const canvasW = 800;
@@ -269,12 +275,12 @@ function getInterceptY(x1: number, y1: number, x2: number, y2: number): number {
         return inf;
     } else if (y_int === Infinity) {
         return nInf;
-    } else {
-        return y_int;
-    }
+    } 
+    return y_int;
+    
 }
 
-export function drawUI(canvas: HTMLCanvasElement, state: type_player) {
+export function drawUI(canvas: HTMLCanvasElement, state: type_player): void {
     const context = canvas.getContext('2d');
     context.fillStyle = "black";
     context.beginPath();
@@ -283,7 +289,7 @@ export function drawUI(canvas: HTMLCanvasElement, state: type_player) {
 
     context.fillStyle = "red";
     context.beginPath();
-    context.rect(20, canvas.height - 40, (150 * state.hp) / 100, 20);
+    context.rect(20, canvas.height - 40, 150 * state.hp / 100, 20);
     context.fill();
 
     context.font = "30px Arial";

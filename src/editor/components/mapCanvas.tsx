@@ -4,7 +4,9 @@ import { type_map } from '../../server/types';
 
 const tile_size = 50;
 
-export class MapCanvas extends React.Component<{}, {
+type Props = Record<string, unknown>
+
+interface State {
     file: string,
     name: string,
     width: number,
@@ -13,10 +15,13 @@ export class MapCanvas extends React.Component<{}, {
     mheight: number,
     state: number[][],
     maps: JSX.Element[]
-}> {
+}
+
+export class MapCanvas extends React.Component<Props, State> {
     private _canvas: HTMLCanvasElement;
     private _ctx: CanvasRenderingContext2D;
-    constructor(props) {
+    private _canvasRef: React.RefObject<HTMLCanvasElement>;
+    constructor(props: Props) {
         super(props);
         const mw = Math.floor(800 / tile_size);
         const mh = Math.floor(600 / tile_size);
@@ -31,6 +36,8 @@ export class MapCanvas extends React.Component<{}, {
             maps: [],
         };
 
+        this._canvasRef = React.createRef();
+
         this.handleCanvasClick = this.handleCanvasClick.bind(this);
         this.handleCanvasSubmit = this.handleCanvasSubmit.bind(this);
         this.updateName = this.updateName.bind(this);
@@ -39,7 +46,6 @@ export class MapCanvas extends React.Component<{}, {
     }
 
     componentDidMount() {
-        this._canvas = this.refs.canvas as HTMLCanvasElement;
         this._ctx = this._canvas.getContext("2d");
         this.draw();
         this.loadMapList();
@@ -49,7 +55,7 @@ export class MapCanvas extends React.Component<{}, {
         this._ctx.clearRect(0, 0, this.state.width, this.state.height);
         this.state.state.forEach((vx, cx) => {
             vx.forEach((vy, cy) => {
-                if (vy == 1) {
+                if (vy === 1) {
                     this._ctx.beginPath();
                     this._ctx.rect(cx * tile_size, cy * tile_size, tile_size, tile_size);
                     this._ctx.fill();
@@ -70,11 +76,15 @@ export class MapCanvas extends React.Component<{}, {
         const mx = Math.floor(cx / tile_size);
         const my = Math.floor(cy / tile_size);
 
-        if (this.state.state[mx][my] != 1) {
-            this.state.state[mx][my] = 1;
+        const state = this.state.state.map((l) => l.slice());   
+
+        if (state[mx][my] !== 1) {
+            state[mx][my] = 1;
         } else {
-            this.state.state[mx][my] = 0;
+            state[mx][my] = 0;
         }
+
+        this.setState({state: state});
 
         this.draw();
     }
@@ -109,7 +119,7 @@ export class MapCanvas extends React.Component<{}, {
 
     loadMap(name: string) {
         const fname = name + (name.endsWith('.json') ? '' : '.json');
-        if (name != '') {
+        if (name !== '') {
             fetch('/maps/' + fname)
                 .then((resp) => resp.json())
                 .then((resp: type_map) => {
@@ -165,7 +175,12 @@ export class MapCanvas extends React.Component<{}, {
         return <div>
             <Selector maps={this.state.maps} onSelect={this.loadMap} ></ Selector>
             <input type="text" value={this.state.name} onChange={this.updateName}></input>
-            <canvas ref="canvas" width={this.state.width} height={this.state.height} onClick={this.handleCanvasClick}></canvas>
+            <canvas
+                ref={this._canvasRef}
+                width={this.state.width}
+                height={this.state.height}
+                onClick={this.handleCanvasClick}
+            ></canvas>
             <button onClick={this.handleCanvasSubmit}>Save Map</button>
         </div>
     }
@@ -193,7 +208,14 @@ function readMap(map: type_map): number[][] {
     return res;
 }
 
-function isPure(state: number[][], x: number, y: number, w: number, h: number, pred: (v: number) => boolean) {
+function isPure(
+    state: number[][],
+    x: number,
+    y: number,
+    w: number,
+    h: number,
+    pred: (v: number) => boolean
+) {
     const substate = state.slice(x, x + w).map((l) => l.slice(y, y + h));
     for (const r of substate) {
         for (const v of r) {
@@ -221,45 +243,57 @@ function getElementList(state: number[][])
 function _getElementList(x: number, y: number, w: number, h: number)
     : { x: number, y: number, w: number, h: number }[] {
     const ind: string = [x, y, w, h].toString();
-    if (cache[ind] == 0) {
+    if (cache[ind] === 0) {
         return []
     }
-    if (cache[ind] == 1) {
+    if (cache[ind] === 1) {
         return [{ x: x * tile_size, y: y * tile_size, w: w * tile_size, h: h * tile_size }];
     }
     const dv = cache[ind][0][1]
     let b1: [number, number, number, number];
     let b2: [number, number, number, number];
-    if (cache[ind][0][0] == 'x') {
+    if (cache[ind][0][0] === 'x') {
         b1 = [x, y, dv, h];
         b2 = [x + dv, y, w - dv, h];
     } else {
         b1 = [x, y, w, dv];
         b2 = [x, y + dv, w, h - dv];
     }
-    return _getElementList(b1[0], b1[1], b1[2], b1[3]).concat(_getElementList(b2[0], b2[1], b2[2], b2[3]));
+    return _getElementList(
+        b1[0], b1[1], b1[2], b1[3]
+    ).concat(_getElementList(b2[0], b2[1], b2[2], b2[3]));
 }
 
 function _getElementCount(state: number[][], x: number, y: number, w: number, h: number) {
     const ind: string = [x, y, w, h].toString();
     if (ind in cache) {
-        if (cache[ind] == 0 || cache[ind] == 1) {
+        if (cache[ind] === 0 || cache[ind] === 1) {
             return cache[ind];
         } 
         return cache[ind][1];
         
     }
 
-    if (isPure(state, x, y, w, h, (x) => x == 1)) {
+    if (isPure(state, x, y, w, h, (x) => x === 1)) {
         cache[ind] = 1;
         return 1;
-    } else if (isPure(state, x, y, w, h, (x) => x != 1)) {
+    } else if (isPure(state, x, y, w, h, (x) => x !== 1)) {
         cache[ind] = 0;
         return 0;
     }
 
-    const xVals = range(1, w).map((m) => [['x', m], _getElementCount(state, x, y, m, h) + _getElementCount(state, x + m, y, w - m, h)]);
-    const yVals = range(1, h).map((m) => [['y', m], _getElementCount(state, x, y, w, m) + _getElementCount(state, x, y + m, w, h - m)]);
+    const xVals = range(1, w).map(
+        (m) => [
+            ['x', m],
+            _getElementCount(state, x, y, m, h) + _getElementCount(state, x + m, y, w - m, h),
+        ]
+    );
+
+    const yVals = range(1, h).map(
+        (m) => [
+            ['y', m],
+            _getElementCount(state, x, y, w, m) + _getElementCount(state, x, y + m, w, h - m),
+        ]);
 
     const values = xVals.concat(yVals);
     const res = values.reduce((acc, curr) => {

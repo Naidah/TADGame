@@ -1,5 +1,4 @@
 import { PlayerSession } from "./playerSession";
-import { indexOf } from "../../webpack.config";
 
 export class Lobby {
     private static room_id = 1;
@@ -29,11 +28,11 @@ export class Lobby {
 
     leave(member: PlayerSession): boolean {
         const i = this._members.indexOf(member);
-        if (i == -1) {
+        if (i === -1) {
             return false;
         }
         this._members.splice(i, 1);
-        if (this._members.length == 0) {
+        if (this._members.length === 0) {
             Lobby.remove(this);
         }
         this.sendUpdate();
@@ -47,13 +46,17 @@ export class Lobby {
     }
 
     sendUpdate() {
-        this._members.forEach((p, i) => p.emit("updateLobby", { isLeader: i == 0, map: this._map, name: this._name, players: this._members.map((p) => p.name) }));
+        this._members.forEach((p, i) => p.emit("updateLobby", {
+            isLeader: i === 0,
+            map: this._map,
+            name: this._name,
+            players: this._members.map((p) => p.name),
+        }));
     }
 
     update(state: { map: string, name: string }) {
         this._map = state.map;
         this._name = state.name;
-        console.log("New map", state.map);
         this.sendUpdate();
     }
 
@@ -62,7 +65,7 @@ export class Lobby {
     }
 
     end(): void {
-
+        return;
     }
 
     get id(): number {
@@ -85,14 +88,14 @@ export class Lobby {
 
     static remove(l: Lobby) {
         const i = Lobby.lobbies.indexOf(l);
-        if (i != -1) {
+        if (i !== -1) {
             Lobby.lobbies.splice(i, 1);
         }
     }
 
     static get(id: number): Lobby {
         // return Lobby.lobbies[0];
-        return Lobby.lobbies.find((l) => l.id == id);
+        return Lobby.lobbies.find((l) => l.id === id);
     }
 
     static getAll(): Lobby[] {

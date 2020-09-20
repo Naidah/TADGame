@@ -1,6 +1,6 @@
+import { DecayingProjectile } from "./decayingProjectile";
 import { Projectile } from "./projectile";
 import { ProjectileFactory } from "./projectileFactory";
-import { DecayingProjectile } from "./decayingProjectile";
 
 export class DecayingProjectileFactory extends ProjectileFactory {
     private _rate: number;
@@ -12,6 +12,15 @@ export class DecayingProjectileFactory extends ProjectileFactory {
     }
 
     generate(x: number, y: number, direction: number): Projectile {
-        return new DecayingProjectile(this._owner, x, y, direction, this._speed, this._dmg, this._rate, this._lifetime);
+        return new DecayingProjectile(
+            this._owner,
+            x,
+            y,
+            direction,
+            this._speed,
+            this._dmg,
+            this._rate,
+            this._lifetime
+        );
     }
 }

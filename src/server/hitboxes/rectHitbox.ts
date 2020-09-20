@@ -1,5 +1,5 @@
-import { Hitbox } from './hitbox';
 import { CircleHitbox } from './circleHitbox';
+import { Hitbox } from './hitbox';
 import { getGame } from '../game'
 
 export class RectHitbox extends Hitbox {
@@ -49,8 +49,12 @@ export class RectHitbox extends Hitbox {
         // Checks if the centre of the circle is inside a rectangle with its width extended by its radius in both
         // direction or its height extended by its radius in both direction or if the corners of the original rect
         // is inside the circle
-        return this._ptOnRect(hitbox.x, hitbox.y, this.x - hitbox.r, this.y, this._w + 2 * hitbox.r, this._h) ||
-            this._ptOnRect(hitbox.x, hitbox.y, this.x, this.y - hitbox.r, this._w, this._h + 2 * hitbox.r) ||
+        return this._ptOnRect(
+            hitbox.x, hitbox.y, this.x - hitbox.r, this.y, this._w + 2 * hitbox.r, this._h
+        ) ||
+            this._ptOnRect(
+                hitbox.x, hitbox.y, this.x, this.y - hitbox.r, this._w, this._h + 2 * hitbox.r
+            ) ||
             hitbox.containsPoint(this.x, this.y) ||
             hitbox.containsPoint(this.x + this._w, this.y) ||
             hitbox.containsPoint(this.x, this.y + this._h) ||

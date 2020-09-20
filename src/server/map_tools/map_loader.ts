@@ -1,7 +1,7 @@
 import { MapGame } from "./map";
+import { Wall } from "../wall";
 import { readJSON } from '../utility'
 import { type_map } from "../types";
-import { Wall } from "../wall";
 
 export class MapLoader {
     private _map: string;

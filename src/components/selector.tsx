@@ -1,7 +1,16 @@
 import * as React from 'react';
 
-export class Selector extends React.Component<{ onSelect: (mapName: string) => void, maps: JSX.Element[] }, { value: string }> {
-    constructor(props) {
+interface Props {
+    onSelect: (mapName: string) => void,
+    maps: JSX.Element[]
+}
+
+interface State {
+    value: string
+}
+
+export class Selector extends React.Component<Props, State> {
+    constructor(props: Props) {
         super(props);
         this.state = { value: "" };
 

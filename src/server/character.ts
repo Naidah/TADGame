@@ -1,22 +1,22 @@
-import { clamp } from './utility';
-import { type_input, type_player } from './types'
-import { Entity } from './entity';
-import { getGame } from './game'
 import * as weapons from './weapons/index';
+import { type_input, type_player } from './types';
+import { Entity } from './entity';
 import { Hitbox } from './hitboxes/index';
+import { clamp } from './utility';
+import { getGame } from './game'
 
 export class Character extends Entity {
     private static readonly maxHp: number = 100;
     private static readonly max_speed: number = 300;
     private static readonly accel_rate: number = 800;
-    private static cid: number = 0;
+    private static cid = 0;
     private static readonly respawnTime: number = 4;
 
     private _id: number;
     private _weapon: weapons.Weapon;
     private _hp: number = Character.maxHp;
-    private _isAlive: boolean = true;
-    private _respawnTimer: number = 0;
+    private _isAlive = true;
+    private _respawnTimer = 0;
 
     constructor() {
         super(300, 300, 20);
@@ -33,26 +33,28 @@ export class Character extends Entity {
             return;
         }
 
-        let l = input.left ? 1 : 0;
-        let r = input.right ? 1 : 0;
-        let u = input.up ? 1 : 0;
-        let d = input.down ? 1 : 0;
+        const l = input.left ? 1 : 0;
+        const r = input.right ? 1 : 0;
+        const u = input.up ? 1 : 0;
+        const d = input.down ? 1 : 0;
         const mx = r - l;
         const my = d - u;
 
-        if (mx != 0) {
+        if (mx !== 0) {
             this._sx += mx * Character.accel_rate * delta;
         } else {
-            this._sx = clamp(Math.sign(this._sx) * -Character.accel_rate * delta + this._sx, 0, this._sx);
+            const speed = Math.sign(this._sx) * -Character.accel_rate * delta + this._sx;
+            this._sx = clamp(speed, 0, this._sx);
         }
 
-        if (my != 0) {
+        if (my !== 0) {
             this._sy += my * Character.accel_rate * delta;
         } else {
-            this._sy = clamp(Math.sign(this._sy) * -Character.accel_rate * delta + this._sy, 0, this._sy);
+            const speed = Math.sign(this._sy) * -Character.accel_rate * delta + this._sy;
+            this._sy = clamp(speed, 0, this._sy);
         }
 
-        let speed = Math.sqrt(Math.pow(this._sx, 2) + Math.pow(this._sy, 2));
+        const speed = Math.sqrt(Math.pow(this._sx, 2) + Math.pow(this._sy, 2));
         if (speed > Character.max_speed) {
             this._sx *= Character.max_speed / speed;
             this._sy *= Character.max_speed / speed;
@@ -68,7 +70,9 @@ export class Character extends Entity {
 
         this._weapon.update(delta);
 
-        const ps = this._weapon.shoot(this._x, this._y, this._direction, input.mdown, input.mpress);
+        const ps = this._weapon.shoot(
+            this._x, this._y, this._direction, input.mdown, input.mpress
+        );
         for (const p of ps) {
             g.spawnProjectile(p);
         }
@@ -76,14 +80,22 @@ export class Character extends Entity {
 
     updatePos(dx: number, dy: number): void {
         const g = getGame();
-        while ((g.isCollidingWalls(this._hitbox, dx, 0) || this._hitbox.isOutOfBounds(dx, 0, true)) && dx != 0) {
+        while (
+            (g.isCollidingWalls(this._hitbox, dx, 0)
+            || this._hitbox.isOutOfBounds(dx, 0, true))
+            && dx !== 0
+        ) {
             this._sx = 0;
             dx -= Math.sign(dx);
         }
         this._x += dx;
         this._updateHitbox();
 
-        while ((g.isCollidingWalls(this._hitbox, 0, dy) || this._hitbox.isOutOfBounds(0, dy, true)) && dy != 0) {
+        while (
+            (g.isCollidingWalls(this._hitbox, 0, dy)
+            || this._hitbox.isOutOfBounds(0, dy, true))
+            && dy !== 0
+        ) {
             this._sy = 0;
             dy -= Math.sign(dy);
         }
@@ -91,7 +103,7 @@ export class Character extends Entity {
         this._updateHitbox();
     }
 
-    damage(dmg): boolean {
+    damage(dmg: number): boolean {
         this._hp -= dmg;
         if (this._hp <= 0) {
             this.destroy();
@@ -119,12 +131,12 @@ export class Character extends Entity {
     }
 
     getRepr(): type_player {
-        let repr = super.getRepr() as type_player;
+        const repr = super.getRepr() as type_player;
         repr.id = this._id;
         if (this.isAlive) {
             repr.hp = this._hp;
         } else {
-            repr.hp = 100 - (this._respawnTimer / Character.respawnTime) * 100;
+            repr.hp = 100 - this._respawnTimer / Character.respawnTime * 100;
         }
         repr.isAlive = this.isAlive;
         repr.ammo = this._weapon.ammo;
@@ -133,8 +145,6 @@ export class Character extends Entity {
     }
 
     destroy(): void {
-        let g = getGame();
-        // g.removePlayer(this._id);
         this._isAlive = false;
         this._respawnTimer = Character.respawnTime;
     }

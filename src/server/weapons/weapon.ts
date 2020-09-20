@@ -1,10 +1,8 @@
-// ammo, max ammo, spread, firerate, reload time, projectile speed/life?
-
-import { Projectile } from "../projectiles/projectile";
 import { clamp, randBinom } from "../utility";
-import { type_weapon_args } from "../types";
-import { ProjectileFactory } from "../projectiles/projectileFactory";
 import { Character } from "../character";
+import { Projectile } from "../projectiles/projectile";
+import { ProjectileFactory } from "../projectiles/projectileFactory";
+import { type_weapon_args } from "../types";
 
 export abstract class WeaponState {
     protected _parent: Weapon;
@@ -12,7 +10,13 @@ export abstract class WeaponState {
         this._parent = parent;
     }
     abstract get ammo(): number;
-    abstract shoot(x: number, y: number, direction: number, mdown: boolean, mpress: boolean): [WeaponState, Projectile[]];
+    abstract shoot(
+        x: number,
+        y: number,
+        direction: number,
+        mdown: boolean,
+        mpress: boolean
+    ): [WeaponState, Projectile[]];
     abstract reload(): WeaponState;
     abstract update(delta: number): WeaponState;
 }
@@ -30,7 +34,7 @@ export class Weapon {
         spreadGrowth,
         projFactory = new ProjectileFactory(420, 40),
         isPress = false,
-        shots = 1
+        shots = 1,
     }) {
         this._values = {
             maxAmmo: maxAmmo,
@@ -42,14 +46,20 @@ export class Weapon {
             spreadGrowth: spreadGrowth,
             projFactory: projFactory,
             isPress: isPress,
-            shots: shots
+            shots: shots,
         };
         this._state = new StateStandby(this, this.maxAmmo, this.minSpread);
         this._values.projFactory.owner = player;
     }
 
-    shoot(x: number, y: number, direction: number, mdown: boolean, mpress: boolean): Projectile[] {
-        let res = this._state.shoot(x, y, direction, mdown, mpress);
+    shoot(
+        x: number,
+        y: number,
+        direction: number,
+        mdown: boolean,
+        mpress: boolean
+    ): Projectile[] {
+        const res = this._state.shoot(x, y, direction, mdown, mpress);
         this._state = res[0];
         return res[1];
     }
@@ -91,14 +101,14 @@ export class Weapon {
     }
 
     get spreadRecovery() {
-        if (this._values.spreadRecovery == 0) {
+        if (this._values.spreadRecovery === 0) {
             return 0;
         }
         return (this.maxSpread - this.minSpread) / this._values.spreadRecovery;
     }
 
     get spreadGrowth() {
-        if (this._values.spreadGrowth == 0) {
+        if (this._values.spreadGrowth === 0) {
             return 0;
         }
         return (this.maxSpread - this.minSpread) / this._values.spreadGrowth;
@@ -130,17 +140,24 @@ class StateStandby extends WeaponState {
         return this._ammo;
     }
 
-    shoot(x: number, y: number, direction: number, mdown: boolean, mpress: boolean): [WeaponState, Projectile[]] {
-        let res: [WeaponState, Projectile[]] = [this as WeaponState, []];
+    shoot(
+        x: number,
+        y: number,
+        direction: number,
+        mdown: boolean,
+        mpress: boolean
+    ): [WeaponState, Projectile[]] {
+        const res: [WeaponState, Projectile[]] = [this as WeaponState, []];
         if (this._parent.isPress ? mpress : mdown) {
             if (this._ammo > 0) {
                 for (let i = 0; i < this._parent.shots; i++) {
-                    let randDirection = direction + randBinom(-this._spread, this._spread)
+                    const randDirection = direction + randBinom(-this._spread, this._spread)
                     res[1].push(this._parent.projFactory.generate(x, y, randDirection));
                 }
-                this._spread = clamp(this._spread + this._parent.spreadGrowth, this._parent.minSpread, this._parent.maxSpread);
+                const spread = this._spread + this._parent.spreadGrowth;
+                this._spread = clamp(spread, this._parent.minSpread, this._parent.maxSpread);
                 this._ammo--;
-                if (this._parent.cooldownTime != 0) {
+                if (this._parent.cooldownTime !== 0) {
                     res[0] = new StateCooldown(this._parent, this._ammo, this._spread);
                     return res;
                 }
@@ -157,7 +174,8 @@ class StateStandby extends WeaponState {
     }
 
     update(delta: number): WeaponState {
-        this._spread = clamp(this._spread - this._parent.spreadRecovery * delta, this._parent.minSpread, this._parent.maxSpread);
+        const spread = this._spread - this._parent.spreadRecovery * delta;
+        this._spread = clamp(spread, this._parent.minSpread, this._parent.maxSpread);
         return this;
     }
 }
@@ -173,8 +191,8 @@ class StateReload extends WeaponState {
         return 0;
     }
 
-    shoot(x: number, y: number, direction: number, mdown: boolean, mpress: boolean) {
-        let res: [this, Projectile[]] = [this, []];
+    shoot() {
+        const res: [this, Projectile[]] = [this, []];
         return res;
     }
 
@@ -206,8 +224,8 @@ class StateCooldown extends WeaponState {
         return this._ammo;
     }
 
-    shoot(x: number, y: number, direction: number, mdown: boolean, mpress: boolean) {
-        let res: [this, Projectile[]] = [this, []];
+    shoot() {
+        const res: [this, Projectile[]] = [this, []];
         return res;
     }
 

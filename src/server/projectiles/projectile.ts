@@ -1,6 +1,6 @@
-import { Entity } from '../entity'
-import { getGame } from '../game';
 import { Character } from '../character';
+import { Entity } from '../entity';
+import { getGame } from '../game';
 
 const radius = 5;
 
@@ -8,7 +8,14 @@ export class Projectile extends Entity {
     private _speed: number;
     private _owner: Character;
     private _dmg: number;
-    constructor(owner: Character, x: number, y: number, direction: number, speed: number, dmg: number) {
+    constructor(
+        owner: Character,
+        x: number,
+        y: number,
+        direction: number,
+        speed: number,
+        dmg: number
+    ) {
         super(x, y, radius);
         this._direction = direction;
         this._owner = owner;
@@ -21,10 +28,10 @@ export class Projectile extends Entity {
 
     update(delta: number) {
         super.update(delta);
-        let g = getGame();
+        const g = getGame();
         let hasHit = false;
-        for (let player of g.alivePlayers) {
-            if (player.hitbox.hasCollision(this._hitbox) && player != this._owner) {
+        for (const player of g.alivePlayers) {
+            if (player.hitbox.hasCollision(this._hitbox) && player !== this._owner) {
                 player.damage(this._dmg);
                 hasHit = true;
             }

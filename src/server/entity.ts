@@ -1,5 +1,5 @@
-import { type_entity } from "./types";
 import * as hitboxes from "./hitboxes/index";
+import { type_entity } from "./types";
 
 export abstract class Entity {
   protected _x: any;

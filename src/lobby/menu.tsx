@@ -2,11 +2,11 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import * as styles from './components/styles/menu.css'
 
-import { LobbyMenu } from './components/lobbyMenu';
 import { Loadout } from './components/loadout';
 import { LobbyList } from './components/lobbylist';
+import { LobbyMenu } from './components/lobbyMenu';
 
-class Menu extends React.Component<{}, { lobby: number }> {
+class Menu extends React.Component<Record<string, unknown>, { lobby: number }> {
     constructor(props) {
         super(props);
         this.state = { lobby: -1 };

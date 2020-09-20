@@ -77,12 +77,12 @@ export class PlayerSession {
     }
 
     static get(id: any): PlayerSession {
-        return PlayerSession.players.find((player) => player.id == id);
+        return PlayerSession.players.find((player) => player.id === id);
     }
 
     static remove(p: PlayerSession): void {
         const i = PlayerSession.players.indexOf(p);
-        if (i != -1) {
+        if (i !== -1) {
             p.destroy();
             PlayerSession.players.splice(i, 1);
         }

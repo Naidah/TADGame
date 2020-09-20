@@ -1,22 +1,26 @@
-import { type_player } from "../../../server/types";
 import * as globals from "../globals";
+import { type_player } from "../../../server/types";
 
 const char_radius = 20;
 
-export function renderCharacter(canvas: HTMLCanvasElement, centre: [number, number], state: type_player, pid: number): void {
+export function renderCharacter(
+    canvas: HTMLCanvasElement,
+    state: type_player,
+    pid: number
+): void {
     const context = canvas.getContext('2d');
 
-    let viewportX = globals.getViewportX();
-    let viewportY = globals.getViewportY();
+    const viewportX = globals.getViewportX();
+    const viewportY = globals.getViewportY();
 
-    if (state.id == pid) {
+    if (state.id === pid) {
         context.fillStyle = 'blue';
     } else {
         context.fillStyle = 'green';
     }
 
-    let x = state.x - viewportX;
-    let y = state.y - viewportY;
+    const x = state.x - viewportX;
+    const y = state.y - viewportY;
     context.beginPath();
     context.arc(x, y, char_radius, 0, 2 * Math.PI);
     context.fill();

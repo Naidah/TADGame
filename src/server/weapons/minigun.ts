@@ -1,6 +1,6 @@
-import { Weapon } from './weapon';
 import { Character } from '../character';
 import { ProjectileFactory } from '../projectiles/projectileFactory';
+import { Weapon } from './weapon';
 
 export class Minigun extends Weapon {
     constructor(player: Character) {
@@ -12,7 +12,7 @@ export class Minigun extends Weapon {
             maxSpread: Math.PI / 5,
             spreadRecovery: 0,
             spreadGrowth: 0,
-            projFactory: new ProjectileFactory(420, 5)
+            projFactory: new ProjectileFactory(420, 5),
         });
     }
 }

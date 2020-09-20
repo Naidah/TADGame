@@ -1,5 +1,5 @@
-let viewportX: number = 0;
-let viewportY: number = 0;
+let viewportX = 0;
+let viewportY = 0;
 
 export function getViewportX() {
     return viewportX;

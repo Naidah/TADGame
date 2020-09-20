@@ -1,6 +1,5 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import { json } from 'express';
 
 // clamp a number between a min and max
 export function clamp(val: number, min: number, max: number): number {
@@ -37,7 +36,7 @@ export function randBinom(min: number, max: number, skew = 1): number {
     return num;
 }
 
-export function readJSON(fname: string): object {
+export function readJSON(fname: string): Record<string, unknown> {
     if (!fname.endsWith(".json")) {
         fname += '.json';
     }
@@ -45,7 +44,7 @@ export function readJSON(fname: string): object {
     return JSON.parse(fs.readFileSync(path.join(__dirname, fname)).toString());
 }
 
-export function writeJSON(fname: string, obj: object): void {
+export function writeJSON(fname: string, obj: Record<string, unknown>): void {
     if (!fname.endsWith('.json')) {
         fname += '.json';
     }

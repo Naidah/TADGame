@@ -1,16 +1,16 @@
-import { type_projectile } from "../../../server/types";
 import * as globals from "../globals";
+import { type_projectile } from "../../../server/types";
 
 const proj_radius = 4;
 
-export function renderProjectile(canvas: HTMLCanvasElement, centre: [number, number], state: type_projectile): void {
+export function renderProjectile(canvas: HTMLCanvasElement, state: type_projectile): void {
     const context = canvas.getContext('2d');
 
-    let viewportX = globals.getViewportX();
-    let viewportY = globals.getViewportY();
+    const viewportX = globals.getViewportX();
+    const viewportY = globals.getViewportY();
 
-    let x = state.x - viewportX;
-    let y = state.y - viewportY;
+    const x = state.x - viewportX;
+    const y = state.y - viewportY;
 
     context.fillStyle = 'red';
 

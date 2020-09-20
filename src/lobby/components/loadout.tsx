@@ -1,12 +1,15 @@
 import * as React from 'react';
-import * as styles from './styles/loadout.css';
-
 import * as globals from '../globals';
-
+import * as styles from './styles/loadout.css';
 import { ButtonPanel } from './ButtonPanel';
 import { type_button_info } from '../../server/types';
 
-export class Loadout extends React.Component<{}, { name: string, loadout: { weapon: string, ability: string, perk: string } }> {
+interface State {
+    name: string,
+    loadout: { weapon: string, ability: string, perk: string }
+}
+
+export class Loadout extends React.Component<Record<string, unknown>, State> {
     private static _button_size = 80;
     private static _weapons: { [id: string]: type_button_info } = {
         "pistol": {
@@ -78,7 +81,7 @@ export class Loadout extends React.Component<{}, { name: string, loadout: { weap
     }
 
     handleWeaponChange(value: string) {
-        if (this.state.loadout.weapon != value) {
+        if (this.state.loadout.weapon !== value) {
             this.handleLoadoutChange(
                 value,
                 this.state.loadout.ability,
@@ -88,7 +91,7 @@ export class Loadout extends React.Component<{}, { name: string, loadout: { weap
     }
 
     handleAbilityChange(value: string) {
-        if (this.state.loadout.ability != value) {
+        if (this.state.loadout.ability !== value) {
             this.handleLoadoutChange(
                 this.state.loadout.weapon,
                 value,
@@ -98,7 +101,7 @@ export class Loadout extends React.Component<{}, { name: string, loadout: { weap
     }
 
     handlePerkChange(value: string) {
-        if (this.state.loadout.perk != value) {
+        if (this.state.loadout.perk !== value) {
             this.handleLoadoutChange(
                 this.state.loadout.weapon,
                 this.state.loadout.ability,
@@ -111,7 +114,7 @@ export class Loadout extends React.Component<{}, { name: string, loadout: { weap
         weapon: string,
         ability: string,
         perk: string
-    ) {
+    ): void {
         this.setState({ loadout: { weapon: weapon, ability: ability, perk: perk } });
         localStorage.weapon = weapon;
         localStorage.ability = ability;
@@ -121,13 +124,34 @@ export class Loadout extends React.Component<{}, { name: string, loadout: { weap
         globals.socket.emit("setLoadout", { weapon: weapon, ability: ability, perk: perk });
     }
 
-    render() {
+    render(): JSX.Element {
         return <div id="lobby" className={styles.lobby}>
             <h1>Loadout</h1>
-            <input className={styles["loadout-username"]} type="text" value={this.state.name} onChange={this.submitName} placeholder="Username"></input>
-            <ButtonPanel title="Weapons" onChange={this.handleWeaponChange} default={this.state.loadout.weapon} buttons={Loadout._weapons} ></ButtonPanel>
-            <ButtonPanel title="Abilities" onChange={this.handleAbilityChange} default={this.state.loadout.ability} buttons={{}}></ButtonPanel>
-            <ButtonPanel title="Perks" onChange={this.handlePerkChange} default={this.state.loadout.perk} buttons={{}}></ButtonPanel>
+            <input
+                className={styles["loadout-username"]}
+                type="text"
+                value={this.state.name}
+                onChange={this.submitName}
+                placeholder="Username"
+            ></input>
+            <ButtonPanel
+                title="Weapons"
+                onChange={this.handleWeaponChange}
+                default={this.state.loadout.weapon}
+                buttons={Loadout._weapons}
+            ></ButtonPanel>
+            <ButtonPanel
+                title="Abilities"
+                onChange={this.handleAbilityChange}
+                default={this.state.loadout.ability}
+                buttons={{}}
+            ></ButtonPanel>
+            <ButtonPanel
+                title="Perks"
+                onChange={this.handlePerkChange}
+                default={this.state.loadout.perk}
+                buttons={{}}
+            ></ButtonPanel>
         </div>
     }
 }
