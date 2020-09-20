@@ -17,10 +17,10 @@ export class Character extends Entity {
     }
 
     update(delta: number, input?: type_input): void {
-        let l = input.left ? 1 : 0;
-        let r = input.right ? 1 : 0;
-        let u = input.up ? 1 : 0;
-        let d = input.down ? 1 : 0;
+        const l = input.left ? 1 : 0;
+        const r = input.right ? 1 : 0;
+        const u = input.up ? 1 : 0;
+        const d = input.down ? 1 : 0;
         const mx = r - l;
         const my = d - u;
 
@@ -36,15 +36,15 @@ export class Character extends Entity {
             this._sy = clamp(Math.sign(this._sy) * -accel_rate * delta + this._sy, 0, this._sy);
         }
 
-        let speed = Math.sqrt(Math.pow(this._sx, 2) + Math.pow(this._sy, 2));
+        const speed = Math.sqrt(Math.pow(this._sx, 2) + Math.pow(this._sy, 2));
         if (speed > max_speed) {
             this._sx *= max_speed / speed;
             this._sy *= max_speed / speed;
         }
 
         const g = getGame();
-        let movex = Math.round(this._sx * delta);
-        let movey = Math.round(this._sy * delta);
+        const movex = Math.round(this._sx * delta);
+        const movey = Math.round(this._sy * delta);
 
         this.updatePos(movex, movey);
 
@@ -52,8 +52,8 @@ export class Character extends Entity {
 
         this._weapon.update(delta);
 
-        let ps = this._weapon.shoot(this._x, this._y, this._direction, input.mdown, input.mpress);
-        for (let p of ps) {
+        const ps = this._weapon.shoot(this._x, this._y, this._direction, input.mdown, input.mpress);
+        for (const p of ps) {
             g.spawnProjectile(p);
         }
     }
@@ -80,13 +80,13 @@ export class Character extends Entity {
     }
 
     getRepr(): type_player {
-        let repr = super.getRepr() as type_player;
-        repr["id"] = this._id;
+        const repr = super.getRepr() as type_player;
+        repr.id = this._id;
         return repr;
     }
 
     destroy(): void {
-        let g = getGame();
+        const g = getGame();
         g.removePlayer(this._id);
     }
 }

@@ -63,7 +63,7 @@ game modes {
     team deathmatch
     oddball
     one in the barrel
-    gun game
+    gun game (randomly swap on kill)
 }
 
 game modifiers {

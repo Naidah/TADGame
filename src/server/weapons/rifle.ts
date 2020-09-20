@@ -17,7 +17,7 @@ export class Rifle extends Weapon {
     }
 
     shoot(x: number, y: number, direction: number, mdown: boolean, mpress: boolean): Projectile[] {
-        let res = this._state.shoot(x, y, direction, mdown, mpress);
+        const res = this._state.shoot(x, y, direction, mdown, mpress);
         this._state = res[0];
         return res[1];
     }
@@ -37,7 +37,7 @@ class RifleStateStandby extends WeaponState {
     }
 
     shoot(x: number, y: number, direction: number, mdown: boolean, mpress: boolean): [WeaponState, Projectile[]] {
-        let res: [WeaponState, Projectile[]] = [this as WeaponState, []];
+        const res: [WeaponState, Projectile[]] = [this as WeaponState, []];
         if (mdown) {
             if (this._ammo > 0) {
                 res[1].push(new Projectile(x, y, direction + randBinom(-this._spread, this._spread)));
@@ -45,10 +45,10 @@ class RifleStateStandby extends WeaponState {
                 this._ammo--;
                 res[0] = new RifleStateCooldown(this._ammo, this._spread);
                 return res;
-            } else {
-                res[0] = this.reload();
-                return res;
-            }
+            } 
+            res[0] = this.reload();
+            return res;
+            
         }
         return res;
     }
@@ -71,7 +71,7 @@ class RifleStateReload extends WeaponState {
     }
 
     shoot(x: number, y: number, direction: number, mdown: boolean, mpress: boolean) {
-        let res: [this, Projectile[]] = [this, []];
+        const res: [this, Projectile[]] = [this, []];
         return res;
     }
 
@@ -100,7 +100,7 @@ class RifleStateCooldown extends WeaponState {
     }
 
     shoot(x: number, y: number, direction: number, mdown: boolean, mpress: boolean) {
-        let res: [this, Projectile[]] = [this, []];
+        const res: [this, Projectile[]] = [this, []];
         return res;
     }
 

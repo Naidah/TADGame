@@ -12,7 +12,7 @@ export class DecayingProjectile extends Projectile {
         super.update(delta);
 
         // reduce speed
-        let decayAmt = Math.pow(this._rate, delta);
+        const decayAmt = Math.pow(this._rate, delta);
         this._sx *= decayAmt;
         this._sy *= decayAmt;
 

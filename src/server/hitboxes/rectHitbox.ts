@@ -17,9 +17,9 @@ export class RectHitbox extends Hitbox {
         if (hitbox instanceof RectHitbox) {
             return this.rectOnRect(hitbox);
         }
-        else {
-            return this.circleOnRect(hitbox as CircleHitbox);
-        }
+        
+        return this.circleOnRect(hitbox as CircleHitbox);
+        
     }
 
     containsPoint(x: number, y: number) {
@@ -35,13 +35,13 @@ export class RectHitbox extends Hitbox {
             if (this.y > hitbox.y + hitbox._h || this.y + this._h < hitbox.y) {
                 return false;
             }
-            else {
-                return true;
-            }
+            
+            return true;
+            
         }
-        else {
-            return false;
-        }
+        
+        return false;
+        
     }
 
     // Collision detection for circle on rectangle
@@ -49,8 +49,8 @@ export class RectHitbox extends Hitbox {
         // Checks if the centre of the circle is inside a rectangle with its width extended by its radius in both
         // direction or its height extended by its radius in both direction or if the corners of the original rect
         // is inside the circle
-        return this._ptOnRect(hitbox.x, hitbox.y, this.x - hitbox.r, this.y, this._w + (2 * hitbox.r), this._h) ||
-            this._ptOnRect(hitbox.x, hitbox.y, this.x, this.y - hitbox.r, this._w, this._h + (2 * hitbox.r)) ||
+        return this._ptOnRect(hitbox.x, hitbox.y, this.x - hitbox.r, this.y, this._w + 2 * hitbox.r, this._h) ||
+            this._ptOnRect(hitbox.x, hitbox.y, this.x, this.y - hitbox.r, this._w, this._h + 2 * hitbox.r) ||
             hitbox.containsPoint(this.x, this.y) ||
             hitbox.containsPoint(this.x + this._w, this.y) ||
             hitbox.containsPoint(this.x, this.y + this._h) ||
@@ -58,16 +58,16 @@ export class RectHitbox extends Hitbox {
     }
 
     // Checks if a point exists inside the rectangle
-    private _ptOnRect(px: number, py: number, rx: number = 0, ry: number = 0, w: number = 0, h: number = 0): boolean {
+    private _ptOnRect(px: number, py: number, rx = 0, ry = 0, w = 0, h = 0): boolean {
         return rx <= px && px <= rx + w && ry <= py && py <= ry + h;
     }
 
-    isOutOfBounds(dx: number = 0, dy: number = 0, fullyContained: boolean = false): boolean {
-        let g = getGame();
-        let bx = (fullyContained ? this._w : 0) + dx;
-        let by = (fullyContained ? this._h : 0) + dx;
-        let bw = fullyContained ? g.width - 2 * this._w : g.width;
-        let bh = fullyContained ? g.height - 2 * this._h : g.height;
+    isOutOfBounds(dx = 0, dy = 0, fullyContained = false): boolean {
+        const g = getGame();
+        const bx = (fullyContained ? this._w : 0) + dx;
+        const by = (fullyContained ? this._h : 0) + dx;
+        const bw = fullyContained ? g.width - 2 * this._w : g.width;
+        const bh = fullyContained ? g.height - 2 * this._h : g.height;
         return !this.hasCollision(new RectHitbox(bx, by, bw, bh));
     }
 }

@@ -1,8 +1,10 @@
 declare namespace MenuCssNamespace {
   export interface IMenuCss {
     menu: string;
-    "menu-loadout": string;
-    "menu-lobby": string;
+    "menu-home-loadout": string;
+    "menu-home-lobbylist": string;
+    "menu-lobby-loadout": string;
+    "menu-lobby-lobby": string;
   }
 }
 

@@ -16,11 +16,11 @@ export class Chat extends React.Component<{}, { messages: string[] }> {
 
     handleSubmit(event) {
         const msg = this._textInput.value;
-        this.setState(state => {
+        this.setState((state) => {
             const newMsgs = state.messages.concat(msg);
 
             return {
-                messages: newMsgs
+                messages: newMsgs,
             };
         })
         this._textInput.value = "";
@@ -30,9 +30,7 @@ export class Chat extends React.Component<{}, { messages: string[] }> {
     render() {
         return <div id="chat" className={styles.chat}>
             <ul className={styles["chat-list"]}>
-                {[...this.state.messages].reverse().map((msg, i) => {
-                    return <li key={i}>{msg}</li>
-                })}
+                {[...this.state.messages].reverse().map((msg, i) => <li key={i}>{msg}</li>)}
             </ul>
             <form onSubmit={this.handleSubmit} className={styles["chat-input"]}>
                 <input ref="input" type="text" placeholder="Message:"></input>

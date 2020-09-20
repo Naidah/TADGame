@@ -19,9 +19,9 @@ export class CircleHitbox extends Hitbox {
         if (hitbox instanceof CircleHitbox) {
             return this.circleOnCircle(hitbox);
         }
-        else {
-            return hitbox.hasCollision(this);
-        }
+        
+        return hitbox.hasCollision(this);
+        
     }
 
     containsPoint(x: number, y: number): boolean {
@@ -40,20 +40,20 @@ export class CircleHitbox extends Hitbox {
 
     // Helper function for circle on circle with all necessary values as a parameter
     private _circleOnCircle(x1: number, y1: number, r1: number, x2: number, y2: number, r2: number): boolean {
-        let dx = Math.abs(x1 - x2);
-        let dy = Math.abs(y1 - y2);
-        let distance = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+        const dx = Math.abs(x1 - x2);
+        const dy = Math.abs(y1 - y2);
+        const distance = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
         return distance <= r1 + r2;
 
     }
 
-    isOutOfBounds(dx: number = 0, dy: number = 0, fullyContained: boolean = false): boolean {
-        let g = getGame();
-        let d = this._r * 2;
-        let bx = (fullyContained ? d : 0) - dx;
-        let by = (fullyContained ? d : 0) - dy;
-        let bw = fullyContained ? g.width - 2 * d : g.width;
-        let bh = fullyContained ? g.height - 2 * d : g.height;
+    isOutOfBounds(dx = 0, dy = 0, fullyContained = false): boolean {
+        const g = getGame();
+        const d = this._r * 2;
+        const bx = (fullyContained ? d : 0) - dx;
+        const by = (fullyContained ? d : 0) - dy;
+        const bw = fullyContained ? g.width - 2 * d : g.width;
+        const bh = fullyContained ? g.height - 2 * d : g.height;
         return this.x + this._r < bx
             || this.x - this._r > bx + bw
             || this.y + this._r < by

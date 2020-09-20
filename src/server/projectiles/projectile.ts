@@ -15,14 +15,14 @@ export class Projectile extends Entity {
 
     update(delta: number) {
         super.update(delta);
-        let g = getGame();
+        const g = getGame();
         if (this._hitbox.isOutOfBounds() || g.isCollidingWalls(this._hitbox)) {
             this.destroy();
         }
     }
 
     destroy(): void {
-        let g = getGame();
+        const g = getGame();
         g.destroyProjectile(this);
     }
 }

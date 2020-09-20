@@ -8,6 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/server.bundle.js",
     "build": "./build.sh",
+    "lint": "./node_modules/.bin/eslint ./src/* --fix",
     "clean-install": "rm -r node_modules dist; npm install; npm run-script build"
   },
   "repository": {
@@ -29,6 +30,7 @@
     "body-parser": "^1.19.0",
     "corejs": "^1.0.0",
     "css-loader": "^4.2.1",
+    "eslint-loader": "^4.0.2",
     "express": "^4.17.1",
     "glob": "^7.1.6",
     "micromatch": "^4.0.2",
@@ -51,7 +53,11 @@
     "@teamsupercell/typings-for-css-modules-loader": "^2.2.1",
     "@types/express": "^4.17.7",
     "@types/socket.io": "^2.1.10",
+    "@typescript-eslint/eslint-plugin": "^4.1.1",
+    "@typescript-eslint/parser": "^4.1.1",
     "babel-loader": "^8.0.5",
+    "eslint": "^7.9.0",
+    "eslint-plugin-react": "^7.20.6",
     "webpack": "^4.29.0",
     "webpack-cli": "^3.2.1",
     "webpack-dev-server": "^3.1.14"

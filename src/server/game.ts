@@ -1,6 +1,6 @@
 import { Character } from "./character"
 import { Wall } from "./wall";
-import { type_input, type_input_set, type_state, type_player, type_wall, type_projectile } from "./types";
+import { type_input, type_input_set, type_player, type_projectile, type_state, type_wall } from "./types";
 import { Projectile } from "./projectiles/projectile";
 import * as hitboxes from "./hitboxes/index";
 import { MapGame } from "./map_tools/map";
@@ -50,13 +50,13 @@ class Game {
             this._players[p.id].update(delta, p.input);
         }
 
-        for (let p of [...this._projectiles]) { // make a copy of the list to allow removing from the original
+        for (const p of [...this._projectiles]) { // make a copy of the list to allow removing from the original
             p.update(delta);
         }
     }
 
-    isCollidingWalls(hitbox: hitboxes.Hitbox, dx: number = 0, dy: number = 0) {
-        for (let wall of this._map.walls) {
+    isCollidingWalls(hitbox: hitboxes.Hitbox, dx = 0, dy = 0) {
+        for (const wall of this._map.walls) {
             if (wall.hitbox(hitbox, dx, dy)) {
                 return true;
             }
@@ -65,25 +65,25 @@ class Game {
     }
 
     getRepr(): type_state {
-        let prepr: { [id: number]: type_player } = {};
+        const prepr: { [id: number]: type_player } = {};
         for (const [key, p] of Object.entries(this._players)) {
             prepr[p.id] = p.getRepr();
         }
 
-        let wrepr: type_wall[] = [];
-        for (let w of this._map.walls) {
+        const wrepr: type_wall[] = [];
+        for (const w of this._map.walls) {
             wrepr.push(w.getRepr());
         }
 
-        let brepr: type_projectile[] = [];
-        for (let p of this._projectiles) {
+        const brepr: type_projectile[] = [];
+        for (const p of this._projectiles) {
             brepr.push(p.getRepr());
         }
 
-        let repr: type_state = {
+        const repr: type_state = {
             "players": prepr,
             "walls": wrepr,
-            "projectiles": brepr
+            "projectiles": brepr,
         }
         return repr;
     }

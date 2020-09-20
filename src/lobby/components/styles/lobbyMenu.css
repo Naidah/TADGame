@@ -33,3 +33,18 @@
 
     background-color: var(--color-shade-2);
 }
+
+.lobby-headerbar {
+    margin: 10px;
+}
+
+.lobby-leavebutton {
+    position: absolute;
+    margin: 10px 0px;
+}
+
+.lobby-nameinput {
+    margin: 0px auto;
+    display: block;
+    font-size: 28px;
+}

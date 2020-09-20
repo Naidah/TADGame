@@ -1,5 +1,8 @@
 import * as React from 'react';
 import * as styles from './styles/loadout.css';
+
+import * as globals from '../globals';
+
 import { ButtonPanel } from './ButtonPanel';
 import { type_button_info } from '../../server/types';
 
@@ -8,15 +11,15 @@ export class Loadout extends React.Component<{}, { name: string, loadout: { weap
     private static _weapons: { [id: string]: type_button_info } = {
         "pistol": {
             width: Loadout._button_size,
-            height: Loadout._button_size
+            height: Loadout._button_size,
         },
         "rifle": {
             width: Loadout._button_size,
-            height: Loadout._button_size
+            height: Loadout._button_size,
         },
         "shotgun": {
             width: Loadout._button_size,
-            height: Loadout._button_size
+            height: Loadout._button_size,
         },
     }
     constructor(props) {
@@ -54,10 +57,9 @@ export class Loadout extends React.Component<{}, { name: string, loadout: { weap
             localStorage.perk = perk;
         }
 
-        let loadout = { weapon, ability, perk };
+        const loadout = { weapon, ability, perk };
 
         this.state = { name: username, loadout: loadout };
-        console.log(this.state);
 
         this.handleWeaponChange = this.handleWeaponChange.bind(this);
         this.handleAbilityChange = this.handleAbilityChange.bind(this);
@@ -65,10 +67,13 @@ export class Loadout extends React.Component<{}, { name: string, loadout: { weap
         this.handleLoadoutChange = this.handleLoadoutChange.bind(this);
 
         this.submitName = this.submitName.bind(this);
+
+        globals.socket.emit("setUsername", username);
     }
 
     submitName(event) {
         this.setState({ name: event.target.value });
+        globals.socket.emit("setUsername", event.target.value);
         localStorage.username = event.target.value;
     }
 
@@ -108,8 +113,12 @@ export class Loadout extends React.Component<{}, { name: string, loadout: { weap
         perk: string
     ) {
         this.setState({ loadout: { weapon: weapon, ability: ability, perk: perk } });
-        localStorage.loadout = { weapon: weapon, ability: ability, perk: perk };
+        localStorage.weapon = weapon;
+        localStorage.ability = ability;
+        localStorage.perk = perk;
+
         // send to server
+        globals.socket.emit("setLoadout", { weapon: weapon, ability: ability, perk: perk });
     }
 
     render() {

@@ -16,12 +16,12 @@ export abstract class Hitbox {
     }
 
     // Absolute position update
-    updatePos(x: number = 0, y: number = 0) {
+    updatePos(x = 0, y = 0) {
         this._x = x;
         this._y = y;
     }
     // Relative position update
-    move(dx: number = 0, dy: number = 0) {
+    move(dx = 0, dy = 0) {
         this._x += dx;
         this._y += dy;
     }
@@ -29,7 +29,7 @@ export abstract class Hitbox {
     // Test if the passed hitbox will collide if it moves by the given velocity
     testMovement(hitbox: Hitbox, dx: number, dy: number): boolean {
         hitbox.move(dx, dy);
-        let result = this.hasCollision(hitbox);
+        const result = this.hasCollision(hitbox);
         hitbox.move(-dx, -dy);
         return result;
     }

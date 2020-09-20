@@ -10,9 +10,9 @@ export class MapLoader {
     }
 
     createMap(): MapGame {
-        let mapData = readJSON('maps/' + this._map) as type_map;
-        let map = new MapGame(mapData.settings.size.width, mapData.settings.size.height);
-        for (let w of mapData.walls) {
+        const mapData = readJSON('maps/' + this._map) as type_map;
+        const map = new MapGame(mapData.settings.size.width, mapData.settings.size.height);
+        for (const w of mapData.walls) {
             map.addWall(new Wall(w.x, w.y, w.w, w.h));
         }
         return map;

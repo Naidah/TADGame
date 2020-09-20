@@ -25,7 +25,7 @@ export class Wall {
             x: this._x,
             y: this._y,
             w: this._w,
-            h: this._h
+            h: this._h,
         }
     }
 }

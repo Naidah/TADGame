@@ -18,16 +18,17 @@ export class MapCanvas extends React.Component<{}, {
     private _ctx: CanvasRenderingContext2D;
     constructor(props) {
         super(props);
-        let mw = Math.floor(800 / tile_size);
-        let mh = Math.floor(600 / tile_size);
+        const mw = Math.floor(800 / tile_size);
+        const mh = Math.floor(600 / tile_size);
 
         this.state = {
             file: '',
             name: 'NewMap',
             width: 800, height: 600,
             mwidth: mw, mheight: mh,
-            state: Array(mw).fill(null).map(() => Array(mh).fill(0)),
-            maps: []
+            state: Array(mw).fill(null)
+                .map(() => Array(mh).fill(0)),
+            maps: [],
         };
 
         this.handleCanvasClick = this.handleCanvasClick.bind(this);
@@ -62,12 +63,12 @@ export class MapCanvas extends React.Component<{}, {
     }
 
     handleCanvasClick(event) {
-        var rect = this._canvas.getBoundingClientRect();
-        let cx = event.clientX - rect.left;
-        let cy = event.clientY - rect.top;
+        const rect = this._canvas.getBoundingClientRect();
+        const cx = event.clientX - rect.left;
+        const cy = event.clientY - rect.top;
 
-        let mx = Math.floor(cx / tile_size);
-        let my = Math.floor(cy / tile_size);
+        const mx = Math.floor(cx / tile_size);
+        const my = Math.floor(cy / tile_size);
 
         if (this.state.state[mx][my] != 1) {
             this.state.state[mx][my] = 1;
@@ -79,15 +80,15 @@ export class MapCanvas extends React.Component<{}, {
     }
 
     handleCanvasSubmit(event) {
-        let res: type_map = {
+        const res: type_map = {
             settings: {
                 name: this.state.name,
                 size: {
                     width: this.state.width,
-                    height: this.state.height
-                }
+                    height: this.state.height,
+                },
             },
-            walls: []
+            walls: [],
         };
         res.walls = getElementList(this.state.state);
         this.saveMap(res);
@@ -98,8 +99,8 @@ export class MapCanvas extends React.Component<{}, {
         return await fetch("/index.json")
             .then((resp) => resp.json())
             .then((resp) => {
-                let newMaps = [];
-                for (let m in resp) {
+                const newMaps = [];
+                for (const m in resp) {
                     newMaps.push(<option key={m} value={m}>{resp[m]}</option>);
                 }
                 this.setState({ maps: newMaps });
@@ -107,13 +108,13 @@ export class MapCanvas extends React.Component<{}, {
     }
 
     loadMap(name: string) {
-        let fname = name + (name.endsWith('.json') ? '' : '.json');
+        const fname = name + (name.endsWith('.json') ? '' : '.json');
         if (name != '') {
             fetch('/maps/' + fname)
-                .then(resp => resp.json())
+                .then((resp) => resp.json())
                 .then((resp: type_map) => {
-                    let mx = Math.floor(resp.settings.size.width / tile_size);
-                    let my = Math.floor(resp.settings.size.height / tile_size);
+                    const mx = Math.floor(resp.settings.size.width / tile_size);
+                    const my = Math.floor(resp.settings.size.height / tile_size);
                     this.setState({
                         name: resp.settings.name,
                         file: name,
@@ -121,13 +122,13 @@ export class MapCanvas extends React.Component<{}, {
                         height: resp.settings.size.height,
                         mwidth: mx,
                         mheight: my,
-                        state: readMap(resp)
+                        state: readMap(resp),
                     });
                     this.draw();
                 })
         } else {
             fetch('/maps/new' + name)
-                .then(resp => resp.json())
+                .then((resp) => resp.json())
                 .then((resp: string) => {
                     this.setState({
                         name: "NewMap",
@@ -136,7 +137,8 @@ export class MapCanvas extends React.Component<{}, {
                         height: 600,
                         mwidth: 800 / tile_size,
                         mheight: 600 / tile_size,
-                        state: Array(800 / tile_size).fill(null).map(() => Array(600 / tile_size).fill(0))
+                        state: Array(800 / tile_size).fill(null)
+                            .map(() => Array(600 / tile_size).fill(0)),
                     });
                     this.draw();
                 })
@@ -144,18 +146,18 @@ export class MapCanvas extends React.Component<{}, {
     }
 
     saveMap(map: type_map) {
-        let snapshot = this._canvas.toDataURL("png");
-        let resp = {
+        const snapshot = this._canvas.toDataURL("png");
+        const resp = {
             map: map,
-            image: snapshot
+            image: snapshot,
         }
         fetch('/editor/' + this.state.file, {
             method: "POST",
             cache: 'no-cache',
             headers: {
-                'Content-Type': "application/json"
+                'Content-Type': "application/json",
             },
-            body: JSON.stringify(resp)
+            body: JSON.stringify(resp),
         });
     }
 
@@ -170,18 +172,19 @@ export class MapCanvas extends React.Component<{}, {
 }
 
 function readMap(map: type_map): number[][] {
-    let mw = Math.floor(map.settings.size.width / tile_size);
-    let mh = Math.floor(map.settings.size.height / tile_size);
-    let res = Array(mw).fill(null).map(() => Array(mh).fill(0));
+    const mw = Math.floor(map.settings.size.width / tile_size);
+    const mh = Math.floor(map.settings.size.height / tile_size);
+    const res = Array(mw).fill(null)
+        .map(() => Array(mh).fill(0));
 
-    for (let wall of map.walls) {
-        let wx = Math.floor(wall.x / tile_size);
-        let wy = Math.floor(wall.y / tile_size);
-        let ww = Math.floor(wall.w / tile_size);
-        let wh = Math.floor(wall.h / tile_size);
+    for (const wall of map.walls) {
+        const wx = Math.floor(wall.x / tile_size);
+        const wy = Math.floor(wall.y / tile_size);
+        const ww = Math.floor(wall.w / tile_size);
+        const wh = Math.floor(wall.h / tile_size);
 
-        for (let x of range(wx, wx + ww)) {
-            for (let y of range(wy, wy + wh)) {
+        for (const x of range(wx, wx + ww)) {
+            for (const y of range(wy, wy + wh)) {
                 res[x][y] = 1;
             }
         }
@@ -191,9 +194,9 @@ function readMap(map: type_map): number[][] {
 }
 
 function isPure(state: number[][], x: number, y: number, w: number, h: number, pred: (v: number) => boolean) {
-    let substate = state.slice(x, x + w).map(l => l.slice(y, y + h));
-    for (let r of substate) {
-        for (let v of r) {
+    const substate = state.slice(x, x + w).map((l) => l.slice(y, y + h));
+    for (const r of substate) {
+        for (const v of r) {
             if (!pred(v)) {
                 return false;
             }
@@ -203,7 +206,8 @@ function isPure(state: number[][], x: number, y: number, w: number, h: number, p
 }
 
 function range(start: number, end: number) {
-    return Array(end - start).fill(null).map((_, idx) => start + idx)
+    return Array(end - start).fill(null)
+        .map((_, idx) => start + idx)
 }
 
 let cache: { [id: string]: number | [[string, number], number] } = {};
@@ -216,14 +220,14 @@ function getElementList(state: number[][])
 
 function _getElementList(x: number, y: number, w: number, h: number)
     : { x: number, y: number, w: number, h: number }[] {
-    let ind: string = [x, y, w, h].toString();
+    const ind: string = [x, y, w, h].toString();
     if (cache[ind] == 0) {
         return []
     }
     if (cache[ind] == 1) {
         return [{ x: x * tile_size, y: y * tile_size, w: w * tile_size, h: h * tile_size }];
     }
-    let dv = cache[ind][0][1]
+    const dv = cache[ind][0][1]
     let b1: [number, number, number, number];
     let b2: [number, number, number, number];
     if (cache[ind][0][0] == 'x') {
@@ -237,13 +241,13 @@ function _getElementList(x: number, y: number, w: number, h: number)
 }
 
 function _getElementCount(state: number[][], x: number, y: number, w: number, h: number) {
-    let ind: string = [x, y, w, h].toString();
+    const ind: string = [x, y, w, h].toString();
     if (ind in cache) {
         if (cache[ind] == 0 || cache[ind] == 1) {
             return cache[ind];
-        } else {
-            return cache[ind][1];
-        }
+        } 
+        return cache[ind][1];
+        
     }
 
     if (isPure(state, x, y, w, h, (x) => x == 1)) {
@@ -254,15 +258,11 @@ function _getElementCount(state: number[][], x: number, y: number, w: number, h:
         return 0;
     }
 
-    let xVals = range(1, w).map((m) => {
-        return [['x', m], _getElementCount(state, x, y, m, h) + _getElementCount(state, x + m, y, w - m, h)]
-    });
-    let yVals = range(1, h).map((m) => {
-        return [['y', m], _getElementCount(state, x, y, w, m) + _getElementCount(state, x, y + m, w, h - m)]
-    });
+    const xVals = range(1, w).map((m) => [['x', m], _getElementCount(state, x, y, m, h) + _getElementCount(state, x + m, y, w - m, h)]);
+    const yVals = range(1, h).map((m) => [['y', m], _getElementCount(state, x, y, w, m) + _getElementCount(state, x, y + m, w, h - m)]);
 
-    let values = xVals.concat(yVals);
-    let res = values.reduce((acc, curr) => {
+    const values = xVals.concat(yVals);
+    const res = values.reduce((acc, curr) => {
         if (curr[1] < acc[1]) {
             return curr;
         }
