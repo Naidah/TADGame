@@ -9,14 +9,15 @@ Characters have {
         1 sniper (slower, tunnel vision)
         laZer rifle
         grenade launcher
-        flamethrower
+        1 flamethrower
         1 minigun
-        smg (high firerate, high spread)
+        xx smg
         sword
         revolver/deagle
-        bow (slow when charging, slow projectile, oneshot?, scatta)
+        bow
         1 dmr
-        boomerang
+        boomerang/ chakram
+        random crits?!?
     }
     ability {
         1 roll

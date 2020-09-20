@@ -1,4 +1,5 @@
 import { type_input } from "../../server/types";
+import * as globals from "./globals";
 
 const canvas = document.getElementById('canvas') as HTMLCanvasElement;
 
@@ -21,10 +22,10 @@ function getMousePos(canvas: HTMLCanvasElement, evt: MouseEvent) {
     };
 }
 
-canvas.addEventListener('mousemove', (evt) => {
-    const mousePos = getMousePos(canvas, evt);
-    movement.mx = mousePos.x;
-    movement.my = mousePos.y;
+canvas.addEventListener('mousemove', function (evt) {
+    var mousePos = getMousePos(canvas, evt);
+    movement.mx = mousePos.x + globals.getViewportX();
+    movement.my = mousePos.y + globals.getViewportY();
 }, false);
 
 document.addEventListener('keydown', (event) => {

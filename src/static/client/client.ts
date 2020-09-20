@@ -11,11 +11,6 @@ const tickRate = 1000 / 30;
 // player id of this client instance
 let pid = -1;
 
-// setup for drawing to canvas
-const canvas = document.getElementById('canvas') as HTMLCanvasElement;
-canvas.width = 800;
-canvas.height = 600;
-
 // declare this player has joined
 socket.emit('new player');
 // set this instances id

@@ -1,68 +1,28 @@
-import { type_entity, type_player, type_projectile, type_wall } from "../../server/types";
+import { type_entity, type_wall } from "../../../server/types";
+import * as globals from "../globals";
 
-const char_radius = 20;
-const proj_radius = 4;
+export function renderShadow(canvas: HTMLCanvasElement, centre: [number, number], player: type_entity, walls: type_wall[]): void {
+    const context = canvas.getContext('2d');
 
-const canvas = document.getElementById('canvas') as HTMLCanvasElement;
-const context = canvas.getContext('2d');
+    let viewportX = globals.getViewportX();
+    let viewportY = globals.getViewportY();
 
-export function drawCharacter(state: type_player, pid: number): void {
-    if (state.id === pid) {
-        context.fillStyle = 'blue';
-    } else {
-        context.fillStyle = 'green';
-    }
+    let canvasW = canvas.width;
+    let canvasH = canvas.height;
 
-    context.beginPath();
-    context.arc(state.x, state.y, char_radius, 0, 2 * Math.PI);
-    context.fill();
+    var playerx = player.x - viewportX;
+    var playery = player.y - viewportY;
 
-    context.beginPath();
-    context.moveTo(state.x, state.y);
-    // eslint-disable-next-line max-len
-    context.lineTo(state.x + 50 * Math.cos(state.direction), state.y + 50 * Math.sin(state.direction));
-    context.closePath();
-    context.stroke();
-}
-
-export function drawProjectile(state: type_projectile): void {
-    context.fillStyle = 'red';
-
-    context.beginPath();
-    context.arc(state.x, state.y, proj_radius, 0, 2 * Math.PI);
-    context.fill();
-}
-
-export function drawWall(state: type_wall): void {
-    context.fillStyle = 'pink';
-
-    context.beginPath();
-    context.rect(state.x, state.y, state.w, state.h);
-    context.fill();
-}
-
-export function drawShadow(player: type_entity, walls: type_wall[]): void {
-    // let g = getGame();
-
-    // let canvasW = g.width;
-    // let canvasH = g.height
-
-    const canvasW = 800;
-    const canvasH = 600;
-
-    const playerx = player.x;
-    const playery = player.y;
-
-    for (const wall of walls) {
+    for (let wall of walls) {
         //* going clockwise starting from top left
-        const c1x = wall.x;
-        const c1y = wall.y;
-        const c2x = wall.x + wall.w;
-        const c2y = wall.y;
-        const c3x = wall.x + wall.w;
-        const c3y = wall.y + wall.h;
-        const c4x = wall.x;
-        const c4y = wall.y + wall.h;
+        let c1x = wall.x - viewportX;
+        let c1y = wall.y - viewportY;;
+        let c2x = wall.x + wall.w - viewportX;
+        let c2y = wall.y - viewportY;;
+        let c3x = wall.x + wall.w - viewportX;
+        let c3y = wall.y + wall.h - viewportY;;
+        let c4x = wall.x - viewportX;
+        let c4y = wall.y + wall.h - viewportY;;
 
         let leftPointx = 0;
         let leftPointy = 0;
@@ -84,8 +44,8 @@ export function drawShadow(player: type_entity, walls: type_wall[]): void {
             rightPointx = c4x;
             rightPointy = c4y;
 
-            y_int1 = getInterceptY(leftPointx, leftPointy, playerx, playery);
-            y_int2 = getInterceptY(rightPointx, rightPointy, playerx, playery);
+            y_int1 = getInterceptY(canvasW, leftPointx, leftPointy, playerx, playery);
+            y_int2 = getInterceptY(canvasW, rightPointx, rightPointy, playerx, playery);
             context.beginPath();
             context.moveTo(leftPointx, leftPointy);
             context.lineTo(canvasW, y_int1);
@@ -101,8 +61,8 @@ export function drawShadow(player: type_entity, walls: type_wall[]): void {
             rightPointx = c4x;
             rightPointy = c4y;
 
-            x_int1 = getInterceptX(leftPointx, leftPointy, playerx, playery);
-            y_int2 = getInterceptY(rightPointx, rightPointy, playerx, playery);
+            x_int1 = getInterceptX(canvasH, leftPointx, leftPointy, playerx, playery);
+            y_int2 = getInterceptY(canvasW, rightPointx, rightPointy, playerx, playery);
             context.beginPath();
             context.moveTo(leftPointx, leftPointy);
             context.lineTo(x_int1, canvasH);
@@ -118,8 +78,8 @@ export function drawShadow(player: type_entity, walls: type_wall[]): void {
             rightPointx = c1x;
             rightPointy = c1y;
 
-            x_int1 = getInterceptX(leftPointx, leftPointy, playerx, playery);
-            x_int2 = getInterceptX(rightPointx, rightPointy, playerx, playery);
+            x_int1 = getInterceptX(canvasH, leftPointx, leftPointy, playerx, playery);
+            x_int2 = getInterceptX(canvasH, rightPointx, rightPointy, playerx, playery);
             context.beginPath();
             context.moveTo(leftPointx, leftPointy);
 
@@ -145,8 +105,8 @@ export function drawShadow(player: type_entity, walls: type_wall[]): void {
             rightPointx = c1x;
             rightPointy = c1y;
 
-            y_int1 = getInterceptY(leftPointx, leftPointy, playerx, playery);
-            x_int2 = getInterceptX(rightPointx, rightPointy, playerx, playery);
+            y_int1 = getInterceptY(canvasW, leftPointx, leftPointy, playerx, playery);
+            x_int2 = getInterceptX(canvasH, rightPointx, rightPointy, playerx, playery);
             context.beginPath();
             context.moveTo(leftPointx, leftPointy);
             context.lineTo(0, y_int1);
@@ -162,8 +122,8 @@ export function drawShadow(player: type_entity, walls: type_wall[]): void {
             rightPointx = c2x;
             rightPointy = c2y;
 
-            y_int1 = getInterceptY(leftPointx, leftPointy, playerx, playery);
-            y_int2 = getInterceptY(rightPointx, rightPointy, playerx, playery);
+            y_int1 = getInterceptY(canvasW, leftPointx, leftPointy, playerx, playery);
+            y_int2 = getInterceptY(canvasW, rightPointx, rightPointy, playerx, playery);
             context.beginPath();
             context.moveTo(leftPointx, leftPointy);
             context.lineTo(0, y_int1);
@@ -179,8 +139,8 @@ export function drawShadow(player: type_entity, walls: type_wall[]): void {
             rightPointx = c2x;
             rightPointy = c2y;
 
-            x_int1 = getInterceptX(leftPointx, leftPointy, playerx, playery);
-            y_int2 = getInterceptY(rightPointx, rightPointy, playerx, playery);
+            x_int1 = getInterceptX(canvasH, leftPointx, leftPointy, playerx, playery);
+            y_int2 = getInterceptY(canvasW, rightPointx, rightPointy, playerx, playery);
             context.beginPath();
             context.moveTo(leftPointx, leftPointy);
             context.lineTo(x_int1, 0);
@@ -196,8 +156,8 @@ export function drawShadow(player: type_entity, walls: type_wall[]): void {
             rightPointx = c3x;
             rightPointy = c3y;
 
-            x_int1 = getInterceptX(leftPointx, leftPointy, playerx, playery);
-            x_int2 = getInterceptX(rightPointx, rightPointy, playerx, playery);
+            x_int1 = getInterceptX(canvasH, leftPointx, leftPointy, playerx, playery);
+            x_int2 = getInterceptX(canvasH, rightPointx, rightPointy, playerx, playery);
             context.beginPath();
             context.moveTo(leftPointx, leftPointy);
 
@@ -223,8 +183,8 @@ export function drawShadow(player: type_entity, walls: type_wall[]): void {
             rightPointx = c3x;
             rightPointy = c3y;
 
-            y_int1 = getInterceptY(leftPointx, leftPointy, playerx, playery);
-            x_int2 = getInterceptX(rightPointx, rightPointy, playerx, playery);
+            y_int1 = getInterceptY(canvasW, leftPointx, leftPointy, playerx, playery);
+            x_int2 = getInterceptX(canvasH, rightPointx, rightPointy, playerx, playery);
             context.beginPath();
             context.moveTo(leftPointx, leftPointy);
             context.lineTo(canvasW, y_int1);
@@ -237,42 +197,42 @@ export function drawShadow(player: type_entity, walls: type_wall[]): void {
     }
 }
 
-function getInterceptX(x1: number, y1: number, x2: number, y2: number): number {
-    const g = (y1 - y2) / (x1 - x2);
+function getInterceptX(my: number, x1: number, y1: number, x2: number, y2: number): number {
+    let g = (y1 - y2) / (x1 - x2);
     let x_int = 0;
-    const inf = 99999999999;
-    const nInf = -99999999999;
+    let inf = 99999999999;
+    let nInf = -99999999999;
     if (y2 >= y1) {
-        x_int = (g * x1 - y1) / g;
+        x_int = ((g * x1) - y1) / g;
     } else {
-        x_int = (600 - y1 + g * x1) / g;
+        x_int = (my - y1 + (g * x1)) / g;
     }
 
-    if (x_int === -Infinity) {
+    if (x_int == -Infinity) {
         return inf;
-    } else if (x_int === Infinity) {
+    } else if (x_int == Infinity) {
         return nInf;
-    } 
-    return x_int;
-    
+    } else {
+        return x_int;
+    }
 }
 
-function getInterceptY(x1: number, y1: number, x2: number, y2: number): number {
-    const g = (y1 - y2) / (x1 - x2);
+function getInterceptY(mx: number, x1: number, y1: number, x2: number, y2: number): number {
+    let g = (y1 - y2) / (x1 - x2);
     let y_int = 0;
-    const inf = 99999999999;
-    const nInf = -99999999999;
+    let inf = 99999999999;
+    let nInf = -99999999999;
     if (x2 >= x1) {
-        y_int = y1 - g * x1;
+        y_int = y1 - (g * x1);
     } else {
-        y_int = g * (800 - x1) + y1;
+        y_int = g * (mx - x1) + y1;
     }
 
-    if (y_int === -Infinity) {
+    if (y_int == -Infinity) {
         return inf;
-    } else if (y_int === Infinity) {
+    } else if (y_int == Infinity) {
         return nInf;
-    } 
-    return y_int;
-    
+    } else {
+        return y_int;
+    }
 }
