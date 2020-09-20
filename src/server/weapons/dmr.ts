@@ -1,6 +1,7 @@
-import { Weapon } from './weapon';
-import { ProjectileFactory } from '../projectiles/projectileFactory';
 import { Character } from '../character';
+import { ProjectileFactory } from '../projectiles/projectileFactory';
+import { Weapon } from './weapon';
+
 
 export class Dmr extends Weapon {
     constructor(player: Character) {

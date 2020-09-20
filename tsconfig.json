@@ -1,9 +1,12 @@
 {
     "compilerOptions": {
+        "experimentalDecorators": true,
         "target": "es6",
+        "sourceMap": true,
         "allowJs": true,
         "outDir": "build",
         "jsx": "react",
+        "moduleResolution": "node",
         "allowSyntheticDefaultImports": true
     },
     "exclude": [

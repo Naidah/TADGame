@@ -1,6 +1,6 @@
-import { Weapon } from './weapon';
-import { DecayingProjectileFactory } from '../projectiles/decayingProjectileFactory';
 import { Character } from '../character';
+import { DecayingProjectileFactory } from '../projectiles/decayingProjectileFactory';
+import { Weapon } from './weapon';
 
 export class Shotgun extends Weapon {
     constructor(player: Character) {
@@ -14,7 +14,7 @@ export class Shotgun extends Weapon {
             spreadGrowth: 0,
             projFactory: new DecayingProjectileFactory(420, 30, 0.45, 1.2),
             isPress: true,
-            shots: 8
+            shots: 8,
         });
     }
 }

@@ -1,8 +1,8 @@
-import { Projectile } from "./projectile";
 import { Character } from "../character";
+import { Projectile } from "./projectile";
 
 export class ProjectileFactory {
-    protected _speed: any;
+    protected _speed: number;
     protected _owner: Character;
     protected _dmg: number;
     constructor(speed: number, dmg: number) {

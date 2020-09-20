@@ -1,19 +1,17 @@
-import { getGame } from "./server/game";
+import * as bodyParser from 'body-parser';
 import * as express from 'express';
 import * as http from 'http';
 import * as path from 'path';
-import * as bodyParser from 'body-parser';
-import * as fs from 'fs'
+import * as socketIO from 'socket.io';
+import { readJSON, writeJSON, writePNG } from "./server/utility";
 import { type_input_set, type_map } from "./server/types";
-import { writeJSON, readJSON } from "./server/utility";
-// import * as socketIO from 'socket.io';
+import { Lobby } from "./server/lobby";
+import { PlayerSession } from "./server/playerSession";
+import { getGame } from "./server/game";
 
-// Dependencies
-let socketIO = require('socket.io');
-
-let app = express();
-let server = http.createServer(app);
-let io = socketIO(server);
+const app = express();
+const server = http.createServer(app);
+const io = socketIO(server);
 
 app.set('port', 5000);
 app.use(express.static(__dirname));
@@ -21,42 +19,81 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Routing
-app.get('/', function (request, response) {
-    response.sendFile(path.join(__dirname, 'index.html'));
+app.get('/', (request, response) => {
+    response.sendFile(path.join(__dirname, 'game.html'));
 });
 
-app.get('/editor', function (request, response) {
+app.get('/editor', (request, response) => {
     response.sendFile(path.join(__dirname, 'editor.html'));
 });
 
-app.get('/maps/new', function (request, response) {
-    let x = 1;
-    while (fs.existsSync(path.join(__dirname, 'maps', "map" + x + '.json'))) {
-        x += 1
-    }
-    response.send(JSON.stringify("map" + x + '.json'));
+app.get('/lobby', (request, response) => {
+    response.sendFile(path.join(__dirname, "menu.html"));
 })
 
-app.post('/editor/:fname', function (request, response) {
-    let map: type_map = request.body;
+app.get('/maps/new', (request, response) => {
+    let x = 1;
+    const index = readJSON('index.json');
+    while ("map" + x in index) {
+        x += 1;
+    }
+    response.send(JSON.stringify("map" + x));
+})
+
+app.post('/editor/:fname', (request, response) => {
+    const msg: { map: type_map, image: string } = request.body;
+    const map = msg.map;
+    const image = msg.image;
     writeJSON('maps/' + request.params.fname, map);
-    let index = readJSON('index.json');
+    writePNG(path.join('maps', 'images', request.params.fname), image);
+    const index = readJSON('index.json');
     index[request.params.fname] = map.settings.name;
     writeJSON('index.json', index);
     response.sendStatus(200);
 });
 
 // Starts the server
-server.listen(5000, function () {
+server.listen(5000, () => {
     console.log('Starting server on port 5000');
 });
 
-let game = getGame();
+const game = getGame();
 
-let inputs: type_input_set = {};
-io.on('connection', function (socket) {
-    socket.on('new player', function () {
-        let c = game.addPlayer();
+const inputs: type_input_set = {};
+io.on('connection', (socket) => {
+    const p = PlayerSession.create(socket);
+
+    socket.on('getActiveLobbies', (callback: (list: [number, string, number][]) => void) => {
+        callback(Lobby.getAll().map((l) => [l.id, l.name, l.size]))
+    });
+
+    socket.on('createLobby', (callback: (id: number) => void) => {
+        callback(Lobby.create().id);
+    });
+
+    socket.on("joinLobby", (id: number) => {
+        const l = Lobby.get(id);
+        if (l) {
+            l.join(PlayerSession.get(socket.id));
+        }
+    });
+
+    socket.on("leaveLobby", () => {
+        const p = PlayerSession.get(socket.id);
+        if (p) {
+            p.leave();
+        }
+    })
+
+    socket.on("updateLobby", (state: { map: string, name: string }) => {
+        const p = PlayerSession.get(socket.id);
+        if (p && p.lobby) {
+            p.lobby.update(state);
+        }
+    });
+
+    socket.on('new player', () => {
+        const c = game.addPlayer();
         inputs[socket.id] = {
             id: c,
             input: {
@@ -67,17 +104,17 @@ io.on('connection', function (socket) {
                 mx: 0,
                 my: 0,
                 mdown: false,
-                mpress: false
-            }
+                mpress: false,
+            },
         };
         socket.emit('player id', c);
     });
 
-    socket.on('movement', function (data) {
+    socket.on('movement', (data) => {
         if (socket.id in inputs) {
-            var player = inputs[socket.id];
+            const player = inputs[socket.id];
 
-            // a mouse is pressed if the mouse is now pressed, but wasn't on the past frame
+            // a mouse is pressed if the mouse is now down, but wasn't on the past frame
             if (data.mdown && !player.input.mdown) {
                 data.mpress = true;
             } else {
@@ -85,30 +122,33 @@ io.on('connection', function (socket) {
             }
             player.input = data;
         }
-
     });
 
-    socket.on("disconnect", function () {
-        if (inputs.hasOwnProperty(socket.id)) {
+    socket.on("disconnect", () => {
+        const p = PlayerSession.get(socket.id);
+        if (p) {
+            PlayerSession.remove(p);
+        }
+
+        if (inputs[socket.id]) {
             game.removePlayer(inputs[socket.id].id);
             delete inputs[socket.id];
         }
-    })
+    });
 });
 
 const tickRate = 1000 / 60;
-let t = (new Date()).getTime();
-setInterval(function () {
-    let nt = (new Date()).getTime();
-    let delta = (nt - t) / 1000; // seconds since the last update
+let t = new Date().getTime();
+setInterval(() => {
+    const nt = new Date().getTime();
+    const delta = (nt - t) / 1000; // seconds since the last update
 
     game.update(delta, inputs);
-    let resp = game.getRepr();
-
+    const resp = game.getRepr();
     io.sockets.emit('state', resp);
 
     // update so the following frame does not have the mouse press
-    for (let i in inputs) {
+    for (const i in inputs) {
         inputs[i].input.mpress = false;
     }
 

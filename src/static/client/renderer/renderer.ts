@@ -1,11 +1,14 @@
-import { type_player, type_projectile, type_wall, type_entity } from "../../../server/types";
+import { type_entity, type_player, type_projectile, type_wall } from "../../../server/types";
 
 const char_radius = 20;
 const proj_radius = 4;
 
-export function drawCharacter(canvas: HTMLCanvasElement, state: type_player, pid: number): void {
+export function drawCharacter(
+    canvas: HTMLCanvasElement,
+    state: type_player, pid: number
+): void {
     const context = canvas.getContext('2d');
-    if (state.id == pid) {
+    if (state.id === pid) {
         context.fillStyle = 'blue';
     } else {
         context.fillStyle = 'green';
@@ -17,6 +20,7 @@ export function drawCharacter(canvas: HTMLCanvasElement, state: type_player, pid
 
     context.beginPath();
     context.moveTo(state.x, state.y);
+    // eslint-disable-next-line max-len
     context.lineTo(state.x + 50 * Math.cos(state.direction), state.y + 50 * Math.sin(state.direction));
     context.closePath();
     context.stroke();
@@ -40,25 +44,28 @@ export function drawWall(canvas: HTMLCanvasElement, state: type_wall): void {
     context.fill();
 }
 
-export function drawShadow(canvas: HTMLCanvasElement, player: type_entity, walls: type_wall[]): void {
+export function drawShadow(
+    canvas: HTMLCanvasElement,
+    player: type_entity, walls: type_wall[]
+): void {
     const context = canvas.getContext('2d');
 
-    let canvasW = 800;
-    let canvasH = 600;
+    const canvasW = 800;
+    const canvasH = 600;
 
-    var playerx = player.x;
-    var playery = player.y;
+    const playerx = player.x;
+    const playery = player.y;
 
-    for (let wall of walls) {
+    for (const wall of walls) {
         //* going clockwise starting from top left
-        let c1x = wall.x;
-        let c1y = wall.y;
-        let c2x = wall.x + wall.w;
-        let c2y = wall.y;
-        let c3x = wall.x + wall.w;
-        let c3y = wall.y + wall.h;
-        let c4x = wall.x;
-        let c4y = wall.y + wall.h;
+        const c1x = wall.x;
+        const c1y = wall.y;
+        const c2x = wall.x + wall.w;
+        const c2y = wall.y;
+        const c3x = wall.x + wall.w;
+        const c3y = wall.y + wall.h;
+        const c4x = wall.x;
+        const c4y = wall.y + wall.h;
 
         let leftPointx = 0;
         let leftPointy = 0;
@@ -234,46 +241,46 @@ export function drawShadow(canvas: HTMLCanvasElement, player: type_entity, walls
 }
 
 function getInterceptX(x1: number, y1: number, x2: number, y2: number): number {
-    let g = (y1 - y2) / (x1 - x2);
+    const g = (y1 - y2) / (x1 - x2);
     let x_int = 0;
-    let inf = 99999999999;
-    let nInf = -99999999999;
+    const inf = 99999999999;
+    const nInf = -99999999999;
     if (y2 >= y1) {
-        x_int = ((g * x1) - y1) / g;
+        x_int = (g * x1 - y1) / g;
     } else {
-        x_int = (600 - y1 + (g * x1)) / g;
+        x_int = (600 - y1 + g * x1) / g;
     }
 
-    if (x_int == -Infinity) {
+    if (x_int === -Infinity) {
         return inf;
-    } else if (x_int == Infinity) {
+    } else if (x_int === Infinity) {
         return nInf;
-    } else {
-        return x_int;
-    }
+    } 
+    return x_int;
+    
 }
 
 function getInterceptY(x1: number, y1: number, x2: number, y2: number): number {
-    let g = (y1 - y2) / (x1 - x2);
+    const g = (y1 - y2) / (x1 - x2);
     let y_int = 0;
-    let inf = 99999999999;
-    let nInf = -99999999999;
+    const inf = 99999999999;
+    const nInf = -99999999999;
     if (x2 >= x1) {
-        y_int = y1 - (g * x1);
+        y_int = y1 - g * x1;
     } else {
         y_int = g * (800 - x1) + y1;
     }
 
-    if (y_int == -Infinity) {
+    if (y_int === -Infinity) {
         return inf;
-    } else if (y_int == Infinity) {
+    } else if (y_int === Infinity) {
         return nInf;
-    } else {
-        return y_int;
-    }
+    } 
+    return y_int;
+    
 }
 
-export function drawUI(canvas: HTMLCanvasElement, state: type_player) {
+export function drawUI(canvas: HTMLCanvasElement, state: type_player): void {
     const context = canvas.getContext('2d');
     context.fillStyle = "black";
     context.beginPath();
@@ -282,7 +289,7 @@ export function drawUI(canvas: HTMLCanvasElement, state: type_player) {
 
     context.fillStyle = "red";
     context.beginPath();
-    context.rect(20, canvas.height - 40, (150 * state.hp) / 100, 20);
+    context.rect(20, canvas.height - 40, 150 * state.hp / 100, 20);
     context.fill();
 
     context.font = "30px Arial";

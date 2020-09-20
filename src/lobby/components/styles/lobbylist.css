@@ -1,0 +1,64 @@
+.lobbylist h2 {
+    text-align: center;
+}
+
+.lobbylist-controls {
+    display: flex;
+}
+
+.lobbylist-controls button {
+    padding: 5px;
+    border: none;
+    margin: 0px 20px;
+}
+
+.lobbylist-controls-newlobby {
+    width: 60%;
+    background-color: var(--color-shade-2);
+}
+
+.lobbylist-controls-newlobby:hover {
+    background-color: var(--color-shade-3);
+}
+
+.lobbylist-controls-refresh {
+    width: 40%;
+    background-color: var(--color-shade-1);
+}
+
+.lobbylist-controls-refresh:hover {
+    background-color: var(--color-shade-2);
+}
+
+.lobbylist-list-join {
+    margin-left: 10px;
+    padding: 5px;
+    border: none;
+    background-color: var(--color-shade-1);
+}
+
+.lobbylist-list-join:hover {
+    background-color: var(--color-shade-2);
+}
+
+.lobbylist-list {
+    padding: 0px;
+    list-style: none;
+    border-top: 1px solid rgba(29, 29, 29, 0.199);
+}
+
+.lobbylist-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid rgba(29, 29, 29, 0.199);
+    height: 25px;
+    line-height: 25px;
+}
+
+.lobbylist-list-controls {
+    display: flex;
+}
+
+/* .lobbylist-list-playercount {
+} */

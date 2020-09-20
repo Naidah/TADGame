@@ -60,6 +60,13 @@ export type type_map = {
     walls: type_wall[];
 }
 
+export type type_button_info = {
+    title?: string,
+    img?: string,
+    width: number,
+    height: number
+}
+
 export type type_weapon_args = {
     maxAmmo?: number,
     cooldownTime?: number,

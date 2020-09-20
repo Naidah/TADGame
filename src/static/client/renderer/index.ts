@@ -1,13 +1,5 @@
-import { renderCharacter } from "./renderCharacter";
-import { renderProjectile } from "./renderProjectile";
-import { renderShadow } from "./renderShadow";
-import { renderWall } from "./renderWall";
-import { renderUI } from "./renderUI";
-
-export {
-    renderCharacter,
-    renderProjectile,
-    renderShadow,
-    renderWall,
-    renderUI
-}
+export { renderCharacter } from "./renderCharacter";
+export { renderProjectile } from "./renderProjectile";
+export { renderShadow } from "./renderShadow";
+export { renderUI } from "./renderUI";
+export { renderWall } from "./renderWall";

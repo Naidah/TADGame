@@ -6,8 +6,8 @@ Characters have {
         1 pistol
         1 shotgun
         1 rifle
-        1 sniper
-        lazer
+        1 sniper (slower, tunnel vision)
+        laZer rifle
         grenade launcher
         1 flamethrower
         1 minigun
@@ -64,7 +64,7 @@ game modes {
     team deathmatch
     oddball
     one in the barrel
-    gun game
+    gun game (randomly swap on kill)
 }
 
 game modifiers {

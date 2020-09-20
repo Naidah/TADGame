@@ -1,5 +1,5 @@
-import { Weapon } from './weapon';
 import { Character } from '../character';
+import { Weapon } from './weapon';
 
 export class Rifle extends Weapon {
     constructor(player: Character) {

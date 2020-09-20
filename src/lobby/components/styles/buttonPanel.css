@@ -1,0 +1,50 @@
+h2 {
+    text-align: center;
+}
+
+.buttonpanel {
+    margin: 20px;
+}
+
+.buttonpanel-list {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+
+.buttonpanel-button {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 20px;
+    border: 0;
+    background-color: inherit;
+}
+
+.buttonpanel-button:hover {
+    background-color: var(--color-shade-2);
+}
+
+.buttonpanel-button:focus {
+    outline: none;
+}
+
+.buttonpanel-button h3 {
+    margin: auto;
+    padding: 8px;
+}
+
+.buttonpanel-snapshot {
+    margin: auto;
+    background-color: #DDD;
+    overflow: hidden;
+}
+
+.buttonpanel-button.active .buttonpanel-snapshot {
+    background-color: #CCF;
+}
+
+.buttonpanel-snapshot img {
+    object-fit: cover;
+}

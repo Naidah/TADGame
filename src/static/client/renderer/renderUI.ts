@@ -9,7 +9,7 @@ export function renderUI(canvas: HTMLCanvasElement, state: type_player) {
 
     context.fillStyle = "red";
     context.beginPath();
-    context.rect(20, canvas.height - 40, (150 * state.hp) / 100, 20);
+    context.rect(20, canvas.height - 40, 150 * state.hp / 100, 20);
     context.fill();
 
     context.font = "30px Arial";

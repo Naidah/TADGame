@@ -1,28 +1,32 @@
-import { type_entity, type_wall } from "../../../server/types";
 import * as globals from "../globals";
+import { type_entity, type_wall } from "../../../server/types";
 
-export function renderShadow(canvas: HTMLCanvasElement, centre: [number, number], player: type_entity, walls: type_wall[]): void {
+export function renderShadow(
+    canvas: HTMLCanvasElement,
+    player: type_entity,
+    walls: type_wall[]
+): void {
     const context = canvas.getContext('2d');
 
-    let viewportX = globals.getViewportX();
-    let viewportY = globals.getViewportY();
+    const viewportX = globals.getViewportX();
+    const viewportY = globals.getViewportY();
 
-    let canvasW = canvas.width;
-    let canvasH = canvas.height;
+    const canvasW = canvas.width;
+    const canvasH = canvas.height;
 
-    var playerx = player.x - viewportX;
-    var playery = player.y - viewportY;
+    const playerx = player.x - viewportX;
+    const playery = player.y - viewportY;
 
-    for (let wall of walls) {
+    for (const wall of walls) {
         //* going clockwise starting from top left
-        let c1x = wall.x - viewportX;
-        let c1y = wall.y - viewportY;;
-        let c2x = wall.x + wall.w - viewportX;
-        let c2y = wall.y - viewportY;;
-        let c3x = wall.x + wall.w - viewportX;
-        let c3y = wall.y + wall.h - viewportY;;
-        let c4x = wall.x - viewportX;
-        let c4y = wall.y + wall.h - viewportY;;
+        const c1x = wall.x - viewportX;
+        const c1y = wall.y - viewportY;
+        const c2x = wall.x + wall.w - viewportX;
+        const c2y = wall.y - viewportY;
+        const c3x = wall.x + wall.w - viewportX;
+        const c3y = wall.y + wall.h - viewportY;
+        const c4x = wall.x - viewportX;
+        const c4y = wall.y + wall.h - viewportY;
 
         let leftPointx = 0;
         let leftPointy = 0;
@@ -198,41 +202,41 @@ export function renderShadow(canvas: HTMLCanvasElement, centre: [number, number]
 }
 
 function getInterceptX(my: number, x1: number, y1: number, x2: number, y2: number): number {
-    let g = (y1 - y2) / (x1 - x2);
+    const g = (y1 - y2) / (x1 - x2);
     let x_int = 0;
-    let inf = 99999999999;
-    let nInf = -99999999999;
+    const inf = 99999999999;
+    const nInf = -99999999999;
     if (y2 >= y1) {
-        x_int = ((g * x1) - y1) / g;
+        x_int = (g * x1 - y1) / g;
     } else {
-        x_int = (my - y1 + (g * x1)) / g;
+        x_int = (my - y1 + g * x1) / g;
     }
 
-    if (x_int == -Infinity) {
+    if (x_int === -Infinity) {
         return inf;
-    } else if (x_int == Infinity) {
+    } else if (x_int === Infinity) {
         return nInf;
-    } else {
-        return x_int;
-    }
+    } 
+    return x_int;
+    
 }
 
 function getInterceptY(mx: number, x1: number, y1: number, x2: number, y2: number): number {
-    let g = (y1 - y2) / (x1 - x2);
+    const g = (y1 - y2) / (x1 - x2);
     let y_int = 0;
-    let inf = 99999999999;
-    let nInf = -99999999999;
+    const inf = 99999999999;
+    const nInf = -99999999999;
     if (x2 >= x1) {
-        y_int = y1 - (g * x1);
+        y_int = y1 - g * x1;
     } else {
         y_int = g * (mx - x1) + y1;
     }
 
-    if (y_int == -Infinity) {
+    if (y_int === -Infinity) {
         return inf;
-    } else if (y_int == Infinity) {
+    } else if (y_int === Infinity) {
         return nInf;
-    } else {
-        return y_int;
-    }
+    } 
+    return y_int;
+    
 }

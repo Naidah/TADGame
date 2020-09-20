@@ -1,14 +1,18 @@
-import { type_wall } from "../../../server/types";
 import * as globals from "../globals";
+import { type_wall } from "../../../server/types";
 
-export function renderWall(canvas: HTMLCanvasElement, centre: [number, number], state: type_wall): void {
+export function renderWall(
+    canvas: HTMLCanvasElement,
+    centre: [number, number],
+    state: type_wall
+): void {
     const context = canvas.getContext('2d');
 
-    let viewportX = globals.getViewportX();
-    let viewportY = globals.getViewportY();
+    const viewportX = globals.getViewportX();
+    const viewportY = globals.getViewportY();
 
-    let x = state.x - viewportX;
-    let y = state.y - viewportY;
+    const x = state.x - viewportX;
+    const y = state.y - viewportY;
 
     context.fillStyle = 'pink';
 
