@@ -45,7 +45,7 @@ export class Lobby {
         }
     }
 
-    sendUpdate() {
+    sendUpdate(): void {
         this._members.forEach((p, i) => p.emit("updateLobby", {
             isLeader: i === 0,
             map: this._map,
@@ -54,7 +54,7 @@ export class Lobby {
         }));
     }
 
-    update(state: { map: string, name: string }) {
+    update(state: { map: string, name: string }): void {
         this._map = state.map;
         this._name = state.name;
         this.sendUpdate();
@@ -86,7 +86,7 @@ export class Lobby {
         return l;
     }
 
-    static remove(l: Lobby) {
+    static remove(l: Lobby): void {
         const i = Lobby.lobbies.indexOf(l);
         if (i !== -1) {
             Lobby.lobbies.splice(i, 1);

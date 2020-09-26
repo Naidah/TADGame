@@ -22,8 +22,8 @@ export class RectHitbox extends Hitbox {
         
     }
 
-    containsPoint(x: number, y: number) {
-        this._ptOnRect(x, y);
+    containsPoint(x: number, y: number): boolean {
+        return this._ptOnRect(x, y);
     }
 
     // Collision detection for rectangle on rectangle
@@ -66,7 +66,7 @@ export class RectHitbox extends Hitbox {
         return rx <= px && px <= rx + w && ry <= py && py <= ry + h;
     }
 
-    isOutOfBounds(dx = 0, dy = 0, fullyContained = false): boolean {
+    isOutOfBounds(dx = 0, _dy: number, fullyContained = false): boolean {
         const g = getGame();
         const bx = (fullyContained ? this._w : 0) + dx;
         const by = (fullyContained ? this._h : 0) + dx;

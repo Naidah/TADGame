@@ -26,7 +26,7 @@ export class Projectile extends Entity {
         this._sy = speed * Math.sin(direction);
     }
 
-    update(delta: number) {
+    update(delta: number): void {
         super.update(delta);
         const g = getGame();
         let hasHit = false;

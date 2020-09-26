@@ -26,7 +26,7 @@ export class ButtonPanel extends React.Component<Props, State> {
         this.handleButtonPress = this.handleButtonPress.bind(this);
     }
 
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(prevProps: Props): void {
         if (prevProps.default !== this.props.default) {
             const cs = !(this.props.canSelect && !this.props.canSelect);
             this.setState({
@@ -36,7 +36,7 @@ export class ButtonPanel extends React.Component<Props, State> {
         }
     }
 
-    handleButtonPress(value: string) {
+    handleButtonPress(value: string): void {
         if (this.state.canSelect) {
             this.props.onChange(value);
             this.setState({ active: value });
@@ -61,7 +61,7 @@ export class ButtonPanel extends React.Component<Props, State> {
                 key={id}
                 value={id}
                 className={classname}
-                onClick={(e) => this.handleButtonPress(id)}
+                onClick={() => this.handleButtonPress(id)}
             >
                 {v.title ? <h3>{v.title}</h3> : null}
                 <div
@@ -75,7 +75,7 @@ export class ButtonPanel extends React.Component<Props, State> {
         return res;
     }
 
-    render() {
+    render(): JSX.Element {
         return <div className="buttonpanel">
             {this.props.title ? <h2>{this.props.title}</h2> : null}
             <div className={styles['buttonpanel-list']}>

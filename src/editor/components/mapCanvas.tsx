@@ -45,13 +45,13 @@ export class MapCanvas extends React.Component<Props, State> {
         this.saveMap = this.saveMap.bind(this);
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         this._ctx = this._canvas.getContext("2d");
         this.draw();
         this.loadMapList();
     }
 
-    draw() {
+    draw(): void {
         this._ctx.clearRect(0, 0, this.state.width, this.state.height);
         this.state.state.forEach((vx, cx) => {
             vx.forEach((vy, cy) => {
@@ -64,11 +64,11 @@ export class MapCanvas extends React.Component<Props, State> {
         });
     }
 
-    updateName(event) {
+    updateName(event: React.ChangeEvent<HTMLInputElement>): void {
         this.setState({ name: event.target.value });
     }
 
-    handleCanvasClick(event) {
+    handleCanvasClick(event: React.MouseEvent<HTMLCanvasElement, MouseEvent>): void {
         const rect = this._canvas.getBoundingClientRect();
         const cx = event.clientX - rect.left;
         const cy = event.clientY - rect.top;
@@ -89,7 +89,7 @@ export class MapCanvas extends React.Component<Props, State> {
         this.draw();
     }
 
-    handleCanvasSubmit(event) {
+    handleCanvasSubmit(): void {
         const res: type_map = {
             settings: {
                 name: this.state.name,
@@ -105,8 +105,8 @@ export class MapCanvas extends React.Component<Props, State> {
         this.loadMapList();
     }
 
-    async loadMapList() {
-        return await fetch("/index.json")
+    async loadMapList(): Promise<void> {
+        await fetch("/index.json")
             .then((resp) => resp.json())
             .then((resp) => {
                 const newMaps = [];
@@ -117,7 +117,7 @@ export class MapCanvas extends React.Component<Props, State> {
             });
     }
 
-    loadMap(name: string) {
+    loadMap(name: string): void {
         const fname = name + (name.endsWith('.json') ? '' : '.json');
         if (name !== '') {
             fetch('/maps/' + fname)
@@ -155,7 +155,7 @@ export class MapCanvas extends React.Component<Props, State> {
         }
     }
 
-    saveMap(map: type_map) {
+    saveMap(map: type_map): void {
         const snapshot = this._canvas.toDataURL("png");
         const resp = {
             map: map,
@@ -171,7 +171,7 @@ export class MapCanvas extends React.Component<Props, State> {
         });
     }
 
-    render() {
+    render(): JSX.Element {
         return <div>
             <Selector maps={this.state.maps} onSelect={this.loadMap} ></ Selector>
             <input type="text" value={this.state.name} onChange={this.updateName}></input>

@@ -9,7 +9,9 @@ interface State {
     loadout: { weapon: string, ability: string, perk: string }
 }
 
-export class Loadout extends React.Component<Record<string, unknown>, State> {
+type Props = Record<string, unknown>;
+
+export class Loadout extends React.Component<Props, State> {
     private static _button_size = 80;
     private static _weapons: { [id: string]: type_button_info } = {
         "pistol": {
@@ -25,7 +27,7 @@ export class Loadout extends React.Component<Record<string, unknown>, State> {
             height: Loadout._button_size,
         },
     }
-    constructor(props) {
+    constructor(props: Props) {
         super(props);
 
         let username;
@@ -74,13 +76,13 @@ export class Loadout extends React.Component<Record<string, unknown>, State> {
         globals.socket.emit("setUsername", username);
     }
 
-    submitName(event) {
+    submitName(event: React.ChangeEvent<HTMLInputElement>): void {
         this.setState({ name: event.target.value });
         globals.socket.emit("setUsername", event.target.value);
         localStorage.username = event.target.value;
     }
 
-    handleWeaponChange(value: string) {
+    handleWeaponChange(value: string): void {
         if (this.state.loadout.weapon !== value) {
             this.handleLoadoutChange(
                 value,
@@ -90,7 +92,7 @@ export class Loadout extends React.Component<Record<string, unknown>, State> {
         }
     }
 
-    handleAbilityChange(value: string) {
+    handleAbilityChange(value: string): void {
         if (this.state.loadout.ability !== value) {
             this.handleLoadoutChange(
                 this.state.loadout.weapon,
@@ -100,7 +102,7 @@ export class Loadout extends React.Component<Record<string, unknown>, State> {
         }
     }
 
-    handlePerkChange(value: string) {
+    handlePerkChange(value: string): void {
         if (this.state.loadout.perk !== value) {
             this.handleLoadoutChange(
                 this.state.loadout.weapon,

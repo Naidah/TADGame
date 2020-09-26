@@ -1,5 +1,5 @@
 import * as React from 'react';
-import * as styles from './styles/chat.css';
+import styles from './styles/chat.css';
 
 type Props = Record<string, unknown>;
 interface State {
@@ -9,7 +9,7 @@ interface State {
 export class Chat extends React.Component<Props, State> {
     private _textInput: HTMLInputElement;
     inputRef: React.RefObject<HTMLInputElement>;
-    constructor(props) {
+    constructor(props: Props) {
         super(props);
         this.state = { messages: [] };
         this.inputRef = React.createRef();
@@ -17,7 +17,7 @@ export class Chat extends React.Component<Props, State> {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleSubmit(event) {
+    handleSubmit(event: React.ChangeEvent<HTMLFormElement>): void {
         const msg = this._textInput.value;
         this.setState((state) => {
             const newMsgs = state.messages.concat(msg);
@@ -30,7 +30,7 @@ export class Chat extends React.Component<Props, State> {
         event.preventDefault();
     }
 
-    render() {
+    render(): JSX.Element {
         return <div id="chat" className={styles.chat}>
             <ul className={styles["chat-list"]}>
                 {[...this.state.messages].reverse().map((msg, i) => <li key={i}>{msg}</li>)}

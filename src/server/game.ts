@@ -46,7 +46,7 @@ class Game {
     }
 
     update(delta: number, inputs: type_input_set): void {
-        for (const [key, p] of Object.entries(inputs)) {
+        for (const [, p] of Object.entries(inputs)) {
             this._players[p.id].update(delta, p.input);
         }
 

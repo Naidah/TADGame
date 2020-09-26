@@ -36,7 +36,7 @@ export function randBinom(min: number, max: number, skew = 1): number {
     return num;
 }
 
-export function readJSON(fname: string): Record<string, unknown> {
+export function readJSON(fname: string): unknown {
     if (!fname.endsWith(".json")) {
         fname += '.json';
     }
@@ -44,7 +44,7 @@ export function readJSON(fname: string): Record<string, unknown> {
     return JSON.parse(fs.readFileSync(path.join(__dirname, fname)).toString());
 }
 
-export function writeJSON(fname: string, obj: Record<string, unknown>): void {
+export function writeJSON(fname: string, obj: unknown): void {
     if (!fname.endsWith('.json')) {
         fname += '.json';
     }

@@ -1,37 +1,37 @@
 import { ProjectileFactory } from "./projectiles/projectileFactory";
 
-export type type_entity = {
+export interface type_entity {
     x: number,
     y: number,
     direction: number
-};
+}
 
-export type type_player = type_entity & {
+export interface type_player extends type_entity {
     id: number,
     hp: number,
     isAlive: boolean,
     ammo: number,
     maxAmmo: number
-};
+}
 
 export type type_projectile = type_entity;
 
-export type type_wall = {
+export interface type_wall {
     x: number,
     y: number,
     w: number,
     h: number
-};
+}
 
-export type type_state = {
+export interface type_state {
     players: {
         [id: number]: type_player
     },
     projectiles: type_projectile[],
     walls: type_wall[]
-};
+}
 
-export type type_input = {
+export interface type_input {
     up: boolean,
     down: boolean,
     left: boolean,
@@ -40,16 +40,16 @@ export type type_input = {
     my: number,
     mdown: boolean,
     mpress: boolean
-};
+}
 
-export type type_input_set = {
+export interface type_input_set {
     [socketid: number]: {
         id: number,
         input: type_input
     };
 }
 
-export type type_map = {
+export interface type_map {
     settings: {
         name: string,
         size: {
@@ -60,14 +60,20 @@ export type type_map = {
     walls: type_wall[];
 }
 
-export type type_button_info = {
+export interface type_button_info {
     title?: string,
     img?: string,
     width: number,
     height: number
 }
 
-export type type_weapon_args = {
+export interface type_loadout {
+    weapon: string,
+    ability: string,
+    perk: string,
+}
+
+export interface type_weapon_args {
     maxAmmo?: number,
     cooldownTime?: number,
     reloadTime?: number,

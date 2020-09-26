@@ -1,4 +1,5 @@
 import { Lobby } from "./lobby";
+import { type_loadout } from "./types";
 
 export class PlayerSession {
     static players: PlayerSession[] = [];
@@ -19,27 +20,26 @@ export class PlayerSession {
         socket.on("setUsername", this.setName);
     }
 
-    setLoadout(loadout) {
-        console.log(loadout);
+    setLoadout(loadout: type_loadout): void {
         this._loadout = loadout;
     }
 
-    setName(name: string) {
+    setName(name: string): void {
         this._name = name;
         if (this.lobby) {
             this.lobby.sendUpdate();
         }
     }
 
-    emit(cmd: string, msg?: any): void {
+    emit(cmd: string, msg?: unknown): void {
         this._socket.emit(cmd, msg);
     }
 
-    get id() {
+    get id(): string {
         return this._socket.id;
     }
 
-    get loadout() {
+    get loadout(): type_loadout {
         return this._loadout;
     }
 
@@ -47,7 +47,7 @@ export class PlayerSession {
         return this._name;
     }
 
-    get lobby() {
+    get lobby(): Lobby {
         return this._lobby;
     }
 
@@ -59,7 +59,7 @@ export class PlayerSession {
         this.bindSocket(socket);
     }
 
-    leave() {
+    leave(): void {
         if (this.lobby) {
             this.lobby.leave(this);
             this.lobby = null;
@@ -76,7 +76,7 @@ export class PlayerSession {
         return p;
     }
 
-    static get(id: any): PlayerSession {
+    static get(id: string): PlayerSession {
         return PlayerSession.players.find((player) => player.id === id);
     }
 

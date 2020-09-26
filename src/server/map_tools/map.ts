@@ -11,7 +11,7 @@ export class MapGame {
         this._height = height;
     }
 
-    addWall(wall: Wall) {
+    addWall(wall: Wall): void {
         this._walls.push(wall);
     }
 

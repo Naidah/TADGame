@@ -4,6 +4,7 @@ import { Projectile } from "../projectiles/projectile";
 import { ProjectileFactory } from "../projectiles/projectileFactory";
 import { type_weapon_args } from "../types";
 
+
 export abstract class WeaponState {
     protected _parent: Weapon;
     constructor(parent: Weapon) {
@@ -35,7 +36,7 @@ export class Weapon {
         projFactory = new ProjectileFactory(420, 40),
         isPress = false,
         shots = 1,
-    }) {
+    }: type_weapon_args) {
         this._values = {
             maxAmmo: maxAmmo,
             cooldownTime: cooldownTime,
@@ -64,65 +65,65 @@ export class Weapon {
         return res[1];
     }
 
-    reload() {
+    reload(): void {
         this._state = this._state.reload();
     }
 
-    update(delta: number) {
+    update(delta: number): void {
         this._state = this._state.update(delta);
     }
 
-    reset() {
+    reset(): void {
         this._state = new StateStandby(this, this.maxAmmo, this.minSpread);
     }
 
-    get ammo() {
+    get ammo(): number {
         return this._state.ammo;
     }
 
-    get maxAmmo() {
+    get maxAmmo(): number {
         return this._values.maxAmmo;
     }
 
-    get cooldownTime() {
+    get cooldownTime(): number {
         return this._values.cooldownTime;
     }
 
-    get reloadTime() {
+    get reloadTime(): number {
         return this._values.reloadTime;
     }
 
-    get minSpread() {
+    get minSpread(): number {
         return this._values.minSpread;
     }
 
-    get maxSpread() {
+    get maxSpread(): number {
         return this._values.maxSpread;
     }
 
-    get spreadRecovery() {
+    get spreadRecovery(): number {
         if (this._values.spreadRecovery === 0) {
             return 0;
         }
         return (this.maxSpread - this.minSpread) / this._values.spreadRecovery;
     }
 
-    get spreadGrowth() {
+    get spreadGrowth(): number {
         if (this._values.spreadGrowth === 0) {
             return 0;
         }
         return (this.maxSpread - this.minSpread) / this._values.spreadGrowth;
     }
 
-    get projFactory() {
+    get projFactory(): ProjectileFactory {
         return this._values.projFactory;
     }
 
-    get isPress() {
+    get isPress(): boolean {
         return this._values.isPress;
     }
 
-    get shots() {
+    get shots(): number {
         return this._values.shots;
     }
 }

@@ -33,7 +33,7 @@ app.get('/lobby', (request, response) => {
 
 app.get('/maps/new', (request, response) => {
     let x = 1;
-    const index = readJSON('index.json');
+    const index = readJSON('index.json') as {[map: string]: string};
     while ("map" + x in index) {
         x += 1;
     }
@@ -54,6 +54,7 @@ app.post('/editor/:fname', (request, response) => {
 
 // Starts the server
 server.listen(5000, () => {
+    // eslint-disable-next-line no-console
     console.log('Starting server on port 5000');
 });
 
@@ -61,7 +62,7 @@ const game = getGame();
 
 const inputs: type_input_set = {};
 io.on('connection', (socket) => {
-    const p = PlayerSession.create(socket);
+    PlayerSession.create(socket);
 
     socket.on('getActiveLobbies', (callback: (list: [number, string, number][]) => void) => {
         callback(Lobby.getAll().map((l) => [l.id, l.name, l.size]))

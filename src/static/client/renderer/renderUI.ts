@@ -1,6 +1,6 @@
 import { type_player } from "../../../server/types";
 
-export function renderUI(canvas: HTMLCanvasElement, state: type_player) {
+export function renderUI(canvas: HTMLCanvasElement, state: type_player): void {
     const context = canvas.getContext('2d');
     context.fillStyle = "black";
     context.beginPath();

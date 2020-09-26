@@ -2,10 +2,10 @@ import * as hitboxes from "./hitboxes/index";
 import { type_wall } from "./types";
 
 export class Wall {
-    protected _x: any;
-    protected _y: any;
-    protected _w: any;
-    protected _h: any;
+    protected _x: number;
+    protected _y: number;
+    protected _w: number;
+    protected _h: number;
     protected _hitbox: hitboxes.RectHitbox;
 
     constructor(x: number, y: number, w: number, h: number) {

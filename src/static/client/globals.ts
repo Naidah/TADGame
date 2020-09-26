@@ -1,18 +1,18 @@
 let viewportX = 0;
 let viewportY = 0;
 
-export function getViewportX() {
+export function getViewportX(): number {
     return viewportX;
 }
 
-export function getViewportY() {
+export function getViewportY(): number {
     return viewportY;
 }
 
-export function setViewportX(x: number) {
+export function setViewportX(x: number): void {
     viewportX = x;
 }
 
-export function setViewportY(y: number) {
+export function setViewportY(y: number): void {
     viewportY = y;
 }

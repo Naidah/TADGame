@@ -10,7 +10,7 @@ export class ProjectileFactory {
         this._dmg = dmg;
     }
 
-    generate(x, y, direction): Projectile {
+    generate(x: number, y: number, direction: number): Projectile {
         return new Projectile(this._owner, x, y, direction, this._speed, this._dmg);
     }
 

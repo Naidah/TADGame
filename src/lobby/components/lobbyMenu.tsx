@@ -56,7 +56,7 @@ export class LobbyMenu extends React.Component<Props, State> {
         this.props.onLeave();
     }
 
-    submitName(event): void {
+    submitName(event: React.ChangeEvent<HTMLInputElement>): void {
         this.setState({ name: event.target.value });
         this.sendUpdate();
     }
@@ -65,8 +65,8 @@ export class LobbyMenu extends React.Component<Props, State> {
         globals.socket.emit("updateLobby", { map: this.state.name, name: this.state.name });
     }
 
-    async updateMapSet() {
-        return await fetch("/index.json")
+    async updateMapSet(): Promise<void> {
+        await fetch("/index.json")
             .then((resp) => resp.json())
             .then((resp) => {
                 const newMaps: { [id: string]: type_button_info } = {};
@@ -89,13 +89,13 @@ export class LobbyMenu extends React.Component<Props, State> {
             });
     }
 
-    handleMapChange(value: string) {
+    handleMapChange(value: string): void {
         this.setState({ map: value });
-        this.sendUpdate;
+        this.sendUpdate();
     }
 
 
-    render() {
+    render(): JSX.Element {
         let title;
         if (this.state.isOwner) {
             title = <input

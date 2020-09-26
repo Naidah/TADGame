@@ -18,16 +18,16 @@ export class Selector extends React.Component<Props, State> {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleChange(event) {
+    handleChange(event: React.ChangeEvent<HTMLSelectElement>): void {
         this.setState({ value: event.target.value });
     }
 
-    handleSubmit(event) {
+    handleSubmit(event: React.ChangeEvent<HTMLFormElement>): void {
         this.props.onSelect(this.state.value);
         event.preventDefault();
     }
 
-    render() {
+    render(): JSX.Element {
         return <form onSubmit={this.handleSubmit}>
             <select value={this.state.value} onChange={this.handleChange}>
                 <option value="">New Map</option>

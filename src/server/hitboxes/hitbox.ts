@@ -16,12 +16,12 @@ export abstract class Hitbox {
     }
 
     // Absolute position update
-    updatePos(x = 0, y = 0) {
+    updatePos(x = 0, y = 0): void {
         this._x = x;
         this._y = y;
     }
     // Relative position update
-    move(dx = 0, dy = 0) {
+    move(dx = 0, dy = 0): void {
         this._x += dx;
         this._y += dy;
     }
@@ -36,7 +36,7 @@ export abstract class Hitbox {
 
     // Checks if a collisions occurs
     abstract hasCollision(hitbox: Hitbox): boolean;
-    abstract containsPoint(x: number, y: number);
+    abstract containsPoint(x: number, y: number): boolean;
 
     // check if the hitbox is out of the map
     abstract isOutOfBounds(dx: number, dy: number, fullyContained: boolean): boolean;
