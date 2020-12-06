@@ -76,6 +76,10 @@ export class Character extends Entity {
         for (const p of ps) {
             g.spawnProjectile(p);
         }
+
+        if (input.reload) {
+            this._weapon.reload();
+        }
     }
 
     updatePos(dx: number, dy: number): void {
