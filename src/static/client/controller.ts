@@ -11,6 +11,7 @@ const movement = {
     mx: 0,
     my: 0,
     mdown: false,
+    reload: false
 } as type_input;
 
 
@@ -42,6 +43,9 @@ document.addEventListener('keydown', (event) => {
     case 83: // S
         movement.down = true;
         break;
+    case 82: // R
+        movement.reload = true;
+        break;
     }
 });
 document.addEventListener('keyup', (event) => {
@@ -57,6 +61,9 @@ document.addEventListener('keyup', (event) => {
         break;
     case 83: // S
         movement.down = false;
+        break;
+    case 82: // R
+        movement.reload = false;
         break;
     }
 });

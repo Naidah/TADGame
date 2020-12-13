@@ -39,7 +39,8 @@ export type type_input = {
     mx: number,
     my: number,
     mdown: boolean,
-    mpress: boolean
+    mpress: boolean,
+    reload: boolean
 };
 
 export type type_input_set = {
